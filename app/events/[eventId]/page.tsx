@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function LoginPage() {
+export default function Page() {
   return (
     <div>
-      <h1>login page</h1>
+      <h1>event id</h1>
     </div>
   )
 }
