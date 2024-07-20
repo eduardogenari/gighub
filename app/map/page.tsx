@@ -2,13 +2,14 @@ import dynamic from 'next/dynamic';
 import { promises as fs } from "fs";
 import React, { useMemo } from 'react'
 import Filters from "@/components/filters";
+import Spinner from '@/components/Spinner';
 import { NavigationMenu } from "@/components/ui/navigation-menu";
 
 export default async function Page() {
   const Map = useMemo(
     () =>
       dynamic(() => import("@/components/Map"), {
-        loading: () => <p>Loading</p>,
+        loading: () => <div className="flex justify-center items-center h-screen"><Spinner/></div>,
         ssr: false,
       }),
     []
