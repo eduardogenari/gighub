@@ -1,0 +1,18 @@
+[
+    {
+      "id": 0,
+      "name": "Billie Eilish",
+      "venue": "Madison Square Garden",
+      "country": "United States",
+      "city": "New York",
+      "coordinates": [40.75, -73.99]
+    },
+    {
+      "id": 1,
+      "name": "Billie Eilish",
+      "venue": "TD Garden",
+      "country": "United States",
+      "city": "Boston",
+      "coordinates": [42.36, -71.06]
+    }
+]
