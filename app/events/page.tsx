@@ -6,9 +6,6 @@ export default function EventsPage() {
     <div>
       <h1>events</h1>
       <Card>
-        <p>jjj</p>
-      </Card>
-      <Card>
         <CardHeader>
           <CardTitle>Paul McCartney en Madrid con su “Got Back Tour”</CardTitle>
           <CardDescription>Card Description</CardDescription>
