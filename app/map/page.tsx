@@ -7,7 +7,7 @@ export default function Page() {
   const Map = useMemo(
     () =>
       dynamic(() => import("@/components/Map"), {
-        loading: () => <p>"Loading"</p>,
+        loading: () => <p>Loading</p>,
         ssr: false,
       }),
     []
