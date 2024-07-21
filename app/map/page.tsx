@@ -13,7 +13,6 @@ export default async function Page({
 }: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-
   // Get start date and end date from URL query paramters
   let startDate;
   let endDate;
@@ -53,11 +52,11 @@ export default async function Page({
     "utf8"
   );
   let artists = JSON.parse(artistsFile);
-  artists = artists.map((artist: Artist) => artist.name)
+  artists = artists.map((artist: Artist) => artist.name);
 
   // Filter by start date and end date
   if (startDate && endDate) {
-    events = events.filter((event: { date: string }) => {
+    events = events.filter((event: Event) => {
       return (
         new Date(event.date) >= YYYYMMDDToDate(startDate) &&
         new Date(event.date) <= YYYYMMDDToDate(endDate)
