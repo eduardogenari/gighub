@@ -5,6 +5,7 @@ import Filters from "@/components/Filters";
 import Spinner from "@/components/Spinner";
 import { NavigationMenu } from "@/components/ui/navigation-menu";
 import type { Event } from "@/types/event";
+import type { Artist } from "@/types/artist";
 import { YYYYMMDDToDate } from "@/lib/utils";
 
 export default async function Page({
@@ -46,6 +47,14 @@ export default async function Page({
   );
   let events = JSON.parse(eventsFile);
 
+  // Read artists from file
+  const artistsFile = await fs.readFile(
+    process.cwd() + "/app/map/artists.json",
+    "utf8"
+  );
+  let artists = JSON.parse(artistsFile);
+  artists = artists.map((artist: Artist) => artist.name)
+
   // Filter by start date and end date
   if (startDate && endDate) {
     events = events.filter((event: { date: string }) => {
@@ -61,7 +70,7 @@ export default async function Page({
       <div className="w-1/5 bg-white p-4">
         <h1 className="text-lg font-bold mb-4">Filters</h1>
         <NavigationMenu></NavigationMenu>
-        <Filters />
+        <Filters artists={artists} />
       </div>
       <div className="w-4/5 bg-gray-100">
         <Map markers={events} />

@@ -1,17 +1,18 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 import { Button } from "./ui/button";
 import { Form } from "@/components/ui/form";
+import { useForm } from "react-hook-form";
 import CalendarItem from "./CalendarItem";
+import SearchItem from "./SearchItem";
 import { useRouter } from "next/navigation";
 import { format } from "url";
 import { dateToYYYYMMDD } from "@/lib/utils";
 
 const FormSchema = z.object({
+  artist: z.string(),
   startDate: z.date({
     required_error: "A start date is required.",
   }),
@@ -20,7 +21,7 @@ const FormSchema = z.object({
   }),
 });
 
-export default function Filters() {
+export default function Filters({ artists }: { artists: string[] }) {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -33,6 +34,7 @@ export default function Filters() {
       query: {
         startDate: dateToYYYYMMDD(data.startDate),
         endDate: dateToYYYYMMDD(data.endDate),
+        artist: data.artist,
       },
     });
     router.push(url);
@@ -41,6 +43,13 @@ export default function Filters() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <SearchItem
+          form={form}
+          name={"artist"}
+          label={"Artist"}
+          placeholder={"Type an artist name"}
+          options={artists}
+        />
         <CalendarItem
           form={form}
           name={"startDate"}
