@@ -7,6 +7,9 @@ import { z } from "zod";
 import { Button } from "./ui/button";
 import { Form } from "@/components/ui/form";
 import CalendarItem from "./CalendarItem";
+import { useRouter } from "next/navigation";
+import { format } from "url";
+import { dateToYYYYMMDD } from "@/lib/utils";
 
 const FormSchema = z.object({
   startDate: z.date({
@@ -18,17 +21,26 @@ const FormSchema = z.object({
 });
 
 export default function Filters() {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(JSON.stringify(data, null, 2));
+    const url = format({
+      pathname: "/map",
+      query: {
+        startDate: dateToYYYYMMDD(data.startDate),
+        endDate: dateToYYYYMMDD(data.endDate),
+      },
+    });
+    router.push(url);
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <CalendarItem
           form={form}
           name={"startDate"}
