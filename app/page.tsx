@@ -1,4 +1,4 @@
-import Filters from "@/components/filters";
+import Filters from "@/components/Filters";
 import { NavigationMenu } from "@/components/ui/navigation-menu";
 import Image from "next/image";
 

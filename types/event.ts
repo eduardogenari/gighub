@@ -9,4 +9,5 @@ export type Event = {
     city: string;
     country: string;
     images: string[];
+    date: string;
 };
