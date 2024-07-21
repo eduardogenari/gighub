@@ -2,5 +2,13 @@
     {
       "id": 0,
       "name": "Billie Eilish"
+    },
+    {
+      "id": 1,
+      "name": "The Smashing Pumpkins"
+    },
+    {
+      "id": 2,
+      "name": "Aurora"
     }
 ]

@@ -13,15 +13,19 @@ export default async function Page({
 }: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  // Get start date and end date from URL query paramters
+  // Get dates and artist from URL query paramters
   let startDate;
   let endDate;
+  let artist;
   if (searchParams) {
     if (searchParams.hasOwnProperty("startDate")) {
       startDate = searchParams.startDate;
     }
     if (searchParams.hasOwnProperty("endDate")) {
       endDate = searchParams.endDate;
+    }
+    if (searchParams.hasOwnProperty("artist")) {
+      artist = searchParams.artist;
     }
   }
 
@@ -52,15 +56,27 @@ export default async function Page({
     "utf8"
   );
   let artists = JSON.parse(artistsFile);
-  artists = artists.map((artist: Artist) => artist.name);
+  let artistsNames = artists.map((artist: Artist) => artist.name);
 
-  // Filter by start date and end date
-  if (startDate && endDate) {
+  // Filter by start date
+  if (startDate) {
     events = events.filter((event: Event) => {
-      return (
-        new Date(event.date) >= YYYYMMDDToDate(startDate) &&
-        new Date(event.date) <= YYYYMMDDToDate(endDate)
-      );
+      return new Date(event.date) >= YYYYMMDDToDate(startDate);
+    });
+  }
+
+  // Filter by end date
+  if (endDate) {
+    events = events.filter((event: Event) => {
+      return new Date(event.date) <= YYYYMMDDToDate(endDate);
+    });
+  }
+
+  // Filter by artist
+  if (artist) {
+    events = events.filter((event: Event) => {
+      const foundArtist = artists.find((key: Artist) => key.name === artist);
+      return event.artists.includes(foundArtist.id);
     });
   }
 
@@ -69,7 +85,7 @@ export default async function Page({
       <div className="w-1/5 bg-white p-4">
         <h1 className="text-lg font-bold mb-4">Filters</h1>
         <NavigationMenu></NavigationMenu>
-        <Filters artists={artists} />
+        <Filters artists={artistsNames} />
       </div>
       <div className="w-4/5 bg-gray-100">
         <Map markers={events} />

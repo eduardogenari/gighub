@@ -12,13 +12,9 @@ import { format } from "url";
 import { dateToYYYYMMDD } from "@/lib/utils";
 
 const FormSchema = z.object({
-  artist: z.string(),
-  startDate: z.date({
-    required_error: "A start date is required.",
-  }),
-  endDate: z.date({
-    required_error: "An end date is required.",
-  }),
+  artist: z.string().optional(),
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
 });
 
 export default function Filters({ artists }: { artists: string[] }) {
@@ -29,13 +25,23 @@ export default function Filters({ artists }: { artists: string[] }) {
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
+
+    // Add new keys if they are submitted
+    let query: { [key: string]: string } = {};
+    if (data.startDate) {
+      query.startDate = dateToYYYYMMDD(data.startDate);
+    }
+    if (data.endDate) {
+      query.endDate = dateToYYYYMMDD(data.endDate);
+    }
+    if (data.artist) {
+      query.artist = data.artist;
+    }
+
+    // Construct URL to pass variables to backend
     const url = format({
       pathname: "/map",
-      query: {
-        startDate: dateToYYYYMMDD(data.startDate),
-        endDate: dateToYYYYMMDD(data.endDate),
-        artist: data.artist,
-      },
+      query: query,
     });
     router.push(url);
   }
