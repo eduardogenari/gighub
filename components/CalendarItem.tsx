@@ -1,7 +1,5 @@
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import { z } from "zod";
-
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -42,7 +40,7 @@ export default function CalendarItem({
                 <Button
                   variant={"outline"}
                   className={cn(
-                    "w-[240px] pl-3 text-left font-normal",
+                    "pl-3 text-left font-normal",
                     !field.value && "text-muted-foreground"
                   )}
                 >
