@@ -44,15 +44,16 @@ export default async function Page({
   );
 
   // Read events from file
+  console.log(process.cwd());
   const eventsFile = await fs.readFile(
-    process.cwd() + "/app/map/events.json",
+    process.cwd() + "/public/events.json",
     "utf8"
   );
   let events = JSON.parse(eventsFile);
 
   // Read artists from file
   const artistsFile = await fs.readFile(
-    process.cwd() + "/app/map/artists.json",
+    process.cwd() + "/public/artists.json",
     "utf8"
   );
   let artists = JSON.parse(artistsFile);
