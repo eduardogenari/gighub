@@ -7,6 +7,7 @@ import { NavigationMenu } from "@/components/ui/navigation-menu";
 import type { Event } from "@/types/event";
 import type { Artist } from "@/types/artist";
 import { YYYYMMDDToDate } from "@/lib/utils";
+import path from "path";
 
 export default async function Page({
   searchParams,
@@ -46,14 +47,14 @@ export default async function Page({
   // Read events from file
   console.log(process.cwd());
   const eventsFile = await fs.readFile(
-    process.cwd() + "/public/events.json",
+    path.join(process.cwd(), 'public', 'events.json'),
     "utf8"
   );
   let events = JSON.parse(eventsFile);
 
   // Read artists from file
   const artistsFile = await fs.readFile(
-    process.cwd() + "/public/artists.json",
+    path.join(process.cwd(), 'public', 'artists.json'),
     "utf8"
   );
   let artists = JSON.parse(artistsFile);
