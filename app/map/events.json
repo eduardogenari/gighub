@@ -1,0 +1,24 @@
+[
+    {
+      "id": 0,
+      "name": "Billie Eilish: Hit me hard and soft",
+      "artists": [0],
+      "venue": "Madison Square Garden",
+      "country": "United States",
+      "city": "New York",
+      "coordinates": [40.75, -73.99],
+      "images": ["/images/002-billie-eilish-hit-me-hard-and-soft.webp"],
+      "date": "2024-10-16T00:00:00.000Z"
+    },
+    {
+      "id": 1,
+      "name": "Billie Eilish: Hit me hard and soft",
+      "artists": [0],
+      "venue": "TD Garden",
+      "country": "United States",
+      "city": "Boston",
+      "coordinates": [42.36, -71.06],
+      "images": ["/images/002-billie-eilish-hit-me-hard-and-soft.webp"],
+      "date": "2024-10-11T00:00:00.000Z"
+    }
+]
