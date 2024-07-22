@@ -7,7 +7,18 @@ export default async function Page() {
   return (
     <main className="p-6">
       {concerts.map((concert) => (
-        <div key={concert.id}>{concert.name}</div>
+        <div key={concert.id}>
+
+<h2>{concert.name}</h2>
+          <p>{`Date: ${concert.dates.start.localDate}`}</p>
+          <p>{`Time: ${concert.dates.start.localTime}`}</p>
+          {concert._embedded.venues.map((venue) => (
+            <div key={venue.id}>
+              <h3>{venue.name}</h3>
+              <p>{`Location: ${venue.location.latitude}, ${venue.location.longitude}`}</p>
+              </div>
+          ))}
+        </div>
       ))}
     </main>
   );

@@ -68,6 +68,14 @@
   }
 }
 
+h2 {
+  @apply font-extrabold text-xl mb-4 mt-4;
+}
+
+h3 {
+  @apply font-bold text-lg mb-4 mt-4;
+}
+
 .leaflet-popup-content-wrapper {
   padding: 0 !important;
 }

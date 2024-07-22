@@ -2,9 +2,32 @@ import { env } from "@/lib/env";
 import { writeFile } from "fs/promises";
 
 
+type EventDateTime = {
+  localDate: Date; 
+  localTime: Date;
+};
+
+type Location = {
+  longitude: string;
+  latitude: string;
+}
+type Venue = {
+  id : number;
+  name : string;
+  location : Location;
+
+}
 export type Event = {
   id: number;
   name: string;
+  images : { url: string }[];
+  dates: {
+    start: EventDateTime;
+  };
+
+  _embedded: {
+    venues: Venue[];
+  };
 
 };
 
