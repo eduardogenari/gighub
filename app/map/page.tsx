@@ -1,18 +1,16 @@
 import dynamic from "next/dynamic";
-import { promises as fs } from "fs";
 import React, { useMemo } from "react";
 import Filters from "@/components/Filters";
 import Spinner from "@/components/Spinner";
 import { NavigationMenu } from "@/components/ui/navigation-menu";
 import type { Event } from "@/types/event";
-import type { Artist } from "@/types/artist";
 import { YYYYMMDDToDate } from "@/lib/utils";
-import path from "path";
+import { actionGetAllEvents } from "@/actions/events";
 
 export default async function Page({
   searchParams,
 }: {
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: { [key: string]: string | undefined };
 }) {
   // Get dates and artist from URL query paramters
   let startDate;
@@ -44,50 +42,51 @@ export default async function Page({
     []
   );
 
-  // Read events from file
-  console.log(process.cwd());
-  const eventsFile = await fs.readFile(
-    path.join(process.cwd(), 'public', 'events.json'),
-    "utf8"
-  );
-  let events = JSON.parse(eventsFile);
+  // Get events from Ticketmaster
+  let events = await actionGetAllEvents();
 
-  // Read artists from file
-  const artistsFile = await fs.readFile(
-    path.join(process.cwd(), 'public', 'artists.json'),
-    "utf8"
-  );
-  let artists = JSON.parse(artistsFile);
-  let artistsNames = artists.map((artist: Artist) => artist.name);
+  // Get all names in these events
+  let names = events.map(event => {
+    return event._embedded.attractions.map(attraction => attraction.name);
+  })
+
+  // Create a list and remove duplicates
+  let artistNames = [...new Set(names.flat(1))];
+  
+  console.log("Number of concerts before filtering", events.length);
 
   // Filter by start date
   if (startDate) {
     events = events.filter((event: Event) => {
-      return new Date(event.date) >= YYYYMMDDToDate(startDate);
+      return new Date(event.dates.start.localDate) >= YYYYMMDDToDate(startDate);
     });
   }
 
   // Filter by end date
   if (endDate) {
     events = events.filter((event: Event) => {
-      return new Date(event.date) <= YYYYMMDDToDate(endDate);
+      return new Date(event.dates.start.localDate) <= YYYYMMDDToDate(endDate);
     });
   }
 
   // Filter by artist
   if (artist) {
     events = events.filter((event: Event) => {
-      const foundArtist = artists.find((key: Artist) => key.name === artist);
-      return event.artists.includes(foundArtist.id);
+      return event._embedded.attractions.some(attraction => {
+        return attraction.name == artist
+      });
     });
   }
+
+  console.log("Number of concerts after filtering", events.length);
 
   return (
     <main className="h-screen w-screen flex overflow-hidden bg-gray-200">
       <div className="w-1/5 bg-white p-4">
         <h1 className="text-lg font-bold mb-4">Filters</h1>
         <NavigationMenu></NavigationMenu>
-        <Filters artists={artistsNames} />
+        <Filters artists={artistNames} />
+        <p className="text-sm mt-4 text-orange-600">Number of events: {events.length}</p>
       </div>
       <div className="w-4/5 bg-gray-100">
         <Map markers={events} />

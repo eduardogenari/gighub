@@ -1,10 +1,8 @@
-"use server"
+"use server";
 
-import { getAllEvents } from "@/lib/concerts"
-
-
+import { getAllEvents } from "@/lib/events";
 
 export async function actionGetAllEvents() {
-    const events = await getAllEvents();
-    return events;
+  const events = await getAllEvents();
+  return events;
 }
