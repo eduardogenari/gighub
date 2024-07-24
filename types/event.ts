@@ -19,8 +19,8 @@ type Venue = {
   id: number;
   name: string;
   city: string;
-  state: string;
   country: string;
+  state?: string;
   address: string;
   location: Location;
 };
@@ -46,6 +46,7 @@ export type Event = {
   images: Image[];
   dates: {
     start: EventDateTime;
+    end?: EventDateTime;
   };
   _links: Links;
   _embedded: {

@@ -6,9 +6,9 @@ export default async function Page() {
 
   return (
     <main className="p-6">
-      {concerts.map((concert) => (
+      {concerts.map((concert, index) => (
         <div key={concert.id}>
-          <h2>{concert.name}</h2>
+          <h2>{index + 1} - {concert.name}</h2>
           <img
             src={
               concert.images.find(
@@ -25,6 +25,7 @@ export default async function Page() {
               <h3>{venue.name}</h3>
               <p>{`Location: ${venue.location.latitude}, ${venue.location.longitude}`}</p>
               <p>{`Address: ${venue.address}`}</p>
+              <p>{`Country: ${venue.address}`}</p>
             </div>
           ))}
         </div>
