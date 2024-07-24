@@ -6,6 +6,8 @@ import { NavigationMenu } from "@/components/ui/navigation-menu";
 import type { Event } from "@/types/event";
 import { YYYYMMDDToDate } from "@/lib/utils";
 import { actionGetAllEvents } from "@/actions/events";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 export default async function Page({
   searchParams,
@@ -83,18 +85,22 @@ export default async function Page({
   console.log("Number of concerts after filtering", events.length);
 
   return (
-    <main className="h-screen w-screen flex overflow-hidden bg-gray-200">
-      <div className="w-1/5 bg-white p-4">
-        <h1 className="text-lg font-bold mb-4">Filters</h1>
-        <NavigationMenu></NavigationMenu>
-        <Filters artists={artistNames} />
-        <p className="text-sm mt-4 text-orange-600">
-          Number of events: {events.length}
-        </p>
+    <main className="h-screen w-screen flex flex-col">
+      <Header />
+      <div className="flex-grow flex overflow-hidden bg-gray-200">
+        <div className="w-1/5 bg-white p-4">
+          <h1 className="text-lg font-bold mb-4">Filters</h1>
+          <NavigationMenu></NavigationMenu>
+          <Filters artists={artistNames} />
+          <p className="text-sm mt-4 text-orange-600">
+            Number of events: {events.length}
+          </p>
+        </div>
+        <div className="w-4/5 bg-gray-100">
+          <Map markers={events} />
+        </div>
       </div>
-      <div className="w-4/5 bg-gray-100">
-        <Map markers={events} />
-      </div>
+      <Footer />
     </main>
   );
 }
