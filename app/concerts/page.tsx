@@ -1,5 +1,4 @@
 import { actionGetAllEvents } from "@/actions/events";
-import { Event, getAllEvents } from "@/lib/concerts";
 
 export default async function Page() {
   // let concerts: Event[] = [];

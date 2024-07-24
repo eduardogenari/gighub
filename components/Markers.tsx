@@ -16,7 +16,8 @@ export default function Markers(Markers: MarkersProps) {
     return (
       <Circle
         key={event.id}
-        center={event.coordinates}
+        center={[parseFloat(event.venues[0].location.latitude), 
+                 parseFloat(event.venues[0].location.longitude)]}
         radius={700}
         pathOptions={{ color: "orange" }}
       >
@@ -26,16 +27,17 @@ export default function Markers(Markers: MarkersProps) {
               layout="fill"
               objectFit="cover"
               alt={event.name}
-              src={event.images[0]}
+              src={event.images[0].url}
               className="rounded-[12px]"
             ></Image>
           </div>
-          <div className="p-4">
+          <div className="p-4 leading-3">
             <h2 className="font-bold text-orange-600 text-base">
               {event.name}
             </h2>
+            <p className="text-sm">{event.dates.start.localDate.toString()}</p>
             <p className="text-sm">
-              {event.venue} ({event.city}, {event.country})
+              {event.venues[0].name} ({event.venues[0].city}, {event.venues[0].country})
             </p>
             <Button className="bg-orange-600">Go to event &rarr;</Button>
           </div>
