@@ -1,8 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-        domains: ['s1.ticketm.net']
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "s1.ticketm.net",
+        pathname: "/**",
       },
+    ],
+  },
 };
 
 export default nextConfig;
