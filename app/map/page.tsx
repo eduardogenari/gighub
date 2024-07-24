@@ -47,7 +47,7 @@ export default async function Page({
 
   // Get all names in these events
   let names = events.map(event => {
-    return event._embedded.attractions.map(attraction => attraction.name);
+    return event._embedded.attractions?.map(attraction => attraction.name) || [];;
   })
 
   // Create a list and remove duplicates
@@ -72,7 +72,7 @@ export default async function Page({
   // Filter by artist
   if (artist) {
     events = events.filter((event: Event) => {
-      return event._embedded.attractions.some(attraction => {
+      return event._embedded.attractions?.some(attraction => {
         return attraction.name == artist
       });
     });
