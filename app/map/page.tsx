@@ -44,7 +44,6 @@ export default async function Page({
 
   // Get events from Ticketmaster
   let events = await actionGetAllEvents();
-  console.log("concerts", events.length);
 
   // Get all names in these events
   let names = events.map(event => {
@@ -53,7 +52,9 @@ export default async function Page({
 
   // Create a list and remove duplicates
   let artistNames = [...new Set(names.flat(1))];
-  console.log(artistNames)
+  
+  console.log("Number of concerts before filtering", events.length);
+
   // Filter by start date
   if (startDate) {
     events = events.filter((event: Event) => {
@@ -71,9 +72,13 @@ export default async function Page({
   // Filter by artist
   if (artist) {
     events = events.filter((event: Event) => {
-      return artistNames.includes(artist);
+      return event._embedded.attractions.some(attraction => {
+        return attraction.name == artist
+      });
     });
   }
+
+  console.log("Number of concerts after filtering", events.length);
 
   return (
     <main className="h-screen w-screen flex overflow-hidden bg-gray-200">
@@ -81,6 +86,7 @@ export default async function Page({
         <h1 className="text-lg font-bold mb-4">Filters</h1>
         <NavigationMenu></NavigationMenu>
         <Filters artists={artistNames} />
+        <p className="text-sm mt-4 text-orange-600">Number of events: {events.length}</p>
       </div>
       <div className="w-4/5 bg-gray-100">
         <Map markers={events} />
