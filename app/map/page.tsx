@@ -46,13 +46,15 @@ export default async function Page({
   let events = await actionGetAllEvents();
 
   // Get all names in these events
-  let names = events.map(event => {
-    return event._embedded.attractions?.map(attraction => attraction.name) || [];;
-  })
+  let names = events.map((event) => {
+    return (
+      event._embedded.attractions?.map((attraction) => attraction.name) || []
+    );
+  });
 
   // Create a list and remove duplicates
   let artistNames = [...new Set(names.flat(1))];
-  
+
   console.log("Number of concerts before filtering", events.length);
 
   // Filter by start date
@@ -72,8 +74,8 @@ export default async function Page({
   // Filter by artist
   if (artist) {
     events = events.filter((event: Event) => {
-      return event._embedded.attractions?.some(attraction => {
-        return attraction.name == artist
+      return event._embedded.attractions?.some((attraction) => {
+        return attraction.name == artist;
       });
     });
   }
@@ -86,7 +88,9 @@ export default async function Page({
         <h1 className="text-lg font-bold mb-4">Filters</h1>
         <NavigationMenu></NavigationMenu>
         <Filters artists={artistNames} />
-        <p className="text-sm mt-4 text-orange-600">Number of events: {events.length}</p>
+        <p className="text-sm mt-4 text-orange-600">
+          Number of events: {events.length}
+        </p>
       </div>
       <div className="w-4/5 bg-gray-100">
         <Map markers={events} />
