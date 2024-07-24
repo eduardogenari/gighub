@@ -1,8 +1,7 @@
 #!/usr/bin/env npx ts-node
 
-import { getAllConcerts } from "@/lib/concerts";
+import { getAllEvents } from "@/lib/events";
 
-
-const concerts = await getAllConcerts();
+const concerts = await getAllEvents();
 
 console.log(concerts);

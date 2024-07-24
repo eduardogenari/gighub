@@ -1,22 +1,32 @@
-import { Event, getAllConcerts } from "@/lib/concerts";
+import { actionGetAllEvents } from "@/actions/events";
 
 export default async function Page() {
-  let concerts: Event[] = [];
-  concerts = await getAllConcerts();
+  // let concerts: Event[] = [];
+  const concerts = await actionGetAllEvents();
 
   return (
     <main className="p-6">
-      {concerts.map((concert) => (
+      {concerts.map((concert, index) => (
         <div key={concert.id}>
-
-<h2>{concert.name}</h2>
+          <h2>{index + 1} - {concert.name}</h2>
+          <img
+            src={
+              concert.images.find(
+                (img) => img.width === 305 && img.ratio === "4_3"
+              )?.url
+            }
+            alt={concert.name}
+          />
           <p>{`Date: ${concert.dates.start.localDate}`}</p>
           <p>{`Time: ${concert.dates.start.localTime}`}</p>
-          {concert._embedded.venues.map((venue) => (
+
+          {concert.venues.map((venue) => (
             <div key={venue.id}>
               <h3>{venue.name}</h3>
               <p>{`Location: ${venue.location.latitude}, ${venue.location.longitude}`}</p>
-              </div>
+              <p>{`Address: ${venue.address}`}</p>
+              <p>{`Country: ${venue.address}`}</p>
+            </div>
           ))}
         </div>
       ))}
