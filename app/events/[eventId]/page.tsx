@@ -1,9 +1,20 @@
-import React from 'react'
+import { getEventById } from "@/lib/events";
 
-export default function Page() {
+
+console.log("detaaaaaaaaaail")
+
+type PageProps = {
+  params: {
+    eventId: string;
+  };
+};
+export default async function Page({ params }: PageProps) {
+
+  const { eventId } = params;
+  //let event = await getEventById(eventId);
   return (
-    <div>
-      <h1>event id</h1>
-    </div>
-  )
+    <main className="p-6">
+      <h1>{eventId}</h1>
+    </main>
+  );
 }

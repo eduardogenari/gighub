@@ -54,3 +54,4 @@ export type Event = {
   };
   venues: Venue[];
 };
+

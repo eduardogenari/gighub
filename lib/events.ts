@@ -46,3 +46,32 @@ const getEventsByPage = async (page: number) => {
     return [];
   }
 };
+
+export const getEventById = async (id: string) => {
+  const response = await fetch(
+    `${env(
+      "URL_TICKETMASTER"
+    )}events/${id}.json?apikey=${env(
+      "APIKEY_TICKETMASTER"
+    )}`
+  );
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+
+  try {
+    const jsonEvent = await response.json();
+
+    const event = {
+      id: jsonEvent.id,
+      name: jsonEvent.name,
+      imageUrl: jsonEvent.images[0].url,
+    };
+
+    return event;
+  } catch (error) {
+    console.error(`Error fetching event with id ${id}:`, error);
+    return null;
+  }
+};
