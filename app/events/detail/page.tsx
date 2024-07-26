@@ -16,8 +16,8 @@ export default async function EventDetailPage() {
             <Image
               layout="fill"
               objectFit="cover"
-              alt={event?.name}
-              src={event?.images[3].url}
+              alt={event?.name || 'Default Alt Text'}
+              src={event?.images?.[3]?.url || '/public/images/001-paul-goback.jpg'}
               className="rounded-[0px]"
             />
           </div>
