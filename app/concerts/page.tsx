@@ -1,14 +1,22 @@
-import { actionGetAllEvents } from "@/actions/events";
-
+import { actionGetAllEvents, actionGetEventsByDate } from "@/actions/events";
+import { formatDateToISO } from "@/lib/utils";
+import { formatISO } from "date-fns";
 export default async function Page() {
   // let concerts: Event[] = [];
-  const concerts = await actionGetAllEvents();
+  //const concerts = await actionGetAllEvents();
+
+  const concerts = await actionGetEventsByDate(
+    formatDateToISO("2024-08-11"),
+    formatDateToISO("2024-08-31")
+  );
 
   return (
     <main className="p-6">
       {concerts.map((concert, index) => (
         <div key={concert.id}>
-          <h2>{index + 1} - {concert.name}</h2>
+          <h2>
+            {index + 1} - {concert.name}
+          </h2>
           <img
             src={
               concert.images.find(
