@@ -1,4 +1,4 @@
-import { actionGetAllEvents, actionGetEventsByDate } from "@/actions/events";
+import { actionGetAllEvents, actionGetEventById, actionGetEventsByDate } from "@/actions/events";
 import { formatDateToISO } from "@/lib/utils";
 import { formatISO } from "date-fns";
 export default async function Page() {
@@ -10,12 +10,14 @@ export default async function Page() {
     formatDateToISO("2024-08-31")
   );
 
+  const concert = await actionGetEventById("G5d0Z9YlaQsP_");
+  //console.log(concert);
   return (
     <main className="p-6">
       {concerts.map((concert, index) => (
         <div key={concert.id}>
           <h2>
-            {index + 1} - {concert.name}
+            {index + 1} - {concert.id} - {concert.name}
           </h2>
           <img
             src={

@@ -16,6 +16,42 @@ export const getAllEvents = async () => {
   return allEvents;
 };
 
+export const getEventById = async (id: string) => {
+  const response = await fetch(
+    `${env(
+      "URL_TICKETMASTER"
+    )}events.json?id=${id}&apikey=${env(
+      "APIKEY_TICKETMASTER"
+    )}`
+  );
+
+  if (!response.ok) {
+    const jsonError = await response.json();
+    const errorDetail = jsonError.errors ? jsonError.errors[0].detail : 'Unknown error';
+    throw new Error(`HTTP error! Status: ${response.status} - Error: ${errorDetail}`);
+  }
+
+  try {
+    const jsonConcerts = await response.json();
+    console.log(jsonConcerts )
+   // await writeFile(jsonFilePath, JSON.stringify(jsonConcerts));
+    return jsonConcerts._embedded.events.map((res: any) => ({
+      ...res,
+      venues: res._embedded.venues.map((res: any) => ({
+        ...res,
+        city: res.city.name,
+        country: res.country.name,
+        state: res.state ? res.state.name : null,
+        address: res.address.line1,
+      })),
+    })) as Event[];
+  } catch (error) {
+    console.error(`Error fetching event by id (${id}):`, error);
+    return [];
+  }
+};
+
+
 export const getEventsByDates = async (start: string, end: string) => {
 
   
@@ -26,7 +62,7 @@ export const getEventsByDates = async (start: string, end: string) => {
       "APIKEY_TICKETMASTER"
     )}`
   );
-//console.log(await response.json());
+
   if (!response.ok) {
     const jsonError = await response.json();
     const errorDetail = jsonError.errors ? jsonError.errors[0].detail : 'Unknown error';
