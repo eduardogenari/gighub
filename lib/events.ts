@@ -63,10 +63,46 @@ export const getEventById = async (id: string) => {
   try {
     const jsonEvent = await response.json();
 
-    const event = {
+    const event: Event = {
       id: jsonEvent.id,
       name: jsonEvent.name,
-      imageUrl: jsonEvent.images[0].url,
+      type: jsonEvent.type,
+      url: jsonEvent.url,
+      pleaseNote: jsonEvent.pleaseNote,
+      images: jsonEvent.images,
+      dates: {
+        start: {
+          localDate: new Date(jsonEvent.dates.start.localDate),
+          localTime: new Date(jsonEvent.dates.start.localTime),
+        },
+        end: jsonEvent.dates.end ? {
+          localDate: new Date(jsonEvent.dates.end.localDate),
+          localTime: new Date(jsonEvent.dates.end.localTime),
+        } : undefined,
+      },
+      _links: {
+        self: { href: jsonEvent._links.self.href },
+        attractions: jsonEvent._links.attractions.map((attraction: any) => ({ href: attraction.href })),
+        venues: jsonEvent._links.venues.map((venue: any) => ({ href: venue.href })),
+      },
+      _embedded: {
+        attractions: jsonEvent._embedded.attractions.map((attraction: any) => ({
+          name: attraction.name,
+          images: attraction.images,
+        })),
+      },
+      venues: jsonEvent._embedded.venues.map((venue: any) => ({
+        id: venue.id,
+        name: venue.name,
+        city: venue.city.name,
+        country: venue.country.name,
+        state: venue.state ? venue.state.name : null,
+        address: venue.address.line1,
+        location: {
+          longitude: venue.location.longitude,
+          latitude: venue.location.latitude,
+        },
+      })),
     };
 
     return event;

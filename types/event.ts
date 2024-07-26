@@ -43,6 +43,9 @@ type Attraction = {
 export type Event = {
   id: number;
   name: string;
+  type: string;
+  url: string;
+  pleaseNote: string;
   images: Image[];
   dates: {
     start: EventDateTime;
