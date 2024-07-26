@@ -2,7 +2,7 @@ import { env } from "@/lib/env";
 import { writeFile } from "fs/promises";
 import type { Event } from "@/types/event";
 
-const jsonFilePath = "./public/concerts.json";
+//const jsonFilePath = "./public/concerts.json";
 
 export const getAllEvents = async () => {
   const allEvents: Event[] = [];
@@ -36,7 +36,7 @@ export const getEventsByDates = async (start: string, end: string) => {
   try {
     const jsonConcerts = await response.json();
 
-    await writeFile(jsonFilePath, JSON.stringify(jsonConcerts));
+   // await writeFile(jsonFilePath, JSON.stringify(jsonConcerts));
     return jsonConcerts._embedded.events.map((res: any) => ({
       ...res,
       venues: res._embedded.venues.map((res: any) => ({
@@ -69,7 +69,7 @@ const getEventsByPage = async (page: number) => {
   try {
     const jsonConcerts = await response.json();
 
-    await writeFile(jsonFilePath, JSON.stringify(jsonConcerts));
+   // await writeFile(jsonFilePath, JSON.stringify(jsonConcerts));
     return jsonConcerts._embedded.events.map((res: any) => ({
       ...res,
       venues: res._embedded.venues.map((res: any) => ({
