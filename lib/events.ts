@@ -3,6 +3,47 @@ import { writeFile } from "fs/promises";
 import type { Event } from "@/types/event";
 
 //const jsonFilePath = "./public/concerts.json";
+//&lat=${env("LATITUDE_EU")}&long=${env("LONGITUDE_EU")}&radius=${env("RADIUS_EU")}
+const urlEU = `${env(
+  "URL_TICKETMASTER"
+)}events.json?classificationName=music&countryCode=${env(
+  "EUROPE_COUNTRIES"
+)}&apikey=${env("APIKEY_TICKETMASTER")}`;
+
+const checkResponse = async (response: Response) => {
+  const json = await response.json();
+  if (!response.ok) {
+    const errorDetail = json.errors ? json.errors[0].detail : "Unknown error";
+    throw new Error(
+      `HTTP error! Status: ${response.status} - Error: ${errorDetail}`
+    );
+  }
+  return json;
+};
+
+const processEvents = (events: any) => {
+  return events
+    .filter((event: any) =>
+      event._embedded.venues.some(
+        (venue: any) =>
+          venue.location &&
+          venue.location.latitude &&
+          venue.location.longitude &&
+          venue.address &&
+          venue.address.line1
+      )
+    )
+    .map((res: any) => ({
+      ...res,
+      venues: res._embedded.venues.map((venue: any) => ({
+        ...venue,
+        city: venue.city.name,
+        country: venue.country.name,
+        state: venue.state ? venue.state.name : null,
+        address: venue.address.line1,
+      })),
+    })) as Event[];
+};
 
 export const getAllEvents = async () => {
   const allEvents: Event[] = [];
@@ -18,71 +59,30 @@ export const getAllEvents = async () => {
 
 export const getEventById = async (id: string) => {
   const response = await fetch(
-    `${env(
-      "URL_TICKETMASTER"
-    )}events.json?id=${id}&apikey=${env(
+    `${env("URL_TICKETMASTER")}events.json?id=${id}&apikey=${env(
       "APIKEY_TICKETMASTER"
     )}`
   );
 
-  if (!response.ok) {
-    const jsonError = await response.json();
-    const errorDetail = jsonError.errors ? jsonError.errors[0].detail : 'Unknown error';
-    throw new Error(`HTTP error! Status: ${response.status} - Error: ${errorDetail}`);
-  }
+  const jsonConcerts = await checkResponse(response);
 
   try {
-    const jsonConcerts = await response.json();
-    console.log(jsonConcerts )
-   // await writeFile(jsonFilePath, JSON.stringify(jsonConcerts));
-    return jsonConcerts._embedded.events.map((res: any) => ({
-      ...res,
-      venues: res._embedded.venues.map((res: any) => ({
-        ...res,
-        city: res.city.name,
-        country: res.country.name,
-        state: res.state ? res.state.name : null,
-        address: res.address.line1,
-      })),
-    })) as Event[];
+    return processEvents(jsonConcerts._embedded.events) as Event[];
   } catch (error) {
     console.error(`Error fetching event by id (${id}):`, error);
     return [];
   }
 };
 
-
 export const getEventsByDates = async (start: string, end: string) => {
-
-  
   const response = await fetch(
-    `${env(
-      "URL_TICKETMASTER"
-    )}events.json?startDateTime=${start}&endDateTime=${end}&apikey=${env(
-      "APIKEY_TICKETMASTER"
-    )}`
+    `${urlEU}&startDateTime=${start}&endDateTime=${end}`
   );
 
-  if (!response.ok) {
-    const jsonError = await response.json();
-    const errorDetail = jsonError.errors ? jsonError.errors[0].detail : 'Unknown error';
-    throw new Error(`HTTP error! Status: ${response.status} - Error: ${errorDetail}`);
-  }
+  const jsonConcerts = await checkResponse(response);
 
   try {
-    const jsonConcerts = await response.json();
-
-   // await writeFile(jsonFilePath, JSON.stringify(jsonConcerts));
-    return jsonConcerts._embedded.events.map((res: any) => ({
-      ...res,
-      venues: res._embedded.venues.map((res: any) => ({
-        ...res,
-        city: res.city.name,
-        country: res.country.name,
-        state: res.state ? res.state.name : null,
-        address: res.address.line1,
-      })),
-    })) as Event[];
+    return processEvents(jsonConcerts._embedded.events) as Event[];
   } catch (error) {
     console.error(`Error fetching events by dates (${start} - ${end}):`, error);
     return [];
@@ -90,32 +90,11 @@ export const getEventsByDates = async (start: string, end: string) => {
 };
 
 const getEventsByPage = async (page: number) => {
-  const response = await fetch(
-    `${env(
-      "URL_TICKETMASTER"
-    )}events.json?classificationName=music&size=80&page=${page}&apikey=${env(
-      "APIKEY_TICKETMASTER"
-    )}`
-  );
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! Status: ${response.status}`);
-  }
+  const response = await fetch(`${urlEU}&size=80&page=${page}`);
+  const jsonConcerts = await checkResponse(response);
 
   try {
-    const jsonConcerts = await response.json();
-
-   // await writeFile(jsonFilePath, JSON.stringify(jsonConcerts));
-    return jsonConcerts._embedded.events.map((res: any) => ({
-      ...res,
-      venues: res._embedded.venues.map((res: any) => ({
-        ...res,
-        city: res.city.name,
-        country: res.country.name,
-        state: res.state ? res.state.name : null,
-        address: res.address.line1,
-      })),
-    })) as Event[];
+    return processEvents(jsonConcerts._embedded.events) as Event[];
   } catch (error) {
     console.error(`Error fetching events for page ${page}:`, error);
     return [];
