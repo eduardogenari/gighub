@@ -16,7 +16,7 @@ type Image = {
 };
 
 type Venue = {
-  id: number;
+  id: string;
   name: string;
   city: string;
   country: string;
@@ -41,7 +41,7 @@ type Attraction = {
 };
 
 export type Event = {
-  id: number;
+  id: string;
   name: string;
   type: string;
   url: string;

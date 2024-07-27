@@ -1,4 +1,4 @@
-import { actionGetEventById } from "@/actions/events";
+import { actionGetEventByIdEdu } from "@/actions/events";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Image from "next/image";
@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export default async function EventDetailPage() {
 
-    let event = await actionGetEventById("17u8vOG6u3qwf3R");
+    let event = await actionGetEventByIdEdu("17u8vOG6u3qwf3R");
   
     return (
       <main className="flex flex-col">
