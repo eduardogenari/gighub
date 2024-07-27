@@ -18,7 +18,7 @@ export default function Markers(Markers: MarkersProps) {
         key={event.id}
         center={[parseFloat(event.venues[0].location.latitude), 
                  parseFloat(event.venues[0].location.longitude)]}
-        radius={700}
+        radius={1000}
         pathOptions={{ color: "orange" }}
       >
         <Popup>
