@@ -8,7 +8,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 export default function SliderItem({
@@ -20,11 +19,6 @@ export default function SliderItem({
   name: string;
   label: string;
 }) {
-  const [localValues, setLocalValues] = useState([20, 50]);
-
-  const handleValueChange = (newValues: any) => {
-    setLocalValues(newValues);
-  };
   return (
     <FormField
       control={form.control}
@@ -38,13 +32,13 @@ export default function SliderItem({
               max={300}
               min={0}
               step={1}
-              onValueChange={handleValueChange}
+              onValueChange={field.onChange}
               className={cn("w-full pt-1")}
             />
           </FormControl>
           <div className="grid grid-cols-2 justify-between text-gray-500">
-            <p>{localValues[0]} €</p>
-            <p className="text-right">{localValues[1]} €</p>
+            <p>{field.value ? field.value[0] : 20}</p>
+            <p className="text-right">{field.value ? field.value[1] : 50}</p>
           </div>
           <FormMessage />
         </FormItem>

@@ -40,6 +40,13 @@ type Attraction = {
   images: Image[];
 };
 
+type PriceRange = {
+  type: string;
+  currency: string;
+  min: number;
+  max: number;
+}
+
 export type Event = {
   id: string;
   name: string;
@@ -56,5 +63,6 @@ export type Event = {
     attractions: Attraction[];
   };
   venues: Venue[];
+  priceRanges: PriceRange[];
 };
 
