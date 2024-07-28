@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Circle, Popup } from "react-leaflet";
 import { Button } from "./ui/button";
 import { CalendarIcon, MapPinIcon, CoinsIcon } from "lucide-react";
+import { v4 as uuidv4 } from 'uuid';
 
 interface MarkersProps {
   markers: Event[];
@@ -16,7 +17,7 @@ export default function Markers(Markers: MarkersProps) {
   return markers.map((event: Event) => {
     return (
       <Circle
-        key={event.id}
+        key={uuidv4()}
         center={[
           parseFloat(event.venues[0].location.latitude),
           parseFloat(event.venues[0].location.longitude),
