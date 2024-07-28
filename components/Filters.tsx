@@ -8,9 +8,7 @@ import { useForm } from "react-hook-form";
 import CalendarItem from "./CalendarItem";
 import SearchItem from "./SearchItem";
 import SliderItem from "./SliderItem";
-import { useRouter } from "next/navigation";
-import { format } from "url";
-import { dateToYYYYMMDD } from "@/lib/utils";
+import { filter } from "@/actions/filter";
 
 const FormSchema = z.object({
   artist: z.string().optional(),
@@ -20,39 +18,14 @@ const FormSchema = z.object({
 });
 
 export default function Filters({ artists }: { artists: string[] }) {
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    // Add new keys if they are submitted
-    let query: { [key: string]: string } = {};
-    if (data.startDate) {
-      query.startDate = dateToYYYYMMDD(data.startDate);
-    }
-    if (data.endDate) {
-      query.endDate = dateToYYYYMMDD(data.endDate);
-    }
-    if (data.artist) {
-      query.artist = data.artist;
-    }
-    if (data.price) {
-      query.price = data.price.toString();
-    }
-
-    // Construct URL to pass variables to backend
-    const url = format({
-      pathname: "/map",
-      query: query,
-    });
-    router.push(url);
-  }
-
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form action={filter} className="space-y-4">
         <SearchItem
           form={form}
           name={"artist"}
