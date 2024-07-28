@@ -9,6 +9,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { Input } from "./ui/input";
 
 export default function SliderItem({
   form,
@@ -19,6 +21,13 @@ export default function SliderItem({
   name: string;
   label: string;
 }) {
+  const [min, setMin] = useState(0);
+  const [max, setMax] = useState(800);
+  const handleChange = (newValue: number[]) => {
+    setMin(newValue[0]);
+    setMax(newValue[1]);
+  };
+
   return (
     <FormField
       control={form.control}
@@ -26,19 +35,33 @@ export default function SliderItem({
       render={({ field }) => (
         <FormItem>
           <FormLabel>{label}</FormLabel>
-          <FormControl>
-            <Slider
-              defaultValue={[20, 50]}
-              max={300}
-              min={0}
-              step={1}
-              onValueChange={field.onChange}
-              className={cn("w-full pt-1")}
-            />
-          </FormControl>
+          <Slider
+            defaultValue={[0, 800]}
+            max={800}
+            min={0}
+            step={1}
+            onValueChange={handleChange}
+            className={cn("w-full pt-1")}
+          />
           <div className="grid grid-cols-2 justify-between text-gray-500">
-            <p>{field.value ? field.value[0] : 20}</p>
-            <p className="text-right">{field.value ? field.value[1] : 50}</p>
+            <FormControl>
+              <Input
+                {...field}
+                type="text"
+                value={min}
+                placeholder={"Min"}
+                className="border-none focus-visible:ring-0 caret-transparent shadow-none p-0"
+              />
+            </FormControl>
+            <FormControl>
+              <Input
+                {...field}
+                type="text"
+                value={max}
+                placeholder={"Max"}
+                className="border-none focus-visible:ring-0 caret-transparent text-right shadow-none p-0"
+              />
+            </FormControl>
           </div>
           <FormMessage />
         </FormItem>
