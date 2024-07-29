@@ -3,14 +3,14 @@ import { formatDateToISO } from "@/lib/utils";
 import { formatISO } from "date-fns";
 export default async function Page() {
   // let concerts: Event[] = [];
-  //const concerts = await actionGetAllEvents();
+  const concerts = await actionGetAllEvents();
 
-  const concerts = await actionGetEventsByDate(
-    formatDateToISO("2024-08-11"),
-    formatDateToISO("2024-08-31")
-  );
+  //const concerts = await actionGetEventsByDate(
+  //  formatDateToISO("2024-08-11"),
+  //  formatDateToISO("2024-08-31")
+  //);
 
-  const concert = await actionGetEventById("G5d0Z9YlaQsP_");
+  //const concert = await actionGetEventById("G5d0Z9YlaQsP_");
   //console.log(concert);
   return (
     <main className="p-6">
@@ -35,7 +35,7 @@ export default async function Page() {
               <h3>{venue.name}</h3>
               <p>{`Location: ${venue.location.latitude}, ${venue.location.longitude}`}</p>
               <p>{`Address: ${venue.address}`}</p>
-              <p>{`Country: ${venue.address}`}</p>
+              <p>{`Country: ${venue.country}`}</p>
             </div>
           ))}
         </div>
