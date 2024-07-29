@@ -22,7 +22,7 @@ export default function SliderItem({
   label: string;
 }) {
   const [min, setMin] = useState(0);
-  const [max, setMax] = useState(800);
+  const [max, setMax] = useState(1000);
   const handleChange = (newValue: number[]) => {
     setMin(newValue[0]);
     setMax(newValue[1]);
@@ -36,8 +36,8 @@ export default function SliderItem({
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <Slider
-            defaultValue={[0, 800]}
-            max={800}
+            defaultValue={[0, 1000]}
+            max={1000}
             min={0}
             step={1}
             onValueChange={handleChange}

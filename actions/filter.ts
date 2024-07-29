@@ -5,12 +5,13 @@ import { dateToYYYYMMDD } from "@/lib/utils";
 import { redirect } from "next/navigation";
 
 export async function filter(formData: FormData) {
-  
+  console.log("formData", formData);
   const startDate = formData.get("startDate") as string;
   const endDate = formData.get("endDate") as string;
   const artist = formData.get("artist") as string;
   const price = formData.getAll("price");
-  
+  const hideWithoutPrice = formData.get("hideWithoutPrice") as string;
+
   // Add new keys if they are submitted
   let query: { [key: string]: string } = {};
   if (startDate) {
@@ -25,6 +26,11 @@ export async function filter(formData: FormData) {
   if (price) {
     query.price = price.toString();
   }
+  if (hideWithoutPrice) {
+    query.hideWithoutPrice = "on";
+  } else {
+    query.hideWithoutPrice = "off";
+  }
 
   // Construct URL to pass variables to backend
   const url = format({
@@ -32,6 +38,6 @@ export async function filter(formData: FormData) {
     query: query,
   });
 
-  console.log('Redirecting to...', url)
+  console.log("Redirecting to...", url);
   redirect(url);
 }
