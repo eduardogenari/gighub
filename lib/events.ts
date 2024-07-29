@@ -157,7 +157,8 @@ export const getEventByIdEdu = async (id: string) => {
           latitude: venue.location.latitude,
         },
       })),
-      priceRanges: jsonEvent.priceRanges
+      priceRanges: jsonEvent.priceRanges,
+      classifications: jsonEvent.classfications
     };
 
     return event;
