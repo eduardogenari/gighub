@@ -34,3 +34,11 @@ export function formatDateToISO(date: string) {
   const dateISO = parseISO(date);
   return format(dateISO, "yyyy-MM-dd'T'00:00:00'Z'");
 }
+
+export function withinRange(rangeToCheck: number[], range: number[]) {
+  const isWithinRange =
+    range[0] >= rangeToCheck[0] && range[1] <= rangeToCheck[1];
+  const isOverlappingRange =
+    range[0] <= rangeToCheck[1] && range[1] >= rangeToCheck[0];
+  return isWithinRange || isOverlappingRange;
+}

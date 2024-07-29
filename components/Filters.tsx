@@ -7,48 +7,25 @@ import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import CalendarItem from "./CalendarItem";
 import SearchItem from "./SearchItem";
-import { useRouter } from "next/navigation";
-import { format } from "url";
-import { dateToYYYYMMDD } from "@/lib/utils";
+import SliderItem from "./SliderItem";
+import { filter } from "@/actions/filter";
 
 const FormSchema = z.object({
   artist: z.string().optional(),
   startDate: z.date().optional(),
   endDate: z.date().optional(),
+  price: z.array(z.number()).length(2).optional(),
 });
 
 export default function Filters({ artists }: { artists: string[] }) {
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-
-    // Add new keys if they are submitted
-    let query: { [key: string]: string } = {};
-    if (data.startDate) {
-      query.startDate = dateToYYYYMMDD(data.startDate);
-    }
-    if (data.endDate) {
-      query.endDate = dateToYYYYMMDD(data.endDate);
-    }
-    if (data.artist) {
-      query.artist = data.artist;
-    }
-
-    // Construct URL to pass variables to backend
-    const url = format({
-      pathname: "/map",
-      query: query,
-    });
-    router.push(url);
-  }
-
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form action={filter} className="space-y-4">
         <SearchItem
           form={form}
           name={"artist"}
@@ -68,6 +45,7 @@ export default function Filters({ artists }: { artists: string[] }) {
           label={"End date"}
           placeholder={"Pick an end date"}
         />
+        <SliderItem form={form} name={"price"} label={"Price range"} />
         <Button type="submit">Apply</Button>
       </form>
     </Form>

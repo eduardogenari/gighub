@@ -8,6 +8,7 @@ import { YYYYMMDDToDate } from "@/lib/utils";
 import { actionGetAllEvents } from "@/actions/events";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { withinRange } from "@/lib/utils";
 
 export default async function Page({
   searchParams,
@@ -18,6 +19,7 @@ export default async function Page({
   let startDate;
   let endDate;
   let artist;
+  let price;
   if (searchParams) {
     if (searchParams.hasOwnProperty("startDate")) {
       startDate = searchParams.startDate;
@@ -27,6 +29,9 @@ export default async function Page({
     }
     if (searchParams.hasOwnProperty("artist")) {
       artist = searchParams.artist;
+    }
+    if (searchParams.hasOwnProperty("price")) {
+      price = searchParams.price;
     }
   }
 
@@ -79,6 +84,23 @@ export default async function Page({
       return event._embedded.attractions?.some((attraction) => {
         return attraction.name == artist;
       });
+    });
+  }
+  console.log("Before price filter", events.length);
+  if (price) {
+    events = events.filter((event: Event) => {
+      if (
+        event.priceRanges &&
+        event.priceRanges[0].min !== undefined &&
+        event.priceRanges[0].max !== undefined
+      ) {
+        return withinRange(price.split(",").map(Number), [
+          event.priceRanges[0].min,
+          event.priceRanges[0].max,
+        ]);
+      } else {
+        return true; // TODO: Decide if I want to include events without price range
+      }
     });
   }
 

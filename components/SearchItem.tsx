@@ -30,11 +30,11 @@ export default function SearchItem({
     const input = e.target.value;
     setInput(input);
 
-    // Filter options
+    // Filter options and get first 5 suggestions
     const filteredOptions: string[] = options.filter((suggestion) =>
       suggestion.toLowerCase().includes(input.toLowerCase())
     );
-    setSuggestions(filteredOptions);
+    setSuggestions(filteredOptions.slice(0, 5));
 
     // Show options only if the input value is not an empty string
     if (input.length !== 0) {
@@ -65,11 +65,11 @@ export default function SearchItem({
                 field.onChange(e);
                 handleInputChange(e);
               }}
-              className="py-1 px-2 border-1 border-gray-800 rounded"
+              className="border border-gray-200 rounded"
             />
           </FormControl>
           {showSuggestions ? (
-            <ul className="border border-gray-200 rounded">
+            <ul className="border border-gray-200 rounded absolute z-10 w-[21.2rem]">
               {suggestions.map((suggestion, index) => (
                 <li
                   key={index}
@@ -77,7 +77,7 @@ export default function SearchItem({
                     field.onChange(suggestion);
                     handleClick(suggestion);
                   }}
-                  className="cursor-pointer hover:bg-orange-100 text-sm p-2"
+                  className="px-3 cursor-pointer bg-white hover:bg-orange-100 text-sm p-2"
                 >
                   {suggestion}
                 </li>

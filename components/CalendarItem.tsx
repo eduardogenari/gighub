@@ -3,6 +3,7 @@ import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import { Input } from "@/components/ui/input";
 import {
   FormControl,
   FormField,
@@ -40,8 +41,7 @@ export default function CalendarItem({
                 <Button
                   variant={"outline"}
                   className={cn(
-                    "pl-3 text-left font-normal",
-                    !field.value && "text-muted-foreground"
+                    "text-left font-normal"
                   )}
                 >
                   {field.value ? (
@@ -63,6 +63,7 @@ export default function CalendarItem({
             </PopoverContent>
           </Popover>
           <FormMessage />
+          <Input type="hidden" name={field.name} value={field.value}/>
         </FormItem>
       )}
     />

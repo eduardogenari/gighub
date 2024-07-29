@@ -7,6 +7,11 @@ const nextConfig = {
         hostname: "s1.ticketm.net",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "media.ticketmaster.eu",
+        pathname: "/**",
+      },
     ],
   },
 };
