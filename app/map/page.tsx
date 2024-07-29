@@ -19,6 +19,7 @@ export default async function Page({
   let startDate: string | undefined;
   let endDate: string | undefined;
   let artist: string | undefined;
+  let genre: string | undefined;
   let price: string | undefined;
   let hideWithoutPrice: string | undefined;
   if (searchParams) {
@@ -30,6 +31,9 @@ export default async function Page({
     }
     if (searchParams.hasOwnProperty("artist")) {
       artist = searchParams.artist;
+    }
+    if (searchParams.hasOwnProperty("genre")) {
+      genre = searchParams.genre;
     }
     if (searchParams.hasOwnProperty("price")) {
       price = searchParams.price;
@@ -57,14 +61,22 @@ export default async function Page({
   let events = await actionGetAllEvents();
 
   // Get all names in these events
-  let names = events.map((event) => {
+  let artistAllNames = events.map((event) => {
     return (
       event._embedded.attractions?.map((attraction) => attraction.name) || []
     );
   });
 
   // Create a list and remove duplicates
-  let artistNames = [...new Set(names.flat(1))];
+  let artistNames = [...new Set(artistAllNames.flat(1))];
+
+  // Get all genres in these events
+  let genreAllNames = events.map((event) => {
+    return (
+      event.classifications.map((classification) => classification.genre.name) || []
+    );
+  });
+  let genreNames = [...new Set(genreAllNames.flat(1))];
 
   console.log("Number of concerts before filtering", events.length);
 
@@ -90,6 +102,16 @@ export default async function Page({
       });
     });
   }
+
+  // Filter by genre
+  if (genre) {
+    events = events.filter((event: Event) => {
+      return event.classifications?.some((classification) => {
+        return classification.genre.name == genre;
+      });
+    });
+  }
+
   console.log("Before price filter", events.length);
   if (price) {
     events = events.filter((event: Event) => {
@@ -123,7 +145,7 @@ export default async function Page({
         <div className="w-1/5 bg-white p-4">
           <h1 className="text-lg font-bold">Filters</h1>
           <NavigationMenu></NavigationMenu>
-          <Filters artists={artistNames} />
+          <Filters artists={artistNames} genres={genreNames} />
           <p className="text-sm mt-4 text-orange-600">
             Number of events: {events.length}
           </p>

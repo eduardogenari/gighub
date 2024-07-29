@@ -45,7 +45,16 @@ type PriceRange = {
   currency: string;
   min: number;
   max: number;
-}
+};
+
+type Classification = {
+  genre: {
+    name: string;
+  };
+  subgenre: {
+    name: string;
+  };
+};
 
 export type Event = {
   id: string;
@@ -64,5 +73,5 @@ export type Event = {
   };
   venues: Venue[];
   priceRanges: PriceRange[];
+  classifications: Classification[];
 };
-
