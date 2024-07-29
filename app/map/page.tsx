@@ -16,10 +16,11 @@ export default async function Page({
   searchParams?: { [key: string]: string | undefined };
 }) {
   // Get dates and artist from URL query paramters
-  let startDate;
-  let endDate;
-  let artist;
-  let price;
+  let startDate: string | undefined;
+  let endDate: string | undefined;
+  let artist: string | undefined;
+  let price: string | undefined;
+  let hideWithoutPrice: string | undefined;
   if (searchParams) {
     if (searchParams.hasOwnProperty("startDate")) {
       startDate = searchParams.startDate;
@@ -32,6 +33,9 @@ export default async function Page({
     }
     if (searchParams.hasOwnProperty("price")) {
       price = searchParams.price;
+    }
+    if (searchParams.hasOwnProperty("hideWithoutPrice")) {
+      hideWithoutPrice = searchParams.hideWithoutPrice;
     }
   }
 
@@ -99,7 +103,13 @@ export default async function Page({
           event.priceRanges[0].max,
         ]);
       } else {
-        return true; // TODO: Decide if I want to include events without price range
+        // Hide events that have no information on price
+        if (hideWithoutPrice === "on") {
+          return false;
+          // Show events that have no information on price
+        } else {
+          return true;
+        }
       }
     });
   }
@@ -111,7 +121,7 @@ export default async function Page({
       <Header />
       <div className="flex-grow flex overflow-hidden bg-gray-200">
         <div className="w-1/5 bg-white p-4">
-          <h1 className="text-lg font-bold mb-4">Filters</h1>
+          <h1 className="text-lg font-bold">Filters</h1>
           <NavigationMenu></NavigationMenu>
           <Filters artists={artistNames} />
           <p className="text-sm mt-4 text-orange-600">

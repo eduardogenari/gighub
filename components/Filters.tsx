@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import CalendarItem from "./CalendarItem";
 import SearchItem from "./SearchItem";
 import SliderItem from "./SliderItem";
+import CheckboxItem from "./CheckboxItem";
 import { filter } from "@/actions/filter";
 
 const FormSchema = z.object({
@@ -15,10 +16,10 @@ const FormSchema = z.object({
   startDate: z.date().optional(),
   endDate: z.date().optional(),
   price: z.array(z.number()).length(2).optional(),
+  hideWithoutPrice: z.string().optional(),
 });
 
 export default function Filters({ artists }: { artists: string[] }) {
-
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
@@ -46,6 +47,11 @@ export default function Filters({ artists }: { artists: string[] }) {
           placeholder={"Pick an end date"}
         />
         <SliderItem form={form} name={"price"} label={"Price range"} />
+        <CheckboxItem
+          form={form}
+          name={"hideWithoutPrice"}
+          label={"Hide events without information on price"}
+        />
         <Button type="submit">Apply</Button>
       </form>
     </Form>
