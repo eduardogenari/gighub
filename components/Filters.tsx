@@ -19,7 +19,13 @@ const FormSchema = z.object({
   hideWithoutPrice: z.string().optional(),
 });
 
-export default function Filters({ artists }: { artists: string[] }) {
+export default function Filters({
+  artists,
+  genres,
+}: {
+  artists: string[];
+  genres: string[];
+}) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
@@ -33,6 +39,13 @@ export default function Filters({ artists }: { artists: string[] }) {
           label={"Artist"}
           placeholder={"Type an artist name"}
           options={artists}
+        />
+        <SearchItem
+          form={form}
+          name={"genre"}
+          label={"Genre"}
+          placeholder={"Type a genre"}
+          options={genres}
         />
         <CalendarItem
           form={form}

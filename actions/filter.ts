@@ -9,6 +9,7 @@ export async function filter(formData: FormData) {
   const startDate = formData.get("startDate") as string;
   const endDate = formData.get("endDate") as string;
   const artist = formData.get("artist") as string;
+  const genre = formData.get("genre") as string;
   const price = formData.getAll("price");
   const hideWithoutPrice = formData.get("hideWithoutPrice") as string;
 
@@ -22,6 +23,9 @@ export async function filter(formData: FormData) {
   }
   if (artist) {
     query.artist = artist;
+  }
+  if (genre) {
+    query.genre = genre;
   }
   if (price) {
     query.price = price.toString();
