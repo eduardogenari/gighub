@@ -91,7 +91,7 @@ async function main() {
         },
       ],
     });
-    console.log(`Users have been created successfully: ${users}`);
+    console.log("Users have been created successfully");
   } catch (error) {
     console.error("Error creating users:", error);
   } finally {
