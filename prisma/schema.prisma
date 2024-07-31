@@ -10,8 +10,50 @@ datasource db {
 
 model User {
   id        String   @id @default(cuid())
-  name      String?
-  email     String?  @unique
+  firstName String
+  lastName  String
+  email     String   @unique
+  role      String
+  password  String
+  isAdmin   Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Artist {
+  id    Int     @id @default(autoincrement())
+  name  String?
+  event Event[]
+}
+
+model Venue {
+  id        Int     @id @default(autoincrement())
+  name      String?
+  address   String?
+  city      String?
+  country   String?
+  latitude  Float?
+  longitude Float?
+  event     Event[]
+}
+
+model PriceRange {
+  id       Int     @id @default(autoincrement())
+  type     String?
+  min      Float?
+  max      Float?
+  currency String?
+  eventId  Int
+  event    Event   @relation(fields: [eventId], references: [id])
+}
+
+model Event {
+  id         Int          @id @default(autoincrement())
+  name       String
+  artist     Artist[]
+  venue      Venue[]
+  startDate  DateTime
+  endDate    DateTime
+  genre      String[]
+  priceRange PriceRange[]
 }
