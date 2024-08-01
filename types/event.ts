@@ -75,3 +75,12 @@ export type Event = {
   priceRanges: PriceRange[];
   classifications: Classification[];
 };
+
+
+export type  PaginatedEvents = {
+  events: Event[];
+  pageInfo: {
+    totalPages: number;
+    totalElements: number;
+  };
+}
