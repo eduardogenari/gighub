@@ -1,4 +1,4 @@
-import { actionGetArtistTopTracks } from "@/actions/artists";
+import { actionGetArtistByName, actionGetArtistTopTracks } from "@/actions/artists";
 import { actionGetAllEvents, actionGetEventById, actionGetEventsByDate } from "@/actions/events";
 import { formatDateToISO } from "@/lib/utils";
 import { formatISO } from "date-fns";
@@ -6,9 +6,11 @@ export default async function Page() {
   // let concerts: Event[] = [];
   const concerts = await actionGetAllEvents();
 
-  const artistTracks = await actionGetArtistTopTracks("0TnOYISbd1XYRBk9myaseg");
+  //const artist = await actionGetArtistTopTracks("0TnOYISbd1XYRBk9myaseg");
+  const artist = await actionGetArtistByName("The Tyets");
 
-  console.log(artistTracks);
+  console.log(artist);
+
   //const concerts = await actionGetEventsByDate(
   //  formatDateToISO("2024-08-11"),
   //  formatDateToISO("2024-08-31")
