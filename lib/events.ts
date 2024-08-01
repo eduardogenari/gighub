@@ -1,6 +1,6 @@
-import { env } from "@/lib/env";
+import { env } from "./env";
 import { writeFile } from "fs/promises";
-import type { Event } from "@/types/event";
+import type { Event } from "../types/event";
 
 //const jsonFilePath = "./public/concerts.json";
 //&lat=${env("LATITUDE_EU")}&long=${env("LONGITUDE_EU")}&radius=${env("RADIUS_EU")}
@@ -157,7 +157,8 @@ export const getEventByIdEdu = async (id: string) => {
           latitude: venue.location.latitude,
         },
       })),
-      priceRanges: jsonEvent.priceRanges
+      priceRanges: jsonEvent.priceRanges,
+      classifications: jsonEvent.classfications
     };
 
     return event;
