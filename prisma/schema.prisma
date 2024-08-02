@@ -22,29 +22,39 @@ model User {
 
 model Artist {
   id    Int     @id @default(autoincrement())
-  name  String?
+  name  String
   event Event[]
 }
 
 model Venue {
   id        Int     @id @default(autoincrement())
   name      String?
-  address   String?
-  city      String?
-  country   String?
-  latitude  Float?
-  longitude Float?
+  address   String
+  city      String
+  country   String
+  latitude  Float
+  longitude Float
   event     Event[]
 }
 
 model PriceRange {
-  id       Int     @id @default(autoincrement())
+  id       Int    @id @default(autoincrement())
   type     String?
   min      Float?
   max      Float?
-  currency String?
+  currency String
   eventId  Int
-  event    Event   @relation(fields: [eventId], references: [id])
+  event    Event  @relation(fields: [eventId], references: [id])
+}
+
+model Image {
+  id      Int     @id @default(autoincrement())
+  url     String
+  ratio   String?
+  width   Float
+  height  Float
+  eventId Int
+  event   Event   @relation(fields: [eventId], references: [id])
 }
 
 model Event {
@@ -56,4 +66,5 @@ model Event {
   endDate    DateTime
   genre      String[]
   priceRange PriceRange[]
+  image      Image[]
 }

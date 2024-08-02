@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import type { Event } from "@/types/event";
+import type { Event } from "@/types/api_event";
 import Image from "next/image";
 import Link from 'next/link';
 

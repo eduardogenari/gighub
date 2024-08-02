@@ -1,10 +1,11 @@
 import { actionGetArtistByName, actionGetArtistTopTracks } from "@/actions/artists";
 import { actionGetAllEvents, actionGetEventById, actionGetEventsByDate } from "@/actions/events";
+import { getAllEventsByCountry, getEventsEurope } from "@/lib/events";
 import { formatDateToISO } from "@/lib/utils";
 import { formatISO } from "date-fns";
 export default async function Page() {
   // let concerts: Event[] = [];
-  const concerts = await actionGetAllEvents();
+  //const concerts = await actionGetAllEvents();
 
   //const artist = await actionGetArtistTopTracks("0TnOYISbd1XYRBk9myaseg");
   const artist = await actionGetArtistByName("The Tyets");
@@ -17,7 +18,23 @@ export default async function Page() {
   //);
 
   //const concert = await actionGetEventById("G5d0Z9YlaQsP_");
+  //const concerts = await getAllEventsByCountry("ES");
+  const concerts = await getEventsEurope();
   //console.log(concert);
+
+  return (
+    <main className="p-6">
+      {concerts.map((concert, index) => (
+        <div key={concert.id}>
+          <h2>
+            {index + 1} - {concert.id} - {concert.name}
+          </h2>
+       
+        </div>
+      ))}
+    </main>
+  );
+  /*
   return (
     <main className="p-6">
       {concerts.map((concert, index) => (
@@ -48,4 +65,5 @@ export default async function Page() {
       ))}
     </main>
   );
+  */
 }

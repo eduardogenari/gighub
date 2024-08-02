@@ -1,15 +1,18 @@
 import * as bcrypt from "bcryptjs";
 import { PrismaClient } from "@prisma/client";
-import { getAllEvents } from "../lib/events";
+import { getEventsEurope } from "../lib/events";
 
 const prisma = new PrismaClient();
 
 export default async function loadData() {
   try {
     // Get events from Ticketmaster
-    let events = await getAllEvents();
+    console.log('Getting events by country...')
+    let events = await getEventsEurope();
+    console.log(`Total events to save in database: ${events.length}`)
 
     // Load data
+    console.log('Loading...')
     for (const event of events) {
       await prisma.event.create({
         data: {
@@ -35,9 +38,9 @@ export default async function loadData() {
             event.dates.end?.localDate || event.dates.start.localDate
           ),
           genre:
-            event.classifications?.map(
-              (classification) => classification.genre.name
-            ) || [],
+            (event.classifications?.map(
+              (classification) => classification.genre?.name
+            ) || []).filter(name => name !== undefined),
           priceRange: {
             create:
               event.priceRanges?.map((priceRange) => ({
@@ -46,6 +49,13 @@ export default async function loadData() {
                 max: priceRange.max,
                 currency: priceRange.currency,
               })) || [],
+          },
+          image: {
+            create: event.images?.map((image) => ({
+              url: image.url,
+              width: image.width,
+              height: image.height
+            })),
           },
         },
       });
