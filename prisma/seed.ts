@@ -7,9 +7,12 @@ const prisma = new PrismaClient();
 export default async function loadData() {
   try {
     // Get events from Ticketmaster
+    console.log('Getting events by country...')
     let events = await getEventsEurope();
+    console.log(`Total events to save in database: ${events.length}`)
 
     // Load data
+    console.log('Loading...')
     for (const event of events) {
       await prisma.event.create({
         data: {
@@ -35,9 +38,9 @@ export default async function loadData() {
             event.dates.end?.localDate || event.dates.start.localDate
           ),
           genre:
-            event.classifications?.map(
-              (classification) => classification.genre.name
-            ) || [],
+            (event.classifications?.map(
+              (classification) => classification.genre?.name
+            ) || []).filter(name => name !== undefined),
           priceRange: {
             create:
               event.priceRanges?.map((priceRange) => ({

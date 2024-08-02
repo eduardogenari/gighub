@@ -222,6 +222,7 @@ export const getEventsEurope = async () => {
     try {
       const events = await getAllEventsByCountry(country);
       allEventsEurope.push(...events);
+      console.log(`Finished getting events for country ${country}: ${events.length}`)
     } catch (error) {
       console.error(`Error fetching events for country ${country}:`, error);
     }
