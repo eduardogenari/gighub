@@ -1,13 +1,13 @@
 import * as bcrypt from "bcryptjs";
 import { PrismaClient } from "@prisma/client";
-import { getAllEvents } from "../lib/events";
+import { getEventsEurope } from "../lib/events";
 
 const prisma = new PrismaClient();
 
 export default async function loadData() {
   try {
     // Get events from Ticketmaster
-    let events = await getAllEvents();
+    let events = await getEventsEurope();
 
     // Load data
     for (const event of events) {
