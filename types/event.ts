@@ -1,77 +1,41 @@
-type EventDateTime = {
-  localDate: Date;
-  localTime: Date;
+type Venue = {
+  id: number;
+  name: string | null;
+  city: string;
+  country: string;
+  address: string;
+  latitude: number;
+  longitude: number;
 };
 
-type Location = {
-  longitude: string;
-  latitude: string;
+type PriceRange = {
+  id: number;
+  type: string | null;
+  min: number | null;
+  max: number | null;
+  currency: string;
+};
+
+type Artist = {
+  id: number;
+  name: string;
 };
 
 type Image = {
-  ratio: string;
+  id: number;
   url: string;
   width: number;
   height: number;
 };
 
-type Venue = {
-  id: string;
-  name: string;
-  city: string;
-  country: string;
-  state?: string;
-  address: string;
-  location: Location;
-};
-
-type Link = {
-  href: string;
-};
-
-type Links = {
-  self: Link;
-  attractions: Link[];
-  venues: Link[];
-};
-
-type Attraction = {
-  name: string;
-  images: Image[];
-};
-
-type PriceRange = {
-  type: string;
-  currency: string;
-  min: number;
-  max: number;
-};
-
-type Classification = {
-  genre: {
-    name: string;
-  };
-  subgenre: {
-    name: string;
-  };
-};
-
 export type Event = {
-  id: string;
+  id: number;
   name: string;
-  type: string;
-  url: string;
-  pleaseNote: string;
-  images: Image[];
-  dates: {
-    start: EventDateTime;
-    end?: EventDateTime;
-  };
-  _links: Links;
-  _embedded: {
-    attractions: Attraction[];
-  };
-  venues: Venue[];
-  priceRanges: PriceRange[];
-  classifications: Classification[];
+  artist: Artist[];
+  venue: Venue[];
+  genre: string[];
+  priceRange: PriceRange[];
+  startDate: Date;
+  endDate: Date;
+  image: Image[];
 };

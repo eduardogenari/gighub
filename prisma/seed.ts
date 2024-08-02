@@ -47,6 +47,13 @@ export default async function loadData() {
                 currency: priceRange.currency,
               })) || [],
           },
+          image: {
+            create: event.images?.map((image) => ({
+              url: image.url,
+              width: image.width,
+              height: image.height
+            })),
+          },
         },
       });
     }

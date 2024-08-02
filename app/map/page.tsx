@@ -3,19 +3,19 @@ import React, { useMemo } from "react";
 import Filters from "@/components/Filters";
 import Spinner from "@/components/Spinner";
 import { NavigationMenu } from "@/components/ui/navigation-menu";
-import type { Event } from "@/types/event";
 import { YYYYMMDDToDate } from "@/lib/utils";
 import { actionGetAllEvents } from "@/actions/events";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { withinRange } from "@/lib/utils";
+import prisma from "@/lib/prisma";
 
 export default async function Page({
   searchParams,
 }: {
   searchParams?: { [key: string]: string | undefined };
 }) {
-  // Get dates and artist from URL query paramters
+  // Get dates imageand artist from URL query paramters
   let startDate: string | undefined;
   let endDate: string | undefined;
   let artist: string | undefined;
@@ -58,13 +58,18 @@ export default async function Page({
   );
 
   // Get events from Ticketmaster
-  let events = await actionGetAllEvents();
+  let events = await prisma.event.findMany({
+    include: {
+      artist: true,
+      venue: true,
+      priceRange: true,
+      image: true,
+    },
+  });
 
   // Get all names in these events
   let artistAllNames = events.map((event) => {
-    return (
-      event._embedded.attractions?.map((attraction) => attraction.name) || []
-    );
+    return event.artist?.map((artist) => artist.name || "") || [];
   });
 
   // Create a list and remove duplicates
@@ -72,9 +77,7 @@ export default async function Page({
 
   // Get all genres in these events
   let genreAllNames = events.map((event) => {
-    return (
-      event.classifications.map((classification) => classification.genre.name) || []
-    );
+    return event.genre || [];
   });
   let genreNames = [...new Set(genreAllNames.flat(1))];
 
@@ -82,54 +85,54 @@ export default async function Page({
 
   // Filter by start date
   if (startDate) {
-    events = events.filter((event: Event) => {
-      return new Date(event.dates.start.localDate) >= YYYYMMDDToDate(startDate);
+    events = events.filter((event) => {
+      return new Date(event.startDate) >= YYYYMMDDToDate(startDate);
     });
   }
 
   // Filter by end date
   if (endDate) {
-    events = events.filter((event: Event) => {
-      return new Date(event.dates.start.localDate) <= YYYYMMDDToDate(endDate);
+    events = events.filter((event) => {
+      return new Date(event.endDate) <= YYYYMMDDToDate(endDate);
     });
   }
 
   // Filter by artist
   if (artist) {
-    events = events.filter((event: Event) => {
-      return event._embedded.attractions?.some((attraction) => {
-        return attraction.name == artist;
+    events = events.filter((event) => {
+      return event.artist?.some((dbArtist) => {
+        return dbArtist.name == artist;
       });
     });
   }
 
   // Filter by genre
   if (genre) {
-    events = events.filter((event: Event) => {
-      return event.classifications?.some((classification) => {
-        return classification.genre.name == genre;
+    events = events.filter((event) => {
+      return event.genre.some((dbGenre) => {
+        return dbGenre == genre;
       });
     });
   }
 
   console.log("Before price filter", events.length);
   if (price) {
-    events = events.filter((event: Event) => {
+    events = events.filter((event) => {
       if (
-        event.priceRanges &&
-        event.priceRanges[0].min !== undefined &&
-        event.priceRanges[0].max !== undefined
+        event.priceRange &&
+        event.priceRange[0].min !== null &&
+        event.priceRange[0].max !== null
       ) {
         return withinRange(price.split(",").map(Number), [
-          event.priceRanges[0].min,
-          event.priceRanges[0].max,
+          event.priceRange[0].min,
+          event.priceRange[0].max,
         ]);
       } else {
-        // Hide events that have no information on price
         if (hideWithoutPrice === "on") {
+          // Hide events that have no information on price
           return false;
-          // Show events that have no information on price
         } else {
+          // Show events that have no information on price
           return true;
         }
       }

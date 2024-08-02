@@ -14,8 +14,8 @@ interface MapProps {
 
 export default function Map(Map: MapProps) {
   const { markers } = Map;
-  const center: LatLngExpression | LatLngTuple = [45, 10];
-  const zoom = 2.5;
+  const center: LatLngExpression | LatLngTuple = [53, 20];
+  const zoom = 4.3;
 
   // Fit view
   // function ChangeView({ markers }: { markers: Event[] }) {

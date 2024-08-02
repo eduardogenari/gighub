@@ -2,7 +2,7 @@ import { actionGetAllEvents } from "@/actions/events";
 import EventCard from "@/components/EventCard";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import { Event } from "@/types/event";
+import { Event } from "@/types/api_event";
 
 export default async function EventsPage() {
 
