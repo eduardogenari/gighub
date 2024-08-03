@@ -5,8 +5,7 @@ import Image from "next/image";
 import { Circle, Popup } from "react-leaflet";
 import { Button } from "./ui/button";
 import { CalendarIcon, MapPinIcon, CoinsIcon } from "lucide-react";
-import { v4 as uuidv4 } from "uuid";
-import { Suspense, useState } from "react";
+import { useState } from "react";
 import Spinner from "./Spinner";
 
 interface MarkersProps {
@@ -21,11 +20,11 @@ export default function Markers(Markers: MarkersProps) {
     setLoading(false);
   }
 
-  return markers.map((event) => {
+  return markers.map((event, index) => {
     if (event.venue[0].latitude !== null && event.venue[0].longitude !== null) {
       return (
         <Circle
-          key={uuidv4()}
+          key={index}
           center={[event.venue[0].latitude, event.venue[0].longitude]}
           radius={200}
           pathOptions={{ color: "orange" }}
