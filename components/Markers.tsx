@@ -19,7 +19,6 @@ export default function Markers(Markers: MarkersProps) {
   const [isLoaded, setLoading] = useState(true);
   function onImageLoad() {
     setLoading(false);
-    console.log("loaded");
   }
 
   return markers.map((event) => {

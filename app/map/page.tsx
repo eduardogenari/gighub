@@ -4,7 +4,6 @@ import Filters from "@/components/Filters";
 import Spinner from "@/components/Spinner";
 import { NavigationMenu } from "@/components/ui/navigation-menu";
 import { YYYYMMDDToDate } from "@/lib/utils";
-import { actionGetAllEvents } from "@/actions/events";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { withinRange } from "@/lib/utils";
