@@ -10,6 +10,8 @@ export async function filter(formData: FormData) {
   const endDate = formData.get("endDate") as string;
   const artist = formData.get("artist") as string;
   const genre = formData.get("genre") as string;
+  const city = formData.get("city") as string;
+  const country = formData.get("country") as string;
   const price = formData.getAll("price");
   const hideWithoutPrice = formData.get("hideWithoutPrice") as string;
 
@@ -29,6 +31,12 @@ export async function filter(formData: FormData) {
   }
   if (price) {
     query.price = price.toString();
+  }
+  if (city) {
+    query.city = city;
+  }
+  if (country) {
+    query.country = country;
   }
   if (hideWithoutPrice) {
     query.hideWithoutPrice = "on";

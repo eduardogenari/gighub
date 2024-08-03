@@ -12,35 +12,28 @@ import prisma from "@/lib/prisma";
 export default async function Page({
   searchParams,
 }: {
-  searchParams?: { [key: string]: string | undefined };
+  searchParams?: { [key: string]: string };
 }) {
-  // Get dates imageand artist from URL query paramters
-  let startDate: string | undefined;
-  let endDate: string | undefined;
-  let artist: string | undefined;
-  let genre: string | undefined;
-  let price: string | undefined;
-  let hideWithoutPrice: string | undefined;
-  if (searchParams) {
-    if (searchParams.hasOwnProperty("startDate")) {
-      startDate = searchParams.startDate;
-    }
-    if (searchParams.hasOwnProperty("endDate")) {
-      endDate = searchParams.endDate;
-    }
-    if (searchParams.hasOwnProperty("artist")) {
-      artist = searchParams.artist;
-    }
-    if (searchParams.hasOwnProperty("genre")) {
-      genre = searchParams.genre;
-    }
-    if (searchParams.hasOwnProperty("price")) {
-      price = searchParams.price;
-    }
-    if (searchParams.hasOwnProperty("hideWithoutPrice")) {
-      hideWithoutPrice = searchParams.hideWithoutPrice;
-    }
-  }
+  const {
+    startDate,
+    endDate,
+    artist,
+    genre,
+    price,
+    hideWithoutPrice,
+    country,
+    city,
+  } = searchParams ?? {};
+
+  console.log("Filters");
+  console.log("Start date:", startDate);
+  console.log("End date:", endDate);
+  console.log("Artist:", artist);
+  console.log("Genre:", genre);
+  console.log("Price:", price);
+  console.log("Hide without price:", hideWithoutPrice);
+  console.log("Country:", country);
+  console.log("City:", city);
 
   // Initialise map
   const Map = useMemo(
@@ -80,64 +73,79 @@ export default async function Page({
   });
   let genreNames = [...new Set(genreAllNames.flat(1))];
 
+  // Get all countries in these events
+  let countryAllNames = events.flatMap((event) => {
+    return event.venue.map((venue) => venue.country);
+  });
+  let countryNames = [...new Set(countryAllNames.flat(1))];
+
+  // Get all cities in these events (in selected country if any)
+  let cityAllNames = events.flatMap((event) => {
+    return event.venue.map((venue) => venue.city);
+  });
+  let cityNames = [...new Set(cityAllNames.flat(1))];
+
   console.log("Number of concerts before filtering", events.length);
 
-  // Filter by start date
-  if (startDate) {
-    events = events.filter((event) => {
-      return new Date(event.startDate) >= YYYYMMDDToDate(startDate);
-    });
-  }
+  // Convert date strings to Date objects for comparison
+  const start = startDate ? YYYYMMDDToDate(startDate) : null;
+  const end = endDate ? YYYYMMDDToDate(endDate) : null;
 
-  // Filter by end date
-  if (endDate) {
-    events = events.filter((event) => {
-      return new Date(event.endDate) <= YYYYMMDDToDate(endDate);
-    });
-  }
+  console.log("Number of concerts before filtering", events.length);
 
-  // Filter by artist
-  if (artist) {
-    events = events.filter((event) => {
-      return event.artist?.some((dbArtist) => {
-        return dbArtist.name == artist;
-      });
-    });
-  }
+  events = events.filter((event) => {
+    // Filter by start date
+    if (start && new Date(event.startDate) < start) {
+      return false;
+    }
 
-  // Filter by genre
-  if (genre) {
-    events = events.filter((event) => {
-      return event.genre.some((dbGenre) => {
-        return dbGenre == genre;
-      });
-    });
-  }
+    // Filter by end date
+    if (end && new Date(event.endDate) > end) {
+      return false;
+    }
 
-  console.log("Before price filter", events.length);
-  if (price) {
-    events = events.filter((event) => {
-      if (
-        event.priceRange &&
-        event.priceRange[0] &&
-        event.priceRange[0]?.min !== null &&
-        event.priceRange[0]?.max !== null
-      ) {
-        return withinRange(price.split(",").map(Number), [
-          event.priceRange[0].min,
-          event.priceRange[0].max,
-        ]);
+    // Filter by artist
+    if (artist && !event.artist?.some((dbArtist) => dbArtist.name === artist)) {
+      return false;
+    }
+
+    // Filter by genre
+    if (genre && !event.genre.some((dbGenre) => dbGenre === genre)) {
+      return false;
+    }
+
+    // Filter by country
+    if (country && !event.venue.some((venue) => venue.country === country)) {
+      return false;
+    }
+
+    // Filter by city
+    if (country && !event.venue.some((venue) => venue.city === city)) {
+      return false;
+    }
+
+    // Filter by price
+    if (
+      price &&
+      event.priceRange &&
+      event.priceRange[0] &&
+      event.priceRange[0]?.min !== null &&
+      event.priceRange[0]?.max !== null
+    ) {
+      return withinRange(price.split(",").map(Number), [
+        event.priceRange[0].min,
+        event.priceRange[0].max,
+      ]);
+    } else {
+      if (hideWithoutPrice === "on") {
+        // Hide events that have no information on price
+        return false;
       } else {
-        if (hideWithoutPrice === "on") {
-          // Hide events that have no information on price
-          return false;
-        } else {
-          // Show events that have no information on price
-          return true;
-        }
+        // Show events that have no information on price
+        return true;
       }
-    });
-  }
+    }
+  });
 
   console.log("Number of concerts after filtering", events.length);
 
@@ -148,7 +156,12 @@ export default async function Page({
         <div className="w-1/5 bg-white p-4">
           <h1 className="text-lg font-bold">Filters</h1>
           <NavigationMenu></NavigationMenu>
-          <Filters artists={artistNames} genres={genreNames} />
+          <Filters
+            artists={artistNames}
+            genres={genreNames}
+            countries={countryNames}
+            cities={cityNames}
+          />
           <p className="text-sm mt-4 text-orange-600">
             Number of events: {events.length}
           </p>
