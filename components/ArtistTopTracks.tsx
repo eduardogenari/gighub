@@ -65,6 +65,14 @@ export default function ArtistTopTracks({ artistName }: ArtistTopTracksProps) {
         {topTracks.map((track, index) => (
           <li key={track.id}>
             {index + 1}. {track.name}
+            {track.preview_url && (
+              <div>
+                <audio controls>
+                  <source src={track.preview_url} type="audio/mpeg" />
+                  Your browser does not support the audio element.
+                </audio>
+              </div>
+            )}
           </li>
         ))}
       </ul>

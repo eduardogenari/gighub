@@ -11,3 +11,10 @@ export type Artist = {
 
 }
 
+export type Track = {
+    id : string
+    name : string
+    popularity : number
+    preview_url : string
+    uri : string
+}

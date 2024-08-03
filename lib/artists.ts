@@ -1,5 +1,5 @@
 import { env } from "@/lib/env";
-import { Artist } from "@/types/artist";
+import { Artist, Track } from "@/types/artist";
 //import { writeFile } from "fs/promises";
 
 
@@ -54,7 +54,7 @@ export const getArtistTopTracks = async (artistId: string) => {
   );
   const jsonTracks = await response.json();
   console.log(jsonTracks);
-  return jsonTracks.tracks;
+  return jsonTracks.tracks as Track[];
 };
 
 export const getArtistByName = async (artistName: string) => {
