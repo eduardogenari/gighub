@@ -59,7 +59,7 @@ export default function Markers(Markers: MarkersProps) {
                 {event.startDate.toString()}
               </p>
 
-              {event.venue[0].name !== undefined ? (
+              {event.venue[0].name !== null ? (
                 <p className="flex justify-start gap-2 items-center">
                   <MapPinIcon className="h-4 w-4 shrink-0" />
                   {event.venue[0].name} ({event.venue[0].city},{" "}

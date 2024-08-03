@@ -120,8 +120,9 @@ export default async function Page({
     events = events.filter((event) => {
       if (
         event.priceRange &&
-        event.priceRange[0].min !== null &&
-        event.priceRange[0].max !== null
+        event.priceRange[0] &&
+        event.priceRange[0]?.min !== null &&
+        event.priceRange[0]?.max !== null
       ) {
         return withinRange(price.split(",").map(Number), [
           event.priceRange[0].min,
