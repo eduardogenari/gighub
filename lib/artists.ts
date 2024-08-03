@@ -18,7 +18,7 @@ const getAccessToken = async () => {
     return accessToken;
   }
 
-  const options = {
+  const options = { 
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -53,14 +53,14 @@ export const getArtistTopTracks = async (artistId: string) => {
     }
   );
   const jsonTracks = await response.json();
-  console.log(jsonTracks);
+ // console.log(jsonTracks);
   return jsonTracks.tracks as Track[];
 };
 
 export const getArtistByName = async (artistName: string) => {
   
   const token = await getAccessToken();
-  console.log('Using Access Token for getArtistByName:', token);
+//  console.log('Using Access Token for getArtistByName:', token);
   const response = await fetch(
     `https://api.spotify.com/v1/search?q=${artistName}&type=artist`,
     {
@@ -91,7 +91,7 @@ export const getArtistByName = async (artistName: string) => {
 export const getFirstArtistByName = async (artistName: string) => {
   
   const token = await getAccessToken();
-  console.log('Using Access Token for getArtistByName:', token);
+  //console.log('Using Access Token for getArtistByName:', token);
   const response = await fetch(
     `https://api.spotify.com/v1/search?q=${artistName}&type=artist`,
     {
