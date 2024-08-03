@@ -27,7 +27,7 @@ export default function Markers(Markers: MarkersProps) {
         <Circle
           key={uuidv4()}
           center={[event.venue[0].latitude, event.venue[0].longitude]}
-          radius={1000}
+          radius={200}
           pathOptions={{ color: "orange" }}
         >
           <Popup>
@@ -74,6 +74,7 @@ export default function Markers(Markers: MarkersProps) {
               {event.priceRange && event.priceRange[0] !== undefined ? (
                 <p className="flex justify-start gap-2 items-center">
                   <CoinsIcon className="h-4 w-4 shrink-0" />
+                  {event.priceRange[0].min === event.priceRange[0].max}, {event.priceRange[0].min }, {event.priceRange[0].max}
                   {event.priceRange[0].min === event.priceRange[0].max ? (
                     <>{event.priceRange[0].min}</>
                   ) : (

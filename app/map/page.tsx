@@ -91,8 +91,6 @@ export default async function Page({
   const start = startDate ? YYYYMMDDToDate(startDate) : null;
   const end = endDate ? YYYYMMDDToDate(endDate) : null;
 
-  console.log("Number of concerts before filtering", events.length);
-
   events = events.filter((event) => {
     // Filter by start date
     if (start && new Date(event.startDate) < start) {
@@ -120,7 +118,7 @@ export default async function Page({
     }
 
     // Filter by city
-    if (country && !event.venue.some((venue) => venue.city === city)) {
+    if (city && !event.venue.some((venue) => venue.city === city)) {
       return false;
     }
 
