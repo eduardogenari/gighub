@@ -1,5 +1,12 @@
-import { actionGetArtistByName, actionGetArtistTopTracks } from "@/actions/artists";
-import { actionGetAllEvents, actionGetEventById, actionGetEventsByDate } from "@/actions/events";
+import {
+  actionGetArtistByName,
+  actionGetArtistTopTracks,
+} from "@/actions/artists";
+import {
+  actionGetAllEvents,
+  actionGetEventById,
+  actionGetEventsByDate,
+} from "@/actions/events";
 import { getAllEventsByCountry, getEventsEurope } from "@/lib/events";
 import { formatDateToISO } from "@/lib/utils";
 import { formatISO } from "date-fns";
@@ -18,7 +25,7 @@ export default async function Page() {
   //);
 
   //const concert = await actionGetEventById("G5d0Z9YlaQsP_");
-//  const concerts = await getAllEventsByCountry("ES");
+  //  const concerts = await getAllEventsByCountry("ES");
   const concerts = await getEventsEurope();
   //console.log(concert);
 
@@ -29,7 +36,6 @@ export default async function Page() {
           <h2>
             {index + 1} - {concert.id} - {concert.name}
           </h2>
-       
         </div>
       ))}
     </main>

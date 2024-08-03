@@ -1,17 +1,12 @@
-import React from 'react';
-import ArtistTopTracks from '@/components/ArtistTopTracks';
-import { Artist } from '@/types/artist';
-import { getFirstArtistByName } from '@/lib/artists';
+import React from "react";
+import ArtistTopTracks from "@/components/ArtistTopTracks";
 
 export default async function Page() {
-
-
-   // const artists: Artist  = await getFirstArtistByName("The Tyets");
+  // const artists: Artist  = await getFirstArtistByName("The Tyets");
 
   return (
     <div>
-      <ArtistTopTracks artistName="The Tyets"/>
+      <ArtistTopTracks artistName="The Tyets" />
     </div>
   );
-};
-
+}

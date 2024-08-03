@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { Artist } from "@/types/artist";
-import { actionGetArtistByName, actionGetArtistTopTracks, actionGetFirstArtistByName } from "@/actions/artists";
-import { getArtistTopTracks, getFirstArtistByName } from "@/lib/artists";
+import {
+  actionGetArtistTopTracks,
+  actionGetFirstArtistByName,
+} from "@/actions/artists";
 
 type ArtistTopTracksProps = {
   artistName: string;
@@ -18,16 +20,16 @@ export default function ArtistTopTracks({ artistName }: ArtistTopTracksProps) {
     const fetchArtist = async () => {
       try {
         const artist = await actionGetFirstArtistByName(artistName);
-        { artist ? ( setArtist(artist)) : setError("Artist not found")}
-         
+        {
+          artist ? setArtist(artist) : setError("Artist not found");
         }
-       catch (err) {
+      } catch (err) {
         setError("Failed to fetch artist");
       }
     };
 
     fetchArtist();
-    setTopTracks(null); 
+    setTopTracks(null);
   }, [artistName]);
 
   useEffect(() => {
