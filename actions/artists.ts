@@ -1,5 +1,5 @@
 "use server"
-import { getArtistByName, getArtistTopTracks } from "@/lib/artists";
+import { getArtistByName, getArtistTopTracks, getFirstArtistByName } from "@/lib/artists";
 
 export const actionGetArtistTopTracks = async (artistId: string) => {
   const topTracks = await getArtistTopTracks(artistId);
@@ -10,3 +10,10 @@ export const actionGetArtistByName = async (artistName: string) => {
   const artists = await getArtistByName(artistName);
   return artists;
 };
+
+export const actionGetFirstArtistByName = async (artistName: string) => {
+    const artists = await getFirstArtistByName(artistName);
+    return artists;
+  };
+
+

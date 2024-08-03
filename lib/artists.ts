@@ -1,10 +1,10 @@
 import { env } from "@/lib/env";
 import { Artist } from "@/types/artist";
-import { writeFile } from "fs/promises";
+//import { writeFile } from "fs/promises";
 
 
 
-const jsonFilePath = "./artist.json";
+//const jsonFilePath = "./artist.json";
 const base64Credentials = Buffer.from(
   `${env("CLIENTID_SPOTIFY")}:${env("CLIENTSECRET_SPOTIFY")}`
 ).toString("base64");
@@ -12,7 +12,7 @@ const base64Credentials = Buffer.from(
 let accessToken: string | null = null;
 let tokenExpiresAt: number | null = null;
 
-const getAccessToken = async () => {
+const getAccessToken = async () => { 
 
   if (accessToken && tokenExpiresAt && Date.now() < tokenExpiresAt) {
     return accessToken;
@@ -77,7 +77,7 @@ export const getArtistByName = async (artistName: string) => {
 
   try {
   const jsonArtist = await response.json();
-  await writeFile(jsonFilePath, JSON.stringify(jsonArtist))
+ // await writeFile(jsonFilePath, JSON.stringify(jsonArtist))
   //console.log(jsonArtist);
  // console.log(jsonArtist.items);
   return jsonArtist.artists.items as Artist[];
@@ -85,5 +85,36 @@ export const getArtistByName = async (artistName: string) => {
   catch(error) {
     console.error(`Error fetching artist  ${artistName}:`, error);
     return [];
+  }
+};
+
+export const getFirstArtistByName = async (artistName: string) => {
+  
+  const token = await getAccessToken();
+  console.log('Using Access Token for getArtistByName:', token);
+  const response = await fetch(
+    `https://api.spotify.com/v1/search?q=${artistName}&type=artist`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(`Failed to fetch artist: ${error.error.message}`);
+  }
+
+  try {
+  const jsonArtist = await response.json();
+ // await writeFile(jsonFilePath, JSON.stringify(jsonArtist))
+  //console.log(jsonArtist);
+ // console.log(jsonArtist.items);
+  return jsonArtist.artists.items[0] as Artist;
+  }
+  catch(error) {
+    console.error(`Error fetching artist  ${artistName}:`, error);
+    return null;
   }
 };

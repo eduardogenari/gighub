@@ -10,3 +10,4 @@ export type Artist = {
     popularity: number
 
 }
+
