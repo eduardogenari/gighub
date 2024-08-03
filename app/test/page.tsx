@@ -10,7 +10,7 @@ export default async function Page() {
   //const artist = await actionGetArtistTopTracks("0TnOYISbd1XYRBk9myaseg");
   const artist = await actionGetArtistByName("The Tyets");
 
-  console.log(artist);
+  //console.log(artist);
 
   //const concerts = await actionGetEventsByDate(
   //  formatDateToISO("2024-08-11"),
@@ -18,7 +18,7 @@ export default async function Page() {
   //);
 
   //const concert = await actionGetEventById("G5d0Z9YlaQsP_");
-  //const concerts = await getAllEventsByCountry("ES");
+//  const concerts = await getAllEventsByCountry("ES");
   const concerts = await getEventsEurope();
   //console.log(concert);
 

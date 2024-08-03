@@ -1,10 +1,23 @@
 import { env } from "@/lib/env";
+import { Artist } from "@/types/artist";
+import { writeFile } from "fs/promises";
 
+
+
+const jsonFilePath = "./artist.json";
 const base64Credentials = Buffer.from(
   `${env("CLIENTID_SPOTIFY")}:${env("CLIENTSECRET_SPOTIFY")}`
 ).toString("base64");
 
+let accessToken: string | null = null;
+let tokenExpiresAt: number | null = null;
+
 const getAccessToken = async () => {
+
+  if (accessToken && tokenExpiresAt && Date.now() < tokenExpiresAt) {
+    return accessToken;
+  }
+
   const options = {
     method: "POST",
     headers: {
@@ -24,7 +37,8 @@ const getAccessToken = async () => {
   }
 
   const token = await response.json();
-  console.log(token);
+  accessToken = token.access_token;
+  tokenExpiresAt = Date.now() + token.expires_in * 1000; 
   return token.access_token;
 };
 
@@ -44,6 +58,7 @@ export const getArtistTopTracks = async (artistId: string) => {
 };
 
 export const getArtistByName = async (artistName: string) => {
+  
   const token = await getAccessToken();
   console.log('Using Access Token for getArtistByName:', token);
   const response = await fetch(
@@ -59,8 +74,16 @@ export const getArtistByName = async (artistName: string) => {
     const error = await response.json();
     throw new Error(`Failed to fetch artist: ${error.error.message}`);
   }
+
+  try {
   const jsonArtist = await response.json();
-  console.log(jsonArtist);
+  await writeFile(jsonFilePath, JSON.stringify(jsonArtist))
+  //console.log(jsonArtist);
  // console.log(jsonArtist.items);
-  return jsonArtist.artists.items;
+  return jsonArtist.artists.items as Artist[];
+  }
+  catch(error) {
+    console.error(`Error fetching artist  ${artistName}:`, error);
+    return [];
+  }
 };
