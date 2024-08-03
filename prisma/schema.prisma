@@ -50,7 +50,6 @@ model PriceRange {
 model Image {
   id      Int     @id @default(autoincrement())
   url     String
-  ratio   String?
   width   Float
   height  Float
   eventId Int

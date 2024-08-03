@@ -4,7 +4,6 @@ import Filters from "@/components/Filters";
 import Spinner from "@/components/Spinner";
 import { NavigationMenu } from "@/components/ui/navigation-menu";
 import { YYYYMMDDToDate } from "@/lib/utils";
-import { actionGetAllEvents } from "@/actions/events";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { withinRange } from "@/lib/utils";
@@ -120,8 +119,9 @@ export default async function Page({
     events = events.filter((event) => {
       if (
         event.priceRange &&
-        event.priceRange[0].min !== null &&
-        event.priceRange[0].max !== null
+        event.priceRange[0] &&
+        event.priceRange[0]?.min !== null &&
+        event.priceRange[0]?.max !== null
       ) {
         return withinRange(price.split(",").map(Number), [
           event.priceRange[0].min,
