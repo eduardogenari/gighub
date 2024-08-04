@@ -16,13 +16,15 @@ export default function SliderItem({
   form,
   name,
   label,
+  value,
 }: {
   form: any;
   name: string;
   label: string;
+  value: number[];
 }) {
-  const [min, setMin] = useState<number>(0);
-  const [max, setMax] = useState<number>(1000);
+  const [min, setMin] = useState<number>(value[0]);
+  const [max, setMax] = useState<number>(value[1]);
   const handleChange = (range: number[]) => {
     setMin(range[0]);
     setMax(range[1]);
@@ -42,7 +44,7 @@ export default function SliderItem({
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <Slider
-            defaultValue={[0, 1000]}
+            defaultValue={[value[0], value[1]]}
             max={1000}
             min={0}
             step={1}

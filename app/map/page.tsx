@@ -12,18 +12,28 @@ import prisma from "@/lib/prisma";
 export default async function Page({
   searchParams,
 }: {
-  searchParams?: { [key: string]: string };
+  searchParams?: { [key: string]: any };
 }) {
-  const {
-    startDate,
-    endDate,
-    artist,
-    genre,
-    price,
-    hideWithoutPrice,
-    country,
-    city,
-  } = searchParams ?? {};
+  // Get filter values from URL
+  let { startDate, endDate, artist, genre, price, country, city } =
+    searchParams ?? {};
+
+  // Set default values
+  if (!startDate) {
+    startDate = new Date();
+  }
+  if (!endDate) {
+    endDate = new Date();
+    endDate.setMonth(endDate.getMonth() + 3);
+  }
+  if (!country && !city) {
+    // TODO: Detect user location
+    country = "Spain";
+    city = "Barcelona";
+  }
+  if (!price) {
+    price = [0, 1000];
+  }
 
   console.log("Filters");
   console.log("Start date:", startDate);
@@ -31,7 +41,6 @@ export default async function Page({
   console.log("Artist:", artist);
   console.log("Genre:", genre);
   console.log("Price:", price);
-  console.log("Hide without price:", hideWithoutPrice);
   console.log("Country:", country);
   console.log("City:", city);
 
@@ -49,6 +58,15 @@ export default async function Page({
     []
   );
 
+  // Convert strings for comparison
+  startDate =
+    typeof startDate === "string" ? YYYYMMDDToDate(startDate) : startDate;
+  endDate = typeof endDate === "string" ? YYYYMMDDToDate(endDate) : endDate;
+  price =
+    typeof price === "string"
+      ? [parseFloat(price.split(",")[0]), parseFloat(price.split(",")[1])]
+      : price;
+
   // Get events from Ticketmaster
   let events = await prisma.event.findMany({
     include: {
@@ -57,95 +75,110 @@ export default async function Page({
       priceRange: true,
       image: true,
     },
+    where: {
+      AND: [
+        startDate && {
+          startDate: {
+            gte: startDate,
+          },
+        },
+        endDate && {
+          endDate: {
+            lte: endDate,
+          },
+        },
+        country && {
+          venue: {
+            some: {
+              country: country,
+            },
+          },
+        },
+        city && {
+          venue: {
+            some: {
+              city: city,
+            },
+          },
+        },
+        artist && {
+          artist: {
+            some: {
+              name: artist,
+            },
+          },
+        },
+        genre && {
+          genre: {
+            has: genre,
+          },
+        },
+        price && {
+          priceRange: {
+            some: {
+              OR: [
+                {
+                  AND: [
+                    {
+                      min: {
+                        gte: price[0],
+                      },
+                    },
+                    {
+                      max: {
+                        lte: price[1],
+                      },
+                    },
+                    {
+                      type: "standard",
+                    },
+                  ],
+                },
+                {
+                  AND: [
+                    {
+                      min: {
+                        lte: price[1],
+                      },
+                    },
+                    {
+                      max: {
+                        gte: price[0],
+                      },
+                    },
+                    {
+                      type: "standard",
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+      ].filter(Boolean),
+    },
   });
 
-  // Get all names in these events
+  // Get artists in current location
   let artistAllNames = events.map((event) => {
     return event.artist?.map((artist) => artist.name || "") || [];
   });
-
-  // Create a list and remove duplicates
   let artistNames = [...new Set(artistAllNames.flat(1))];
 
-  // Get all genres in these events
+  // Get genres in current location
   let genreAllNames = events.map((event) => {
     return event.genre || [];
   });
   let genreNames = [...new Set(genreAllNames.flat(1))];
 
-  // Get all countries in these events
-  let countryAllNames = events.flatMap((event) => {
-    return event.venue.map((venue) => venue.country);
-  });
+  // Get all countries
+  let venues = await prisma.venue.findMany();
+  let countryAllNames = venues.map((venue) => venue.country);
   let countryNames = [...new Set(countryAllNames.flat(1))];
 
-  // Get all cities in these events (in selected country if any)
-  let cityAllNames = events.flatMap((event) => {
-    return event.venue.map((venue) => venue.city);
-  });
+  // Get all cities
+  let cityAllNames = venues.map((venue) => venue.city);
   let cityNames = [...new Set(cityAllNames.flat(1))];
-
-  console.log("Number of concerts before filtering", events.length);
-
-  // Convert date strings to Date objects for comparison
-  const start = startDate ? YYYYMMDDToDate(startDate) : null;
-  const end = endDate ? YYYYMMDDToDate(endDate) : null;
-
-  events = events.filter((event) => {
-    // Filter by start date
-    if (start && new Date(event.startDate) < start) {
-      return false;
-    }
-
-    // Filter by end date
-    if (end && new Date(event.endDate) > end) {
-      return false;
-    }
-
-    // Filter by artist
-    if (artist && !event.artist?.some((dbArtist) => dbArtist.name === artist)) {
-      return false;
-    }
-
-    // Filter by genre
-    if (genre && !event.genre.some((dbGenre) => dbGenre === genre)) {
-      return false;
-    }
-
-    // Filter by country
-    if (country && !event.venue.some((venue) => venue.country === country)) {
-      return false;
-    }
-
-    // Filter by city
-    if (city && !event.venue.some((venue) => venue.city === city)) {
-      return false;
-    }
-
-    // Filter by price
-    if (
-      price &&
-      event.priceRange &&
-      event.priceRange[0] &&
-      event.priceRange[0]?.min !== null &&
-      event.priceRange[0]?.max !== null
-    ) {
-      return withinRange(price.split(",").map(Number), [
-        event.priceRange[0].min,
-        event.priceRange[0].max,
-      ]);
-    } else {
-      if (hideWithoutPrice === "on") {
-        // Hide events that have no information on price
-        return false;
-      } else {
-        // Show events that have no information on price
-        return true;
-      }
-    }
-  });
-
-  console.log("Number of concerts after filtering", events.length);
 
   return (
     <main className="h-screen w-screen flex flex-col">
@@ -159,6 +192,11 @@ export default async function Page({
             genres={genreNames}
             countries={countryNames}
             cities={cityNames}
+            startDate={startDate}
+            endDate={endDate}
+            country={country}
+            city={city}
+            price={price}
           />
           <p className="text-sm mt-4 text-orange-600">
             Number of events: {events.length}

@@ -70,19 +70,23 @@ export default function Markers(Markers: MarkersProps) {
                 </p>
               )}
 
-              {event.priceRange && event.priceRange[0] !== undefined ? (
-                <p className="flex justify-start gap-2 items-center">
-                  <CoinsIcon className="h-4 w-4 shrink-0" />
-                  {event.priceRange[0].min === event.priceRange[0].max ? (
-                    <>{event.priceRange[0].min}</>
-                  ) : (
-                    <>
-                      {event.priceRange[0].min} - {event.priceRange[0].max}
-                    </>
-                  )}{" "}
-                  {event.priceRange[0].currency}
-                </p>
-              ) : null}
+              {event.priceRange
+                ? event.priceRange
+                    .filter((priceRange) => priceRange.type == "standard")
+                    .map((priceRange, rangeIndex) => (
+                      <p key={rangeIndex} className="flex justify-start gap-2 items-center">
+                        <CoinsIcon className="h-4 w-4 shrink-0" />
+                        {priceRange.min === priceRange.max ? (
+                          <>{priceRange.min}</>
+                        ) : (
+                          <>
+                            {priceRange.min} - {priceRange.max}
+                          </>
+                        )}{" "}
+                        {priceRange.currency}
+                      </p>
+                    ))
+                : null}
               <Button className="bg-orange-600">Go to event &rarr;</Button>
             </div>
           </Popup>

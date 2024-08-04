@@ -5,7 +5,6 @@ import { dateToYYYYMMDD } from "@/lib/utils";
 import { redirect } from "next/navigation";
 
 export async function filter(formData: FormData) {
-  console.log("formData", formData);
   const startDate = formData.get("startDate") as string;
   const endDate = formData.get("endDate") as string;
   const artist = formData.get("artist") as string;
@@ -13,7 +12,6 @@ export async function filter(formData: FormData) {
   const city = formData.get("city") as string;
   const country = formData.get("country") as string;
   const price = formData.getAll("price");
-  const hideWithoutPrice = formData.get("hideWithoutPrice") as string;
 
   // Add new keys if they are submitted
   let query: { [key: string]: string } = {};
@@ -37,11 +35,6 @@ export async function filter(formData: FormData) {
   }
   if (country) {
     query.country = country;
-  }
-  if (hideWithoutPrice) {
-    query.hideWithoutPrice = "on";
-  } else {
-    query.hideWithoutPrice = "off";
   }
 
   // Construct URL to pass variables to backend

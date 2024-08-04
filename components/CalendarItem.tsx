@@ -22,11 +22,13 @@ export default function CalendarItem({
   name,
   label,
   placeholder,
+  value,
 }: {
   form: any;
   name: string;
   label: string;
   placeholder: string;
+  value: Date;
 }) {
   return (
     <FormField
@@ -40,9 +42,7 @@ export default function CalendarItem({
               <FormControl>
                 <Button
                   variant={"outline"}
-                  className={cn(
-                    "text-left font-normal"
-                  )}
+                  className={cn("text-left font-normal")}
                 >
                   {field.value ? (
                     format(field.value, "PPP")
@@ -63,7 +63,7 @@ export default function CalendarItem({
             </PopoverContent>
           </Popover>
           <FormMessage />
-          <Input type="hidden" name={field.name} value={field.value}/>
+          <Input type="hidden" name={field.name} value={field.value} />
         </FormItem>
       )}
     />
