@@ -14,6 +14,7 @@ export default async function Page({
 }: {
   searchParams?: { [key: string]: any };
 }) {
+  // Get filter values from URL
   let {
     startDate,
     endDate,
@@ -24,14 +25,20 @@ export default async function Page({
     country,
     city,
   } = searchParams ?? {};
+
+  // Set dates and location by default if these are not passed
   if (!startDate) {
     startDate = new Date();
   }
   if (!endDate) {
     endDate = new Date();
-    endDate.setMonth(endDate.getMonth() + 1);
+    endDate.setMonth(endDate.getMonth() + 3);
   }
-  console.log(startDate, endDate);
+  if (!country && !city) {
+    // TODO: Detect user location
+    country = "Spain";
+    city = "Barcelona";
+  }
 
   console.log("Filters");
   console.log("Start date:", startDate);
@@ -82,40 +89,48 @@ export default async function Page({
             lte: end,
           },
         },
+        country && {
+          venue: {
+            some: {
+              country: country,
+            },
+          },
+        },
+        city && {
+          venue: {
+            some: {
+              city: city,
+            },
+          },
+        },
       ].filter(Boolean),
     },
   });
 
-  // Get all names in these events
+  // Get artists in current location
   let artistAllNames = events.map((event) => {
     return event.artist?.map((artist) => artist.name || "") || [];
   });
-
-  // Create a list and remove duplicates
   let artistNames = [...new Set(artistAllNames.flat(1))];
 
-  // Get all genres in these events
+  // Get genres in current location
   let genreAllNames = events.map((event) => {
     return event.genre || [];
   });
   let genreNames = [...new Set(genreAllNames.flat(1))];
 
-  // Get all countries in these events
-  let countryAllNames = events.flatMap((event) => {
-    return event.venue.map((venue) => venue.country);
-  });
+  // Get all countries
+  let venues = await prisma.venue.findMany();
+  let countryAllNames = venues.map((venue) => venue.country);
   let countryNames = [...new Set(countryAllNames.flat(1))];
 
-  // Get all cities in these events (in selected country if any)
-  let cityAllNames = events.flatMap((event) => {
-    return event.venue.map((venue) => venue.city);
-  });
+  // Get all cities
+  let cityAllNames = venues.map((venue) => venue.city);
   let cityNames = [...new Set(cityAllNames.flat(1))];
 
   console.log("Number of concerts before filtering", events.length);
 
   events = events.filter((event) => {
-
     // Filter by artist
     if (artist && !event.artist?.some((dbArtist) => dbArtist.name === artist)) {
       return false;
@@ -123,16 +138,6 @@ export default async function Page({
 
     // Filter by genre
     if (genre && !event.genre.some((dbGenre) => dbGenre === genre)) {
-      return false;
-    }
-
-    // Filter by country
-    if (country && !event.venue.some((venue) => venue.country === country)) {
-      return false;
-    }
-
-    // Filter by city
-    if (city && !event.venue.some((venue) => venue.city === city)) {
       return false;
     }
 
