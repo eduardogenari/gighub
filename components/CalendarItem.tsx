@@ -16,6 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useState } from "react";
 
 export default function CalendarItem({
   form,
@@ -30,6 +31,7 @@ export default function CalendarItem({
   placeholder: string;
   value: Date;
 }) {
+  const [input, setInput] = useState<Date>(value);
   return (
     <FormField
       control={form.control}
@@ -44,11 +46,7 @@ export default function CalendarItem({
                   variant={"outline"}
                   className={cn("text-left font-normal")}
                 >
-                  {field.value ? (
-                    format(field.value, "PPP")
-                  ) : (
-                    <span>{placeholder}</span>
-                  )}
+                  {input ? format(input, "PPP") : <span>{placeholder}</span>}
                   <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                 </Button>
               </FormControl>
@@ -56,8 +54,14 @@ export default function CalendarItem({
             <PopoverContent className="w-auto p-0" align="start">
               <Calendar
                 mode="single"
-                selected={field.value}
-                onSelect={field.onChange}
+                selected={input}
+                onSelect={(e) => {
+                  if (e) {
+                    field.onChange(e);
+                    setInput(e);
+                  }
+                }}
+                defaultMonth={input}
                 initialFocus
               />
             </PopoverContent>
