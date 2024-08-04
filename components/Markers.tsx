@@ -73,8 +73,8 @@ export default function Markers(Markers: MarkersProps) {
               {event.priceRange
                 ? event.priceRange
                     .filter((priceRange) => priceRange.type == "standard")
-                    .map((priceRange) => (
-                      <p className="flex justify-start gap-2 items-center">
+                    .map((priceRange, rangeIndex) => (
+                      <p key={rangeIndex} className="flex justify-start gap-2 items-center">
                         <CoinsIcon className="h-4 w-4 shrink-0" />
                         {priceRange.min === priceRange.max ? (
                           <>{priceRange.min}</>
