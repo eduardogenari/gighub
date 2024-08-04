@@ -12,9 +12,9 @@ import prisma from "@/lib/prisma";
 export default async function Page({
   searchParams,
 }: {
-  searchParams?: { [key: string]: string };
+  searchParams?: { [key: string]: any };
 }) {
-  const {
+  let {
     startDate,
     endDate,
     artist,
@@ -24,6 +24,14 @@ export default async function Page({
     country,
     city,
   } = searchParams ?? {};
+  if (!startDate) {
+    startDate = new Date();
+  }
+  if (!endDate) {
+    endDate = new Date();
+    endDate.setMonth(endDate.getMonth() + 1);
+  }
+  console.log(startDate, endDate);
 
   console.log("Filters");
   console.log("Start date:", startDate);
@@ -49,6 +57,11 @@ export default async function Page({
     []
   );
 
+  // Convert date strings to Date objects for comparison
+  const start =
+    typeof startDate === "string" ? YYYYMMDDToDate(startDate) : startDate;
+  const end = typeof endDate === "string" ? YYYYMMDDToDate(endDate) : endDate;
+
   // Get events from Ticketmaster
   let events = await prisma.event.findMany({
     include: {
@@ -56,6 +69,20 @@ export default async function Page({
       venue: true,
       priceRange: true,
       image: true,
+    },
+    where: {
+      AND: [
+        start && {
+          startDate: {
+            gte: start,
+          },
+        },
+        end && {
+          endDate: {
+            lte: end,
+          },
+        },
+      ].filter(Boolean),
     },
   });
 
@@ -87,20 +114,7 @@ export default async function Page({
 
   console.log("Number of concerts before filtering", events.length);
 
-  // Convert date strings to Date objects for comparison
-  const start = startDate ? YYYYMMDDToDate(startDate) : null;
-  const end = endDate ? YYYYMMDDToDate(endDate) : null;
-
   events = events.filter((event) => {
-    // Filter by start date
-    if (start && new Date(event.startDate) < start) {
-      return false;
-    }
-
-    // Filter by end date
-    if (end && new Date(event.endDate) > end) {
-      return false;
-    }
 
     // Filter by artist
     if (artist && !event.artist?.some((dbArtist) => dbArtist.name === artist)) {
@@ -159,6 +173,8 @@ export default async function Page({
             genres={genreNames}
             countries={countryNames}
             cities={cityNames}
+            startDate={startDate}
+            endDate={endDate}
           />
           <p className="text-sm mt-4 text-orange-600">
             Number of events: {events.length}

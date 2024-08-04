@@ -26,12 +26,16 @@ export default function Filters({
   artists,
   genres,
   countries,
-  cities
+  cities,
+  startDate,
+  endDate
 }: {
   artists: string[];
   genres: string[];
   countries: string[];
   cities: string[];
+  startDate: Date;
+  endDate: Date;
 }) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -73,12 +77,14 @@ export default function Filters({
           name={"startDate"}
           label={"Start date"}
           placeholder={"Pick a start date"}
+          value={startDate}
         />
         <CalendarItem
           form={form}
           name={"endDate"}
           label={"End date"}
           placeholder={"Pick an end date"}
+          value={endDate}
         />
         <SliderItem form={form} name={"price"} label={"Price range"} />
         <CheckboxItem
