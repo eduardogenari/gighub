@@ -19,7 +19,6 @@ const FormSchema = z.object({
   city: z.string().optional(),
   genre: z.string().optional(),
   price: z.array(z.number()).length(2).optional(),
-  hideWithoutPrice: z.string().optional(),
 });
 
 export default function Filters({
@@ -28,7 +27,10 @@ export default function Filters({
   countries,
   cities,
   startDate,
-  endDate
+  endDate,
+  country,
+  city,
+  price,
 }: {
   artists: string[];
   genres: string[];
@@ -36,6 +38,9 @@ export default function Filters({
   cities: string[];
   startDate: Date;
   endDate: Date;
+  country: string;
+  city: string;
+  price: number[];
 }) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -86,11 +91,11 @@ export default function Filters({
           placeholder={"Pick an end date"}
           value={endDate}
         />
-        <SliderItem form={form} name={"price"} label={"Price range"} />
-        <CheckboxItem
+        <SliderItem
           form={form}
-          name={"hideWithoutPrice"}
-          label={"Hide events without information on price"}
+          name={"price"}
+          label={"Price range"}
+          value={price}
         />
         <Button type="submit">Apply</Button>
       </form>
