@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
-import Image from "next/image";
 import React from "react";
+import EventCarousel from "./EventCarousel";
 
 export default async function FeaturedEvents() {
   // Get events from Ticketmaster
@@ -13,61 +13,43 @@ export default async function FeaturedEvents() {
     },
   });
 
-  console.log("Featured Events. Number of concerts before filtering", events.length);
-  console.log(events[0].startDate);
-
   // Define today's date
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date();
+  const todayStr = today.toISOString().split("T")[0];
 
-  // Filter events with startDate equal to today
-  //const todayEvents = events.filter(event => event.startDate.toISOString().split('T')[0] === today);
-  const todayEvents = events.filter(event => event.startDate.toISOString().split('T')[0] === "2024-08-06");
+  // Calculate the date 3 days from today
+  const threeDaysFromNow = new Date(today);
+  threeDaysFromNow.setDate(today.getDate() + 3);
+  const threeDaysFromNowStr = threeDaysFromNow.toISOString().split("T")[0];
 
-  console.log("Featured Events. Number of concerts after filtering", todayEvents.length);
-  console.log("Today: "+ today)
-  console.log(todayEvents[0].startDate)
-  console.log(todayEvents[0])
+  // Filter events with startDate within the next 3 days
+  const upcomingEvents = events.filter((event) => {
+    const eventDateStr = event.startDate.toISOString().split("T")[0];
+    return eventDateStr >= todayStr && eventDateStr <= threeDaysFromNowStr;
+  });
 
-    // Create a set to keep track of unique event names based on the first 10 characters
-    const uniqueEventNames = new Set<string>();
+  // Filter events to include only those with the first image width greater than 1000
+  const filteredEvents = upcomingEvents.filter(
+    (event) => event.image[0] && event.image[0].width > 1000
+  );
 
-    // Filter events to exclude those with similar names
-    const uniqueTodayEvents = todayEvents.filter(event => {
-        const eventNameKey = event.name.substring(0, 10);
-        if (uniqueEventNames.has(eventNameKey)) {
-          return false;
-        } else {
-          uniqueEventNames.add(eventNameKey);
-          return true;
-        }
-      });
+  // Create a set to keep track of unique event names based on the first 10 characters
+  const uniqueEventNames = new Set<string>();
 
-      console.log(uniqueTodayEvents[5].image[0].url)
-      console.log(uniqueTodayEvents[6].image[0].url)
-      console.log(uniqueTodayEvents[0].image[0].url)
-
-      console.log(todayEvents[0].image[0].url)
-      console.log(todayEvents[1].image[0].url)
-      console.log(todayEvents[2].image[0].url)
-
-      return (
-        <div>
-          <h1>featured events</h1>
-          <h1>Today: {today} </h1>
-          {uniqueTodayEvents.map(event => (
-            <div key={event.id}>
-              <h2>{event.name}</h2>
-              <p>{event.artist.map(artist => artist.name).join(', ')}</p>
-              <p>{event.venue.map(venue => venue.name).join(', ')}</p>
-              <p>{event.startDate.toDateString()}</p>
-              <Image
-                src={event.image[0].url}
-                width={150}
-                height={150}
-                alt="Event image"
-              />
-            </div>
-          ))}
-        </div>
-      );
+  // Filter events to exclude those with similar names
+  const uniqueUpcomingEvents = filteredEvents.filter((event) => {
+    const eventNameKey = event.name.substring(0, 10);
+    if (uniqueEventNames.has(eventNameKey)) {
+      return false;
+    } else {
+      uniqueEventNames.add(eventNameKey);
+      return true;
     }
+  });
+
+  return (
+    <div className="flex-grow flex items-center justify-center">
+      <EventCarousel events={uniqueUpcomingEvents} />
+    </div>
+  );
+}
