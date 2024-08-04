@@ -16,7 +16,7 @@ export default async function EventsPage() {
     return (
       <main className="h-screen w-screen flex flex-col">
           <Header />
-          <div className="w-4/5 self-center flex-grow flex items-center justify-center flex-wrap">
+          <div className="mt-24 w-4/5 self-center flex-grow flex items-center justify-center flex-wrap">
               {events.map((event: Event) => (
                   <EventCard key={event.id} event={event} />
               ))}
