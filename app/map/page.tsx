@@ -197,6 +197,8 @@ export default async function Page({
             country={country}
             city={city}
             price={price}
+            artist={artist}
+            genre={genre}
           />
           <p className="text-sm mt-4 text-orange-600">
             Number of events: {events.length}

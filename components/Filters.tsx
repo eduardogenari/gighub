@@ -31,6 +31,8 @@ export default function Filters({
   country,
   city,
   price,
+  artist,
+  genre
 }: {
   artists: string[];
   genres: string[];
@@ -41,6 +43,8 @@ export default function Filters({
   country: string;
   city: string;
   price: number[];
+  artist: string;
+  genre: string;
 }) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -55,6 +59,7 @@ export default function Filters({
           label={"Artist"}
           placeholder={"Type an artist name"}
           options={artists}
+          value={artist}
         />
         <SearchItem
           form={form}
@@ -62,6 +67,7 @@ export default function Filters({
           label={"Genre"}
           placeholder={"Type a genre"}
           options={genres}
+          value={genre}
         />
         <SearchItem
           form={form}
@@ -69,6 +75,7 @@ export default function Filters({
           label={"Country"}
           placeholder={"Search a country"}
           options={countries}
+          value={country}
         />
         <SearchItem
           form={form}
@@ -76,6 +83,7 @@ export default function Filters({
           label={"City"}
           placeholder={"Search a city"}
           options={cities}
+          value={city}
         />
         <CalendarItem
           form={form}

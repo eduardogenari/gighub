@@ -14,16 +14,18 @@ export default function SearchItem({
   label,
   placeholder,
   options,
+  value
 }: {
   form: any;
   name: string;
   label: string;
   placeholder: string;
   options: string[];
+  value?: string;
 }) {
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [input, setInput] = useState<string>("");
+  const [input, setInput] = useState<string>(value ? value : "");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Get input value
