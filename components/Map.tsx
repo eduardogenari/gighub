@@ -1,7 +1,7 @@
 "use client";
 
-import { LatLngExpression, LatLngTuple } from "leaflet";
-import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
+import { latLngBounds, LatLngExpression, LatLngTuple, PointExpression } from "leaflet";
+import { MapContainer, TileLayer, useMap, ZoomControl } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
@@ -15,23 +15,24 @@ interface MapProps {
 export default function Map(Map: MapProps) {
   const { markers } = Map;
   const center: LatLngExpression | LatLngTuple = [53, 20];
-  const zoom = 4.3;
+  const zoom = 4;
 
   // Fit view
-  // function ChangeView({ markers }: { markers: Event[] }) {
-  //   const map = useMap();
-  //   if (markers.length > 0) {
-  //     let markerBounds = latLngBounds([]);
-  //     markers.forEach((marker) => {
-  //       markerBounds.extend([
-  //         parseFloat(marker.venues[0].location.latitude),
-  //         parseFloat(marker.venues[0].location.longitude),
-  //       ]);
-  //     });
-  //     map.fitBounds(markerBounds);
-  //     return null;
-  //   }
-  // }
+  function ChangeView({ markers }: { markers: Event[] }) {
+    const map = useMap();
+    if (markers.length > 0) {
+      let markerBounds = latLngBounds([]);
+      markers.forEach((marker) => {
+        markerBounds.extend([
+          marker.venue[0].latitude,
+          marker.venue[0].longitude,
+        ]);
+      });
+      var padding: PointExpression = [150, 150];
+      map.fitBounds(markerBounds, { padding: padding });
+      return null;
+    }
+  }
 
   return (
     <MapContainer
@@ -48,7 +49,7 @@ export default function Map(Map: MapProps) {
       minZoom={zoom}
       attributionControl={false}
     >
-      {/* <ChangeView markers={markers} /> */}
+      <ChangeView markers={markers} />
       <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/spotify_dark/{z}/{x}/{y}{r}.png" />
       <ZoomControl position="bottomright" />
       <Markers markers={markers} />
