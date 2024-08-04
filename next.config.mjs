@@ -12,6 +12,11 @@ const nextConfig = {
         hostname: "media.ticketmaster.eu",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "images.universe.com",
+        pathname: "/**",
+      },
     ],
   },
 };
