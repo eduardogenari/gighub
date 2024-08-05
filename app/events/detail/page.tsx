@@ -1,6 +1,4 @@
 import { actionGetEventByIdEdu } from "@/actions/events";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
 import Image from "next/image";
 
 
@@ -10,7 +8,6 @@ export default async function EventDetailPage() {
   
     return (
       <main className="flex flex-col">
-        <Header />
         <div className="h-screen w-screen flex items-center justify-center overflow-auto">
           <div className="relative h-screen w-screen">
             <Image
@@ -28,7 +25,6 @@ export default async function EventDetailPage() {
           <h1>buy on ticketmaster:   {event?.url}</h1>
           <pre>{JSON.stringify(paul, null, 2)}</pre>
         </div>
-        <Footer />
       </main>
     );
   }

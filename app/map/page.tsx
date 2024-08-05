@@ -4,8 +4,6 @@ import Filters from "@/components/Filters";
 import Spinner from "@/components/Spinner";
 import { NavigationMenu } from "@/components/ui/navigation-menu";
 import { YYYYMMDDToDate } from "@/lib/utils";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { withinRange } from "@/lib/utils";
 import prisma from "@/lib/prisma";
 
@@ -182,7 +180,6 @@ export default async function Page({
 
   return (
     <main className="h-screen w-screen flex flex-col">
-      <Header />
       <div className="flex-grow flex overflow-hidden bg-gray-200">
         <div className="w-1/5 bg-white p-4">
           <h1 className="text-lg font-bold">Filters</h1>
@@ -208,7 +205,6 @@ export default async function Page({
           <Map markers={events} />
         </div>
       </div>
-      <Footer />
     </main>
   );
 }
