@@ -10,7 +10,7 @@ export default async function EventsPage() {
   console.log("Number of concerts before filtering", events[0].name);
 
   return (
-    <main className="h-screen w-screen flex flex-col">
+    <main className="flex-grow flex items-center justify-center">
       <div className="w-4/5 self-center flex-grow flex items-center justify-center flex-wrap">
         {events.map((event: Event) => (
           <EventCard key={event.id} event={event} />

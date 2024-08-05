@@ -3,7 +3,7 @@ import FeaturedEvents from "@/components/FeaturedEvents";
 
 export default function Home() {
   return (
-    <main className="h-screen w-screen flex flex-col">
+    <main className="flex-grow flex items-center justify-center">
       <FeaturedEvents />
     </main>
   );

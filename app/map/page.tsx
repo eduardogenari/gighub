@@ -179,7 +179,7 @@ export default async function Page({
   let cityNames = [...new Set(cityAllNames.flat(1))];
 
   return (
-    <main className="h-screen w-screen flex flex-col">
+    <main className="flex-grow flex">
       <div className="flex-grow flex overflow-hidden bg-gray-200">
         <div className="w-1/5 bg-white p-4">
           <h1 className="text-lg font-bold">Filters</h1>
