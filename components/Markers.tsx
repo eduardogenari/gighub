@@ -152,6 +152,7 @@ export default function Markers(Markers: MarkersProps) {
                   {filteredEvents.map((filteredEvent, filteredEventIndex) => {
                     return (
                       <hr
+                        key={filteredEventIndex}
                         className={
                           "w-full h-1 border-0 rounded " +
                           (currentEvents[index] === filteredEventIndex
