@@ -84,7 +84,7 @@ export default function Markers(Markers: MarkersProps) {
         <Popup>
           <div className="">
             <div key={event.id}>
-              {event.image[0].url !== null ? (
+              {event?.image[0].url !== null ? (
                 <div className="h-[200px] relative">
                   {!isLoaded && (
                     <div className="flex justify-center items-center h-[200px]">
@@ -156,7 +156,7 @@ export default function Markers(Markers: MarkersProps) {
                           "w-full h-1 border-0 rounded " +
                           (currentEvents[index] === filteredEventIndex
                             ? "bg-orange-500"
-                            : "bg-gray-300")
+                            : "bg-gray-300 hover:cursor-pointer")
                         }
                         onClick={() => {
                           const newArray = [...currentEvents];
@@ -170,14 +170,14 @@ export default function Markers(Markers: MarkersProps) {
                 <div className="absolute top-[100px] flex justify-between gap-4 z-10 w-full px-2">
                   <CircleArrowLeftIcon
                     className={
-                      "h-6 w-6 shrink-0 text-gray-200 " +
+                      "h-6 w-6 shrink-0 text-gray-200 hover:cursor-pointer " +
                       (currentEvents[index] === 0 ? "invisible" : "")
                     }
                     onClick={() => handlePrevious()}
                   />
                   <CircleArrowRightIcon
                     className={
-                      "h-6 w-6 shrink-0 text-gray-200 " +
+                      "h-6 w-6 shrink-0 text-gray-200 hover:cursor-pointer " +
                       (currentEvents[index] === filteredEvents.length - 1
                         ? "invisible"
                         : "")
