@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 import { Artist } from "@/types/artist";
 import {
-  actionGetArtistTopTracks,
+  actionGetTopTracksByArtistId,
   actionGetFirstArtistByName,
 } from "@/actions/artists";
+import Image from "next/image";
 
 type ArtistTopTracksProps = {
   artistName: string;
@@ -36,7 +37,7 @@ export default function ArtistTopTracks({ artistName }: ArtistTopTracksProps) {
     const fetchTopTracks = async () => {
       if (artist) {
         try {
-          const tracks = await actionGetArtistTopTracks(artist.id);
+          const tracks = await actionGetTopTracksByArtistId(artist.id);
           setTopTracks(tracks);
         } catch (err) {
           setError("Failed to fetch top tracks");
@@ -67,6 +68,11 @@ export default function ArtistTopTracks({ artistName }: ArtistTopTracksProps) {
         {topTracks.map((track, index) => (
           <li key={track.id}>
             {index + 1}. {track.name}
+            {track.album && track.album.images && track.album.images.length > 0 && (
+              <div>
+                <Image src={track.album.images[0].url} alt={`${track.name} song album`} width={200} height={200} />
+              </div>
+            )}
             {track.preview_url && (
               <div>
                 <audio controls>

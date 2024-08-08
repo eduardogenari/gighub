@@ -1,6 +1,6 @@
 import {
   actionGetArtistByName,
-  actionGetArtistTopTracks,
+  actionGetTopTracksByArtistId,
 } from "@/actions/artists";
 import {
   actionGetAllEvents,

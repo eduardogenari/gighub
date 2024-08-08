@@ -1,14 +1,14 @@
 import { env } from "@/lib/env";
 import { Artist, Track } from "@/types/artist";
-//import { writeFile } from "fs/promises";
+import { writeFile } from "fs/promises";
 
 
 
-//const jsonFilePath = "./artist.json";
+const jsonFilePath = "./tracks.json";
 const base64Credentials = Buffer.from(
   `${env("CLIENTID_SPOTIFY")}:${env("CLIENTSECRET_SPOTIFY")}`
 ).toString("base64");
-
+const urlSpotify = "https://api.spotify.com/v1"
 let accessToken: string | null = null;
 let tokenExpiresAt: number | null = null;
 
@@ -42,10 +42,13 @@ const getAccessToken = async () => {
   return token.access_token;
 };
 
-export const getArtistTopTracks = async (artistId: string) => {
+
+
+export const getTopTracksByArtistName = async (artistName: string) => {
   const token = await getAccessToken();
+  const artist = await getFirstArtistByName(artistName);
   const response = await fetch(
-    `https://api.spotify.com/v1/artists/${artistId}/top-tracks`,
+    `${urlSpotify}/${artist?.id}/top-tracks`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -53,6 +56,23 @@ export const getArtistTopTracks = async (artistId: string) => {
     }
   );
   const jsonTracks = await response.json();
+ // await writeFile(jsonFilePath, JSON.stringify(jsonTracks))
+ // console.log(jsonTracks);
+  return jsonTracks.tracks as Track[];
+};
+
+export const getTopTracksByArtistId = async (artistId: string) => {
+  const token = await getAccessToken();
+  const response = await fetch(
+    `${urlSpotify}/artists/${artistId}/top-tracks`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const jsonTracks = await response.json();
+ // await writeFile(jsonFilePath, JSON.stringify(jsonTracks))
  // console.log(jsonTracks);
   return jsonTracks.tracks as Track[];
 };
@@ -62,7 +82,7 @@ export const getArtistByName = async (artistName: string) => {
   const token = await getAccessToken();
 //  console.log('Using Access Token for getArtistByName:', token);
   const response = await fetch(
-    `https://api.spotify.com/v1/search?q=${artistName}&type=artist`,
+    `${urlSpotify}/search?q=${artistName}&type=artist`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -93,7 +113,7 @@ export const getFirstArtistByName = async (artistName: string) => {
   const token = await getAccessToken();
   //console.log('Using Access Token for getArtistByName:', token);
   const response = await fetch(
-    `https://api.spotify.com/v1/search?q=${artistName}&type=artist`,
+    `${urlSpotify}/search?q=${artistName}&type=artist`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

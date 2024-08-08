@@ -17,6 +17,11 @@ const nextConfig = {
         hostname: "images.universe.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "i.scdn.co",
+        pathname: "/**",
+      },
     ],
   },
 };
