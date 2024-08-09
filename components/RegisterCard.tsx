@@ -10,14 +10,24 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 
-const FormSchema = z.object({
-  email: z.string().email("Invalid email"),
-  password: z.string().min(6),
-});
+const FormSchema = z
+  .object({
+    email: z.string().email({ message: "Invalid email address" }),
+    password: z
+      .string()
+      .min(6, { message: "Password must be at least 6 characters long" }),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
-export default function LoginCard() {
+export default function RegisterCard() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  //const [error, setError] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -33,7 +43,7 @@ export default function LoginCard() {
   return (
     <Card className="w-full max-w-md shadow-md">
       <CardContent>
-        <h1 className="text-2xl font-bold text-center mt-4 mb-4">Login</h1>
+        <h1 className="text-2xl font-bold text-center mt-4 mb-4">Sign up</h1>
         <Form {...form}>
           <form onSubmit={handleSubmit}>
             <FormItem className="mb-4">
@@ -56,17 +66,27 @@ export default function LoginCard() {
                 placeholder="Enter your password"
               />
             </FormItem>
+            <FormItem className="mb-4">
+              <Label htmlFor="confirmPassword">Confirm password</Label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirm your password"
+              />
+            </FormItem>
             <Button type="submit" className="w-full">
-              Login
+              Sign up
             </Button>
           </form>
         </Form>
       </CardContent>
       <CardFooter className="text-center">
         <p>
-          Don&apos;t have an account?
-          <a href="/register" className="text-blue-500 ml-2">
-            Sign up
+          Already have an account?
+          <a href="/login" className="text-blue-500 ml-2">
+            Login
           </a>
         </p>
       </CardFooter>
