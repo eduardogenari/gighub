@@ -9,6 +9,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const FormSchema = z.object({
   email: z.string().email("Invalid email"),
@@ -65,9 +66,9 @@ export default function LoginCard() {
       <CardFooter className="text-center">
         <p>
           Don&apos;t have an account?
-          <a href="/register" className="text-blue-500 ml-2">
+          <Link href="/register" className="text-blue-500 ml-2">
             Sign up
-          </a>
+          </Link>
         </p>
       </CardFooter>
     </Card>

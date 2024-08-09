@@ -9,6 +9,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const FormSchema = z
   .object({
@@ -85,9 +86,9 @@ export default function RegisterCard() {
       <CardFooter className="text-center">
         <p>
           Already have an account?
-          <a href="/login" className="text-blue-500 ml-2">
+          <Link href="/login" className="text-blue-500 ml-2">
             Login
-          </a>
+          </Link>
         </p>
       </CardFooter>
     </Card>
