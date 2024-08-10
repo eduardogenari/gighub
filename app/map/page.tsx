@@ -6,6 +6,7 @@ import { NavigationMenu } from "@/components/ui/navigation-menu";
 import { YYYYMMDDToDate } from "@/lib/utils";
 import { withinRange } from "@/lib/utils";
 import prisma from "@/lib/prisma";
+import type { Venue } from "@/types/event";
 
 export default async function Page({
   searchParams,
@@ -174,9 +175,23 @@ export default async function Page({
   let countryAllNames = venues.map((venue) => venue.country);
   let countryNames = [...new Set(countryAllNames.flat(1))];
 
-  // Get all cities
+  // Get all cities for selected country
   let cityAllNames = venues.map((venue) => venue.city);
   let cityNames = [...new Set(cityAllNames.flat(1))];
+
+  // Group cities by country
+  let citiesByCountry: Record<string, string[]> = venues.reduce(
+    (accumulator: Record<string, string[]>, venue: Venue) => {
+      if (!accumulator[venue.country]) {
+        accumulator[venue.country] = [];
+      }
+      if (!accumulator[venue.country].includes(venue.city)) {
+        accumulator[venue.country].push(venue.city);
+      }
+      return accumulator;
+    },
+    {}
+  );
 
   return (
     <main className="flex-grow flex">
@@ -196,6 +211,7 @@ export default async function Page({
             price={price}
             artist={artist}
             genre={genre}
+            citiesByCountry={citiesByCountry}
           />
           <p className="text-sm mt-4 text-orange-600">
             Number of events: {events.length}

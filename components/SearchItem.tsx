@@ -14,28 +14,39 @@ export default function SearchItem({
   label,
   placeholder,
   options,
-  value
+  setInput,
+  input,  
+  country,
+  citiesByCountry,
 }: {
   form: any;
   name: string;
   label: string;
   placeholder: string;
   options: string[];
-  value?: string;
+  setInput: React.Dispatch<React.SetStateAction<string>>;
+  input: string;
+  country?: string;
+  citiesByCountry?: Record<string, string[]>
 }) {
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [input, setInput] = useState<string>(value ? value : "");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Get input value
     const input = e.target.value;
     setInput(input);
 
+    // For city field, if country is defined, show only cities in that country
+    if (name === "city" && country !== undefined && citiesByCountry !== undefined) {
+      options = citiesByCountry[country];
+    }
+
     // Filter options and get first 5 suggestions
-    const filteredOptions: string[] = options.filter((suggestion) =>
+    let filteredOptions: string[] = options.filter((suggestion) =>
       suggestion.toLowerCase().includes(input.toLowerCase())
     );
+
     setSuggestions(filteredOptions.slice(0, 5));
 
     // Show options only if the input value is not an empty string

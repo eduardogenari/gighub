@@ -10,6 +10,7 @@ import SearchItem from "./SearchItem";
 import SliderItem from "./SliderItem";
 import CheckboxItem from "./CheckboxItem";
 import { filter } from "@/actions/filter";
+import { useState } from "react";
 
 const FormSchema = z.object({
   artist: z.string().optional(),
@@ -32,7 +33,8 @@ export default function Filters({
   city,
   price,
   artist,
-  genre
+  genre,
+  citiesByCountry
 }: {
   artists: string[];
   genres: string[];
@@ -45,10 +47,16 @@ export default function Filters({
   price: number[];
   artist: string;
   genre: string;
+  citiesByCountry: Record<string, string[]>
 }) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
+
+  const [inputArtist, setInputArtist] = useState<string>(artist ? artist : "");
+  const [inputCountry, setInputCountry] = useState<string>(country ? country : "");
+  const [inputCity, setInputCity] = useState<string>(city ? city : "");
+  const [inputGenre, setInputGenre] = useState<string>(genre ? genre : "");
 
   return (
     <Form {...form}>
@@ -59,7 +67,8 @@ export default function Filters({
           label={"Artist"}
           placeholder={"Type an artist name"}
           options={artists}
-          value={artist}
+          setInput={setInputArtist}
+          input={inputArtist}
         />
         <SearchItem
           form={form}
@@ -67,7 +76,8 @@ export default function Filters({
           label={"Genre"}
           placeholder={"Type a genre"}
           options={genres}
-          value={genre}
+          setInput={setInputGenre}
+          input={inputGenre}
         />
         <SearchItem
           form={form}
@@ -75,7 +85,8 @@ export default function Filters({
           label={"Country"}
           placeholder={"Search a country"}
           options={countries}
-          value={country}
+          setInput={setInputCountry}
+          input={inputCountry}
         />
         <SearchItem
           form={form}
@@ -83,7 +94,10 @@ export default function Filters({
           label={"City"}
           placeholder={"Search a city"}
           options={cities}
-          value={city}
+          setInput={setInputCity}
+          input={inputCity}
+          country={inputCountry}
+          citiesByCountry={citiesByCountry}
         />
         <CalendarItem
           form={form}
