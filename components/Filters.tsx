@@ -25,38 +25,27 @@ const FormSchema = z.object({
 export default function Filters({
   artists,
   genres,
-  countries,
-  cities,
   startDate,
   endDate,
-  country,
-  city,
+  location,
   price,
   artist,
   genre,
-  citiesByCountry
+  locationNames,
 }: {
   artists: string[];
   genres: string[];
-  countries: string[];
-  cities: string[];
   startDate: Date;
   endDate: Date;
-  country: string;
-  city: string;
+  location: string;
   price: number[];
   artist: string;
   genre: string;
-  citiesByCountry: Record<string, string[]>
+  locationNames: string[];
 }) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
-
-  const [inputArtist, setInputArtist] = useState<string>(artist ? artist : "");
-  const [inputCountry, setInputCountry] = useState<string>(country ? country : "");
-  const [inputCity, setInputCity] = useState<string>(city ? city : "");
-  const [inputGenre, setInputGenre] = useState<string>(genre ? genre : "");
 
   return (
     <Form {...form}>
@@ -67,8 +56,7 @@ export default function Filters({
           label={"Artist"}
           placeholder={"Type an artist name"}
           options={artists}
-          setInput={setInputArtist}
-          input={inputArtist}
+          value={artist}
         />
         <SearchItem
           form={form}
@@ -76,28 +64,15 @@ export default function Filters({
           label={"Genre"}
           placeholder={"Type a genre"}
           options={genres}
-          setInput={setInputGenre}
-          input={inputGenre}
+          value={genre}
         />
         <SearchItem
           form={form}
-          name={"country"}
-          label={"Country"}
-          placeholder={"Search a country"}
-          options={countries}
-          setInput={setInputCountry}
-          input={inputCountry}
-        />
-        <SearchItem
-          form={form}
-          name={"city"}
-          label={"City"}
-          placeholder={"Search a city"}
-          options={cities}
-          setInput={setInputCity}
-          input={inputCity}
-          country={inputCountry}
-          citiesByCountry={citiesByCountry}
+          name={"location"}
+          label={"Location"}
+          placeholder={"Search a location"}
+          options={locationNames}
+          value={location}
         />
         <CalendarItem
           form={form}

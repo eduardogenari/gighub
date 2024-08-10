@@ -14,7 +14,7 @@ export default async function Page({
   searchParams?: { [key: string]: any };
 }) {
   // Get filter values from URL
-  let { startDate, endDate, artist, genre, price, country, city } =
+  let { startDate, endDate, artist, genre, price, location } =
     searchParams ?? {};
 
   // Set default values
@@ -25,10 +25,9 @@ export default async function Page({
     endDate = new Date();
     endDate.setMonth(endDate.getMonth() + 3);
   }
-  if (!country && !city) {
+  if (!location) {
     // TODO: Detect user location
-    country = "Spain";
-    city = "Barcelona";
+    location = "Barcelona, Spain";
   }
   if (!price) {
     price = [0, 1000];
@@ -40,8 +39,7 @@ export default async function Page({
   console.log("Artist:", artist);
   console.log("Genre:", genre);
   console.log("Price:", price);
-  console.log("Country:", country);
-  console.log("City:", city);
+  console.log("Location:", location);
 
   // Initialise map
   const Map = useMemo(
@@ -84,20 +82,6 @@ export default async function Page({
         endDate && {
           endDate: {
             lte: endDate,
-          },
-        },
-        country && {
-          venue: {
-            some: {
-              country: country,
-            },
-          },
-        },
-        city && {
-          venue: {
-            some: {
-              city: city,
-            },
           },
         },
         artist && {
@@ -170,16 +154,8 @@ export default async function Page({
   });
   let genreNames = [...new Set(genreAllNames.flat(1))];
 
-  // Get all countries
-  let venues = await prisma.venue.findMany();
-  let countryAllNames = venues.map((venue) => venue.country);
-  let countryNames = [...new Set(countryAllNames.flat(1))];
-
-  // Get all cities for selected country
-  let cityAllNames = venues.map((venue) => venue.city);
-  let cityNames = [...new Set(cityAllNames.flat(1))];
-
   // Group cities by country
+  let venues = events.flatMap((event) => event.venue);
   let citiesByCountry: Record<string, string[]> = venues.reduce(
     (accumulator: Record<string, string[]>, venue: Venue) => {
       if (!accumulator[venue.country]) {
@@ -193,6 +169,30 @@ export default async function Page({
     {}
   );
 
+  // Get city, country combinations
+  let locationNames: string[] = Object.entries(citiesByCountry).flatMap(
+    ([country, cities]) => cities.map((city) => `${city}, ${country}`)
+  );
+
+  // Filter by country and city
+  events = events.filter((event) => {
+    if (
+      location &&
+      !event.venue.some(
+        (venue) => venue.country === location.split(",")[1].trim()
+      )
+    ) {
+      return false;
+    }
+    if (
+      location &&
+      !event.venue.some((venue) => venue.city === location.split(",")[0].trim())
+    ) {
+      return false;
+    }
+    return true;
+  });
+
   return (
     <main className="flex-grow flex">
       <div className="flex-grow flex overflow-hidden bg-gray-200">
@@ -202,16 +202,13 @@ export default async function Page({
           <Filters
             artists={artistNames}
             genres={genreNames}
-            countries={countryNames}
-            cities={cityNames}
             startDate={startDate}
             endDate={endDate}
-            country={country}
-            city={city}
+            location={location}
             price={price}
             artist={artist}
             genre={genre}
-            citiesByCountry={citiesByCountry}
+            locationNames={locationNames}
           />
           <p className="text-sm mt-4 text-orange-600">
             Number of events: {events.length}
