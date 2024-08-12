@@ -215,7 +215,7 @@ export default async function Page({
           </p>
         </div>
         <div className="w-4/5 bg-gray-100">
-          <Map markers={events} />
+          <Map events={events} />
         </div>
       </div>
     </main>
