@@ -1,47 +1,17 @@
+"use client";
+
 import dynamic from "next/dynamic";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import Filters from "@/components/Filters";
 import Spinner from "@/components/Spinner";
 import { NavigationMenu } from "@/components/ui/navigation-menu";
 import { YYYYMMDDToDate } from "@/lib/utils";
-import { withinRange } from "@/lib/utils";
-import prisma from "@/lib/prisma";
-import type { Venue } from "@/types/event";
 
-export default async function Page({
+export default function Page({
   searchParams,
 }: {
   searchParams?: { [key: string]: any };
 }) {
-  // Get filter values from URL
-  let { startDate, endDate, artist, genre, price, location } =
-    searchParams ?? {};
-
-  // Set default values
-  if (!startDate) {
-    startDate = new Date();
-  }
-  if (!endDate) {
-    endDate = new Date();
-    endDate.setMonth(endDate.getMonth() + 3);
-  }
-  // if (!location) {
-  //   // TODO: Detect user location
-  //   location = "Barcelona, Spain";
-  // }
-  let bounds = [1.86, 2.49, 41.25, 41.5];
-  if (!price) {
-    price = [0, 1000];
-  }
-
-  console.log("Filters");
-  console.log("Start date:", startDate);
-  console.log("End date:", endDate);
-  console.log("Artist:", artist);
-  console.log("Genre:", genre);
-  console.log("Price:", price);
-  console.log("Location:", location);
-
   // Initialise map
   const Map = useMemo(
     () =>
@@ -56,6 +26,51 @@ export default async function Page({
     []
   );
 
+  // // Filter by country and city
+  // events = events.filter((event) => {
+  //   if (
+  //     location &&
+  //     !event.venue.some(
+  //       (venue) => venue.country === location.split(",")[1].trim()
+  //     )
+  //   ) {
+  //     return false;
+  //   }
+  //   if (
+  //     location &&
+  //     !event.venue.some((venue) => venue.city === location.split(",")[0].trim())
+  //   ) {
+  //     return false;
+  //   }
+  //   return true;
+  // });
+
+  const [artistNames, setArtistNames] = useState<string[]>([]);
+  const [genreNames, setGenreNames] = useState<string[]>([]);
+  const [locationNames, setLocationNames] = useState<string[]>([]);
+  const [eventsNumber, setEventsNumber] = useState<number>(0);
+
+  // Get filter values from URL
+  let { startDate, endDate, artist, genre, price, location } =
+    searchParams ?? {};
+
+  // Set default values
+  if (!startDate) {
+    startDate = new Date();
+  }
+  if (!endDate) {
+    endDate = new Date();
+    endDate.setMonth(endDate.getMonth() + 3);
+  }
+  // if (!location) {
+  //   //   // TODO: Detect user location
+  //   //   location = "Barcelona, Spain";
+  // }
+  let bounds = [1.86, 2.49, 41.25, 41.5];
+  if (!price) {
+    price = [0, 1000];
+  }
+
   // Convert strings for comparison
   startDate =
     typeof startDate === "string" ? YYYYMMDDToDate(startDate) : startDate;
@@ -64,133 +79,6 @@ export default async function Page({
     typeof price === "string"
       ? [parseFloat(price.split(",")[0]), parseFloat(price.split(",")[1])]
       : price;
-
-  // Get events from Ticketmaster
-  let events = await prisma.event.findMany({
-    include: {
-      artist: true,
-      venue: true,
-      priceRange: true,
-      image: true,
-    },
-    where: {
-      AND: [
-        startDate && {
-          startDate: {
-            gte: startDate,
-          },
-        },
-        endDate && {
-          endDate: {
-            lte: endDate,
-          },
-        },
-        artist && {
-          artist: {
-            some: {
-              name: artist,
-            },
-          },
-        },
-        genre && {
-          genre: {
-            has: genre,
-          },
-        },
-        price && {
-          priceRange: {
-            some: {
-              OR: [
-                {
-                  AND: [
-                    {
-                      min: {
-                        gte: price[0],
-                      },
-                    },
-                    {
-                      max: {
-                        lte: price[1],
-                      },
-                    },
-                    {
-                      type: "standard",
-                    },
-                  ],
-                },
-                {
-                  AND: [
-                    {
-                      min: {
-                        lte: price[1],
-                      },
-                    },
-                    {
-                      max: {
-                        gte: price[0],
-                      },
-                    },
-                    {
-                      type: "standard",
-                    },
-                  ],
-                },
-              ],
-            },
-          },
-        },
-      ].filter(Boolean),
-    },
-  });
-
-  // Get artists and genres in current location
-  const artistNames = [
-    ...new Set(
-      events.flatMap(
-        (event) => event.artist?.map((artist) => artist.name) || []
-      )
-    ),
-  ];
-  const genreNames = [...new Set(events.flatMap((event) => event.genre || []))];
-
-  // Group cities by country
-  let venues = events.flatMap((event) => event.venue);
-  let citiesByCountry: Record<string, string[]> = venues.reduce(
-    (accumulator: Record<string, string[]>, venue: Venue) => {
-      if (!accumulator[venue.country]) {
-        accumulator[venue.country] = [];
-      }
-      if (!accumulator[venue.country].includes(venue.city)) {
-        accumulator[venue.country].push(venue.city);
-      }
-      return accumulator;
-    },
-    {}
-  );
-
-  // Get city, country combinations
-  let locationNames: string[] = Object.entries(citiesByCountry).flatMap(
-    ([country, cities]) => cities.map((city) => `${city}, ${country}`)
-  );
-
-  // Filter by country and city
-  events = events.filter((event) => {
-    if (
-      location &&
-      !event.venue.some(
-        (venue) => venue.country === location.split(",")[1].trim()
-      )
-    ) {
-      return false;
-    }
-    if (
-      location &&
-      !event.venue.some((venue) => venue.city === location.split(",")[0].trim())
-    ) {
-      return false;
-    }
-    return true;
-  });
 
   return (
     <main className="flex-grow flex">
@@ -210,11 +98,22 @@ export default async function Page({
             locationNames={locationNames}
           />
           <p className="text-sm mt-4 text-orange-600">
-            Number of events: {events.length}
+            Number of events: {eventsNumber}
           </p>
         </div>
         <div className="w-4/5 bg-gray-100">
-          <Map bounds={bounds} />
+          <Map
+            setArtistNames={setArtistNames}
+            setGenreNames={setGenreNames}
+            setLocationNames={setLocationNames}
+            setEventsNumber={setEventsNumber}
+            startDate={startDate}
+            endDate={endDate}
+            bounds={bounds}
+            price={price}
+            artist={artist}
+            genre={genre}
+          />
         </div>
       </div>
     </main>

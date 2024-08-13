@@ -22,7 +22,16 @@ import { useEffect, useState } from "react";
 import { updateEventsFromBounds } from "@/actions/markers";
 import Spinner from "./Spinner";
 interface MapProps {
+  setArtistNames: React.Dispatch<React.SetStateAction<string[]>>;
+  setGenreNames: React.Dispatch<React.SetStateAction<string[]>>;
+  setLocationNames: React.Dispatch<React.SetStateAction<string[]>>;
+  setEventsNumber: React.Dispatch<React.SetStateAction<number>>;
+  startDate: Date;
+  endDate: Date;
   bounds: number[];
+  price: number[];
+  artist: string;
+  genre: string;
 }
 
 function CustomEvents({
@@ -41,7 +50,7 @@ function CustomEvents({
       ];
       setBoundingBox(coordinates);
     },
-    moveend() {
+    dragend() {
       let bounds = map.getBounds();
       const coordinates = [
         bounds.getWest(),
@@ -56,14 +65,25 @@ function CustomEvents({
   return null;
 }
 
-export default function Map(Map: MapProps) {
-  const { bounds } = Map;
+export default function Map(props: MapProps) {
+  const {
+    setArtistNames,
+    setGenreNames,
+    setLocationNames,
+    setEventsNumber,
+    startDate,
+    endDate,
+    bounds,
+    price,
+    artist,
+    genre,
+  } = props;
   const [markers, setMarkers] = useState<Event[] | null>(null);
   const [boundingBox, setBoundingBox] = useState<number[]>(bounds);
   const center: LatLngExpression | LatLngTuple = [41.38, 2.17];
   const zoom = 12;
   const [isLoading, setIsLoading] = useState(false);
-  
+
   // Fit view
   // function ChangeView({ markers }: { markers: Event[] }) {
   //   const map = useMap();
@@ -84,9 +104,20 @@ export default function Map(Map: MapProps) {
   useEffect(() => {
     if (boundingBox) {
       setIsLoading(true);
-      updateEventsFromBounds(boundingBox)
+      updateEventsFromBounds(
+        startDate,
+        endDate,
+        boundingBox,
+        price,
+        artist,
+        genre
+      )
         .then((response) => {
           setMarkers(response.events);
+          setArtistNames(response.artistNames);
+          setGenreNames(response.genreNames);
+          setLocationNames(response.locationNames);
+          setEventsNumber(response.events.length);
         })
         .catch((error) => {
           console.error("Error:", error);

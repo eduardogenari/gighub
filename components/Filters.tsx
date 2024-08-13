@@ -66,14 +66,14 @@ export default function Filters({
           options={genres}
           value={genre}
         />
-        <SearchItem
+        {/* <SearchItem
           form={form}
           name={"location"}
           label={"Location"}
           placeholder={"Search a location"}
           options={locationNames}
           value={location}
-        />
+        /> */}
         <CalendarItem
           form={form}
           name={"startDate"}
