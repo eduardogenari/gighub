@@ -1,6 +1,11 @@
 "use client";
 
-import { latLngBounds, LatLngExpression, LatLngTuple, PointExpression } from "leaflet";
+import {
+  latLngBounds,
+  LatLngExpression,
+  LatLngTuple,
+  PointExpression,
+} from "leaflet";
 import {
   MapContainer,
   TileLayer,
@@ -17,16 +22,26 @@ import { useEffect, useState } from "react";
 import { updateEventsFromBounds } from "@/actions/markers";
 import Spinner from "./Spinner";
 interface MapProps {
-  events: Event[];
+  bounds: number[];
 }
 
-function ZoomCustomEvent({
+function CustomEvents({
   setBoundingBox,
 }: {
-  setBoundingBox: React.Dispatch<React.SetStateAction<number[] | null>>;
+  setBoundingBox: React.Dispatch<React.SetStateAction<number[]>>;
 }) {
   const map = useMapEvents({
     zoomend() {
+      let bounds = map.getBounds();
+      const coordinates = [
+        bounds.getWest(),
+        bounds.getEast(),
+        bounds.getSouth(),
+        bounds.getNorth(),
+      ];
+      setBoundingBox(coordinates);
+    },
+    moveend() {
       let bounds = map.getBounds();
       const coordinates = [
         bounds.getWest(),
@@ -42,13 +57,13 @@ function ZoomCustomEvent({
 }
 
 export default function Map(Map: MapProps) {
-  const { events } = Map;
-  const [markers, setMarkers] = useState(events);
-  const [boundingBox, setBoundingBox] = useState<number[] | null>(null);
-  const center: LatLngExpression | LatLngTuple = [53, 20];
-  const zoom = 4;
+  const { bounds } = Map;
+  const [markers, setMarkers] = useState<Event[] | null>(null);
+  const [boundingBox, setBoundingBox] = useState<number[]>(bounds);
+  const center: LatLngExpression | LatLngTuple = [41.38, 2.17];
+  const zoom = 12;
   const [isLoading, setIsLoading] = useState(false);
-
+  
   // Fit view
   // function ChangeView({ markers }: { markers: Event[] }) {
   //   const map = useMap();
@@ -71,7 +86,6 @@ export default function Map(Map: MapProps) {
       setIsLoading(true);
       updateEventsFromBounds(boundingBox)
         .then((response) => {
-          console.log("hello", response);
           setMarkers(response.events);
         })
         .catch((error) => {
@@ -82,7 +96,6 @@ export default function Map(Map: MapProps) {
         });
     }
   }, [boundingBox]);
-
 
   return (
     <MapContainer
@@ -96,20 +109,19 @@ export default function Map(Map: MapProps) {
       }}
       zoomControl={false}
       zoomSnap={0.1}
-      minZoom={zoom}
+      minZoom={4}
       attributionControl={false}
     >
-      <ZoomCustomEvent setBoundingBox={setBoundingBox} />
-      {/* <ChangeView markers={markers} /> */}
+      <CustomEvents setBoundingBox={setBoundingBox} />
       <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/spotify_dark/{z}/{x}/{y}{r}.png" />
       <ZoomControl position="bottomright" />
       {isLoading ? (
-        <div className="relative bg-gray-800/50 w-full flex justify-center z-[10000] items-center h-screen">
+        <div className="relative bg-gray-800/50 w-full flex justify-center z-[10000] items-center h-full">
           <Spinner />
         </div>
-      ) : (
+      ) : markers !== null ? (
         <Markers markers={markers} />
-      )}
+      ) : null}
     </MapContainer>
   );
 }

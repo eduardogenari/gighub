@@ -25,10 +25,11 @@ export default async function Page({
     endDate = new Date();
     endDate.setMonth(endDate.getMonth() + 3);
   }
-  if (!location) {
-    // TODO: Detect user location
-    location = "Barcelona, Spain";
-  }
+  // if (!location) {
+  //   // TODO: Detect user location
+  //   location = "Barcelona, Spain";
+  // }
+  let bounds = [1.86, 2.49, 41.25, 41.5];
   if (!price) {
     price = [0, 1000];
   }
@@ -142,17 +143,15 @@ export default async function Page({
     },
   });
 
-  // Get artists in current location
-  let artistAllNames = events.map((event) => {
-    return event.artist?.map((artist) => artist.name || "") || [];
-  });
-  let artistNames = [...new Set(artistAllNames.flat(1))];
-
-  // Get genres in current location
-  let genreAllNames = events.map((event) => {
-    return event.genre || [];
-  });
-  let genreNames = [...new Set(genreAllNames.flat(1))];
+  // Get artists and genres in current location
+  const artistNames = [
+    ...new Set(
+      events.flatMap(
+        (event) => event.artist?.map((artist) => artist.name) || []
+      )
+    ),
+  ];
+  const genreNames = [...new Set(events.flatMap((event) => event.genre || []))];
 
   // Group cities by country
   let venues = events.flatMap((event) => event.venue);
@@ -215,7 +214,7 @@ export default async function Page({
           </p>
         </div>
         <div className="w-4/5 bg-gray-100">
-          <Map events={events} />
+          <Map bounds={bounds} />
         </div>
       </div>
     </main>
