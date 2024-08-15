@@ -1,15 +1,6 @@
-"use client";
-
-import {
-  latLngBounds,
-  LatLngExpression,
-  LatLngTuple,
-  PointExpression,
-} from "leaflet";
 import {
   MapContainer,
   TileLayer,
-  useMap,
   useMapEvents,
   ZoomControl,
 } from "react-leaflet";
@@ -19,8 +10,11 @@ import "leaflet-defaulticon-compatibility";
 import Markers from "./Markers";
 import type { Event } from "@/types/event";
 import { useEffect, useState } from "react";
-import { updateEventsFromBounds } from "@/actions/markers";
+import { updateEventsFromBounds, updateFilterOptions } from "@/actions/markers";
 import Spinner from "./Spinner";
+import { LatLngExpression, LatLngTuple } from "leaflet";
+import { useSearchParams } from "next/navigation";
+
 interface MapProps {
   setArtistNames: React.Dispatch<React.SetStateAction<string[]>>;
   setGenreNames: React.Dispatch<React.SetStateAction<string[]>>;
@@ -39,26 +33,22 @@ function CustomEvents({
 }: {
   setBoundingBox: React.Dispatch<React.SetStateAction<number[]>>;
 }) {
+  const updateBounds = () => {
+    let bounds = map.getBounds();
+    const coordinates = [
+      bounds.getWest(),
+      bounds.getEast(),
+      bounds.getSouth(),
+      bounds.getNorth(),
+    ];
+    setBoundingBox(coordinates);
+  };
   const map = useMapEvents({
     zoomend() {
-      let bounds = map.getBounds();
-      const coordinates = [
-        bounds.getWest(),
-        bounds.getEast(),
-        bounds.getSouth(),
-        bounds.getNorth(),
-      ];
-      setBoundingBox(coordinates);
+      updateBounds();
     },
     dragend() {
-      let bounds = map.getBounds();
-      const coordinates = [
-        bounds.getWest(),
-        bounds.getEast(),
-        bounds.getSouth(),
-        bounds.getNorth(),
-      ];
-      setBoundingBox(coordinates);
+      updateBounds();
     },
   });
 
@@ -78,55 +68,50 @@ export default function Map(props: MapProps) {
     artist,
     genre,
   } = props;
+
+  const searchParams = useSearchParams();
   const [markers, setMarkers] = useState<Event[] | null>(null);
   const [boundingBox, setBoundingBox] = useState<number[]>(bounds);
   const center: LatLngExpression | LatLngTuple = [41.38, 2.17];
   const zoom = 12;
   const [isLoading, setIsLoading] = useState(false);
-
-  // Fit view
-  // function ChangeView({ markers }: { markers: Event[] }) {
-  //   const map = useMap();
-  //   if (markers.length > 0) {
-  //     let markerBounds = latLngBounds([]);
-  //     markers.forEach((marker) => {
-  //       markerBounds.extend([
-  //         marker.venue[0].latitude,
-  //         marker.venue[0].longitude,
-  //       ]);
-  //     });
-  //     var padding: PointExpression = [150, 150];
-  //     map.fitBounds(markerBounds, { padding: padding });
-  //     return null;
-  //   }
-  // }
+  const [response, setResponse] = useState<any>(null);
 
   useEffect(() => {
-    if (boundingBox) {
-      setIsLoading(true);
-      updateEventsFromBounds(
-        startDate,
-        endDate,
-        boundingBox,
-        price,
-        artist,
-        genre
-      )
-        .then((response) => {
-          setMarkers(response.events);
-          setArtistNames(response.artistNames);
-          setGenreNames(response.genreNames);
-          setLocationNames(response.locationNames);
-          setEventsNumber(response.events.length);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
+    updateFilterOptions().then((response) => {
+      setArtistNames(response.artistNames);
+      setGenreNames(response.genreNames);
+      setLocationNames(response.locationNames);
+    });
+  }, []);
+
+  useEffect(() => {
+    setIsLoading(true);
+    updateEventsFromBounds(
+      startDate,
+      endDate,
+      boundingBox,
+      price,
+      artist,
+      genre
+    )
+      .then((response) => {
+        setResponse(response);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [boundingBox, searchParams]);
+
+  useEffect(() => {
+    if (response) {
+      setMarkers(response.events);
+      setEventsNumber(response.events.length);
     }
-  }, [boundingBox]);
+  }, [response]);
 
   return (
     <MapContainer

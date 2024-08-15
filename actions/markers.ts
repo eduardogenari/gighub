@@ -3,6 +3,55 @@
 import prisma from "@/lib/prisma";
 import type { Venue } from "@/types/event";
 
+export async function updateFilterOptions() {
+  let allEvents = await prisma.event.findMany({
+    include: {
+      artist: true,
+      venue: true,
+    },
+  });
+
+  // Get artists and genres in current location
+  const artistNames = [
+    ...new Set(
+      allEvents.flatMap(
+        (event) => event.artist?.map((artist) => artist.name) || []
+      )
+    ),
+  ];
+  const genreNames = [
+    ...new Set(allEvents.flatMap((event) => event.genre || [])),
+  ];
+
+  // Group cities by country
+  let venues = allEvents.flatMap((event) => event.venue);
+  let citiesByCountry: Record<string, string[]> = venues.reduce(
+    (accumulator: Record<string, string[]>, venue: Venue) => {
+      if (!accumulator[venue.country]) {
+        accumulator[venue.country] = [];
+      }
+      if (!accumulator[venue.country].includes(venue.city)) {
+        accumulator[venue.country].push(venue.city);
+      }
+      return accumulator;
+    },
+    {}
+  );
+
+  // Get city, country combinations
+  let locationNames: string[] = Object.entries(citiesByCountry).flatMap(
+    ([country, cities]) => cities.map((city) => `${city}, ${country}`)
+  );
+
+  console.log(`Got all filter options!`);
+  return {
+    success: true,
+    artistNames: artistNames,
+    genreNames: genreNames,
+    locationNames: locationNames,
+  };
+}
+
 export async function updateEventsFromBounds(
   startDate: Date,
   endDate: Date,
@@ -42,7 +91,6 @@ export async function updateEventsFromBounds(
       startDate: {
         gte: startDate,
       },
-
       endDate: {
         lte: endDate,
       },
@@ -101,43 +149,22 @@ export async function updateEventsFromBounds(
     },
   });
 
-  // Get artists and genres in current location
-  const artistNames = [
-    ...new Set(
-      events.flatMap(
-        (event) => event.artist?.map((artist) => artist.name) || []
-      )
-    ),
-  ];
-  const genreNames = [...new Set(events.flatMap((event) => event.genre || []))];
-
-  // Group cities by country
-  let venues = events.flatMap((event) => event.venue);
-  let citiesByCountry: Record<string, string[]> = venues.reduce(
-    (accumulator: Record<string, string[]>, venue: Venue) => {
-      if (!accumulator[venue.country]) {
-        accumulator[venue.country] = [];
-      }
-      if (!accumulator[venue.country].includes(venue.city)) {
-        accumulator[venue.country].push(venue.city);
-      }
-      return accumulator;
-    },
-    {}
-  );
-
-  // Get city, country combinations
-  let locationNames: string[] = Object.entries(citiesByCountry).flatMap(
-    ([country, cities]) => cities.map((city) => `${city}, ${country}`)
-  );
-
-  console.log("Got events for bounds!");
-  console.log(events.length);
+  console.log(`Got ${events.length} events after filtering!`);
   return {
     success: true,
     events: events,
-    artistNames: artistNames,
-    genreNames: genreNames,
-    locationNames: locationNames,
   };
+}
+
+
+export async function getBoundsFromLocation(location: string) {
+
+  //     let markerBounds = latLngBounds([]);
+  //     markers.forEach((marker) => {
+  //       markerBounds.extend([
+  //         marker.venue[0].latitude,
+  //         marker.venue[0].longitude,
+  //       ]);
+  //     });
+
 }
