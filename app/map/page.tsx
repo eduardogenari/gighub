@@ -37,7 +37,7 @@ export default async function Page({
         dbLocation.country == location.split(",")[1].trim()
     )
     .map((dbLocation) => dbLocation.boundingBox)[0];
-  
+
   // Convert strings for comparison
   startDate =
     typeof startDate === "string" ? YYYYMMDDToDate(startDate) : startDate;
@@ -48,8 +48,8 @@ export default async function Page({
       : price;
 
   return (
-    <main className="flex-grow flex">
-      <div className="flex-grow flex overflow-hidden bg-gray-200">
+    <main className="flex flex-grow">
+      <div className="flex flex-grow overflow-hidden bg-gray-200">
         <MapFilters
           startDate={startDate}
           endDate={endDate}

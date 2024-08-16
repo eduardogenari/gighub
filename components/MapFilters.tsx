@@ -58,7 +58,7 @@ export default function MapFilters(props: MapFiltersProps) {
 
   return (
     <>
-      <div className="absolute t-0 z-50 w-1/5 p-4 m-4">
+      <div className="absolute z-50 w-1/5 p-4 m-4">
         <Button
         variant={"secondary"}
           className="text-lg font-bold"
