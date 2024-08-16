@@ -38,22 +38,22 @@ model Venue {
 }
 
 model PriceRange {
-  id       Int    @id @default(autoincrement())
+  id       Int     @id @default(autoincrement())
   type     String?
   min      Float?
   max      Float?
   currency String
   eventId  Int
-  event    Event  @relation(fields: [eventId], references: [id])
+  event    Event   @relation(fields: [eventId], references: [id])
 }
 
 model Image {
-  id      Int     @id @default(autoincrement())
+  id      Int    @id @default(autoincrement())
   url     String
   width   Float
   height  Float
   eventId Int
-  event   Event   @relation(fields: [eventId], references: [id])
+  event   Event  @relation(fields: [eventId], references: [id])
 }
 
 model Event {
@@ -66,4 +66,11 @@ model Event {
   genre      String[]
   priceRange PriceRange[]
   image      Image[]
+}
+
+model Location {
+  id          Int     @id @default(autoincrement())
+  city        String
+  country     String
+  boundingBox Float[]
 }
