@@ -19,12 +19,13 @@ interface MarkersProps {
   markers: Event[];
 }
 
-export default function Markers({ markers }: MarkersProps) {
-  const [isLoaded, setLoading] = useState(true);
+export default function Markers(props: MarkersProps) {
+  const { markers } = props
+  const [isImageLoaded, setImageLoading] = useState(true);
   const [currentEvents, setCurrentEvents] = useState<number[]>([]);
 
   function onImageLoad() {
-    setLoading(false);
+    setImageLoading(false);
   }
 
   // Memoize unique coordinates
@@ -93,7 +94,7 @@ export default function Markers({ markers }: MarkersProps) {
               <div key={event.id}>
                 {event?.image[0].url !== null ? (
                   <div className="h-[200px] relative">
-                    {!isLoaded && (
+                    {!isImageLoaded && (
                       <div className="flex justify-center items-center h-[200px]">
                         <Spinner />
                       </div>

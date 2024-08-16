@@ -1,6 +1,7 @@
 import {
   MapContainer,
   TileLayer,
+  useMap,
   useMapEvents,
   ZoomControl,
 } from "react-leaflet";
@@ -9,20 +10,23 @@ import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import "leaflet-defaulticon-compatibility";
 import Markers from "./Markers";
 import type { Event } from "@/types/event";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { updateEventsFromBounds, updateFilterOptions } from "@/actions/markers";
 import Spinner from "./Spinner";
-import { LatLngExpression, LatLngTuple } from "leaflet";
+import {
+  LatLngExpression,
+  LatLngTuple,
+} from "leaflet";
 import { useSearchParams } from "next/navigation";
 
 interface MapProps {
   setArtistNames: React.Dispatch<React.SetStateAction<string[]>>;
   setGenreNames: React.Dispatch<React.SetStateAction<string[]>>;
-  setLocationNames: React.Dispatch<React.SetStateAction<string[]>>;
   setEventsNumber: React.Dispatch<React.SetStateAction<number>>;
+  boundingBoxesByCity: any;
   startDate: Date;
   endDate: Date;
-  bounds: number[];
+  location: string;
   price: number[];
   artist: string;
   genre: string;
@@ -59,34 +63,30 @@ export default function Map(props: MapProps) {
   const {
     setArtistNames,
     setGenreNames,
-    setLocationNames,
     setEventsNumber,
+    boundingBoxesByCity,
     startDate,
     endDate,
-    bounds,
+    location,
     price,
     artist,
     genre,
   } = props;
 
   const searchParams = useSearchParams();
-  const [markers, setMarkers] = useState<Event[] | null>(null);
-  const [boundingBox, setBoundingBox] = useState<number[]>(bounds);
   const center: LatLngExpression | LatLngTuple = [41.38, 2.17];
-  const zoom = 12;
-  const [isLoading, setIsLoading] = useState(false);
+  const zoom = 13.3;
+  const [eventsLoaded, setEventsLoaded] = useState(true);
   const [response, setResponse] = useState<any>(null);
+  const [boundingBox, setBoundingBox] = useState<number[]>([]);
+  const [markers, setMarkers] = useState<Event[] | null>(null);
 
   useEffect(() => {
-    updateFilterOptions().then((response) => {
-      setArtistNames(response.artistNames);
-      setGenreNames(response.genreNames);
-      setLocationNames(response.locationNames);
-    });
+    setBoundingBox(boundingBoxesByCity[location]);
   }, []);
 
   useEffect(() => {
-    setIsLoading(true);
+    setEventsLoaded(false);
     updateEventsFromBounds(
       startDate,
       endDate,
@@ -100,16 +100,16 @@ export default function Map(props: MapProps) {
       })
       .catch((error) => {
         console.error("Error:", error);
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
   }, [boundingBox, searchParams]);
 
   useEffect(() => {
     if (response) {
       setMarkers(response.events);
+      setArtistNames(response.artistNames);
+      setGenreNames(response.genreNames);
       setEventsNumber(response.events.length);
+      setEventsLoaded(true);
     }
   }, [response]);
 
@@ -131,7 +131,7 @@ export default function Map(props: MapProps) {
       <CustomEvents setBoundingBox={setBoundingBox} />
       <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/spotify_dark/{z}/{x}/{y}{r}.png" />
       <ZoomControl position="bottomright" />
-      {isLoading ? (
+      {!eventsLoaded ? (
         <div className="relative bg-gray-800/50 w-full flex justify-center z-[10000] items-center h-full">
           <Spinner />
         </div>

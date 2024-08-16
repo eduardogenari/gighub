@@ -8,16 +8,12 @@ import { useForm } from "react-hook-form";
 import CalendarItem from "./CalendarItem";
 import SearchItem from "./SearchItem";
 import SliderItem from "./SliderItem";
-import CheckboxItem from "./CheckboxItem";
 import { filter } from "@/actions/filter";
-import { useState } from "react";
 
 const FormSchema = z.object({
   artist: z.string().optional(),
   startDate: z.date().optional(),
   endDate: z.date().optional(),
-  country: z.string().optional(),
-  city: z.string().optional(),
   genre: z.string().optional(),
   price: z.array(z.number()).length(2).optional(),
 });
@@ -27,21 +23,17 @@ export default function Filters({
   genres,
   startDate,
   endDate,
-  location,
   price,
   artist,
   genre,
-  locationNames,
 }: {
   artists: string[];
   genres: string[];
   startDate: Date;
   endDate: Date;
-  location: string;
   price: number[];
   artist: string;
   genre: string;
-  locationNames: string[];
 }) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -66,14 +58,6 @@ export default function Filters({
           options={genres}
           value={genre}
         />
-        {/* <SearchItem
-          form={form}
-          name={"location"}
-          label={"Location"}
-          placeholder={"Search a location"}
-          options={locationNames}
-          value={location}
-        /> */}
         <CalendarItem
           form={form}
           name={"startDate"}

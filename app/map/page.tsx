@@ -1,11 +1,12 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Filters from "@/components/Filters";
 import Spinner from "@/components/Spinner";
 import { NavigationMenu } from "@/components/ui/navigation-menu";
 import { YYYYMMDDToDate } from "@/lib/utils";
+import { updateFilterOptions } from "@/actions/markers";
 
 export default function Page({
   searchParams,
@@ -26,29 +27,16 @@ export default function Page({
     []
   );
 
-  // // Filter by country and city
-  // events = events.filter((event) => {
-  //   if (
-  //     location &&
-  //     !event.venue.some(
-  //       (venue) => venue.country === location.split(",")[1].trim()
-  //     )
-  //   ) {
-  //     return false;
-  //   }
-  //   if (
-  //     location &&
-  //     !event.venue.some((venue) => venue.city === location.split(",")[0].trim())
-  //   ) {
-  //     return false;
-  //   }
-  //   return true;
-  // });
-
   const [artistNames, setArtistNames] = useState<string[]>([]);
   const [genreNames, setGenreNames] = useState<string[]>([]);
-  const [locationNames, setLocationNames] = useState<string[]>([]);
+  const [boundingBoxesByCity, setBoundingBoxesByCity] = useState<any>([]);
   const [eventsNumber, setEventsNumber] = useState<number>(0);
+
+  useEffect(() => {
+    updateFilterOptions().then((response) => {
+      setBoundingBoxesByCity(response.boundingBoxesByCity)
+    });
+  }, []);
 
   // Get filter values from URL
   let { startDate, endDate, artist, genre, price, location } =
@@ -62,11 +50,10 @@ export default function Page({
     endDate = new Date();
     endDate.setMonth(endDate.getMonth() + 3);
   }
-  // if (!location) {
-  //   //   // TODO: Detect user location
-  //   //   location = "Barcelona, Spain";
-  // }
-  let bounds = [1.86, 2.49, 41.25, 41.5];
+  if (!location) {
+    // TODO: Detect user location
+    location = "Barcelona, Spain";
+  }
   if (!price) {
     price = [0, 1000];
   }
@@ -91,11 +78,9 @@ export default function Page({
             genres={genreNames}
             startDate={startDate}
             endDate={endDate}
-            location={location}
             price={price}
             artist={artist}
             genre={genre}
-            locationNames={locationNames}
           />
           <p className="text-sm mt-4 text-orange-600">
             Number of events: {eventsNumber}
@@ -105,11 +90,11 @@ export default function Page({
           <Map
             setArtistNames={setArtistNames}
             setGenreNames={setGenreNames}
-            setLocationNames={setLocationNames}
             setEventsNumber={setEventsNumber}
+            boundingBoxesByCity={boundingBoxesByCity}
             startDate={startDate}
             endDate={endDate}
-            bounds={bounds}
+            location={location}
             price={price}
             artist={artist}
             genre={genre}
