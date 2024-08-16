@@ -61,7 +61,7 @@ export default function SearchItem({
           <FormControl>
             <Input
               {...field}
-              type="text"
+              type="search"
               value={input}
               placeholder={placeholder}
               onChange={(e) => {
