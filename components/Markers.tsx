@@ -20,7 +20,7 @@ interface MarkersProps {
 }
 
 export default function Markers(props: MarkersProps) {
-  const { markers } = props
+  const { markers } = props;
   const [isImageLoaded, setImageLoading] = useState(true);
   const [currentEvents, setCurrentEvents] = useState<number[]>([]);
 
@@ -61,6 +61,7 @@ export default function Markers(props: MarkersProps) {
     );
   }, [markers, uniqueCoordinates]);
 
+  // Callback to go to next event in popup
   const handleNext = useCallback((index: number) => {
     setCurrentEvents((prevArray) => {
       const newArray = [...prevArray];
@@ -69,6 +70,7 @@ export default function Markers(props: MarkersProps) {
     });
   }, []);
 
+  // Callback to go to previous event in popup
   const handlePrevious = useCallback((index: number) => {
     setCurrentEvents((prevArray) => {
       const newArray = [...prevArray];
@@ -77,9 +79,23 @@ export default function Markers(props: MarkersProps) {
     });
   }, []);
 
+  // Callback to set circle colors
+  const handleColor = useCallback((eventsNumber: number) => {
+    if (eventsNumber == 1) {
+      return "#eab308";
+    } else if (eventsNumber > 1 && eventsNumber <= 3) {
+      return "#f97316";
+    } else if (eventsNumber > 3 && eventsNumber <= 10) {
+      return "#f59e0b";
+    } else {
+      return "#ef4444";
+    }
+  }, []);
+
   return uniqueCoordinates.map((coordinates, index) => {
     const filteredEvents = filteredEventsByCoord[index];
     const event = filteredEvents[currentEvents[index]];
+    const eventsNumber = filteredEvents.length;
 
     if (event !== undefined) {
       return (
@@ -87,7 +103,7 @@ export default function Markers(props: MarkersProps) {
           key={index}
           center={coordinates}
           radius={200}
-          pathOptions={{ color: "orange" }}
+          pathOptions={{ color: handleColor(eventsNumber) }}
         >
           <Popup>
             <div className="">
@@ -156,7 +172,6 @@ export default function Markers(props: MarkersProps) {
               {filteredEvents.length > 1 ? (
                 <>
                   <div className="absolute top-0 flex gap-2 px-10 py-2 z-10 w-full items-center">
-                    {/* <input type="button" onClick={handlePrevious} value="Previous" /> */}
                     {filteredEvents.map((filteredEvent, filteredEventIndex) => {
                       return (
                         <hr
