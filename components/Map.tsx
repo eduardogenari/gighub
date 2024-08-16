@@ -1,7 +1,6 @@
 import {
   MapContainer,
   TileLayer,
-  useMap,
   useMapEvents,
   ZoomControl,
 } from "react-leaflet";
@@ -10,23 +9,21 @@ import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import "leaflet-defaulticon-compatibility";
 import Markers from "./Markers";
 import type { Event } from "@/types/event";
-import { useEffect, useRef, useState } from "react";
-import { updateEventsFromBounds, updateFilterOptions } from "@/actions/markers";
+import { useEffect, useState } from "react";
+import { updateEventsFromBounds } from "@/actions/markers";
 import Spinner from "./Spinner";
-import {
-  LatLngExpression,
-  LatLngTuple,
-} from "leaflet";
+import { LatLngExpression, LatLngTuple } from "leaflet";
 import { useSearchParams } from "next/navigation";
+import { useDebouncedCallback } from "use-debounce";
 
 interface MapProps {
   setArtistNames: React.Dispatch<React.SetStateAction<string[]>>;
   setGenreNames: React.Dispatch<React.SetStateAction<string[]>>;
   setEventsNumber: React.Dispatch<React.SetStateAction<number>>;
-  boundingBoxesByCity: any;
+  setBoundingBox: React.Dispatch<React.SetStateAction<number[]>>;
+  boundingBox: number[];
   startDate: Date;
   endDate: Date;
-  location: string;
   price: number[];
   artist: string;
   genre: string;
@@ -47,12 +44,15 @@ function CustomEvents({
     ];
     setBoundingBox(coordinates);
   };
+  const debouncedUpdateBounds = useDebouncedCallback(() => {
+    updateBounds();
+  }, 300);
   const map = useMapEvents({
     zoomend() {
-      updateBounds();
+      debouncedUpdateBounds();
     },
     dragend() {
-      updateBounds();
+      debouncedUpdateBounds();
     },
   });
 
@@ -64,10 +64,10 @@ export default function Map(props: MapProps) {
     setArtistNames,
     setGenreNames,
     setEventsNumber,
-    boundingBoxesByCity,
+    setBoundingBox,
+    boundingBox,
     startDate,
     endDate,
-    location,
     price,
     artist,
     genre,
@@ -78,12 +78,7 @@ export default function Map(props: MapProps) {
   const zoom = 13.3;
   const [eventsLoaded, setEventsLoaded] = useState(true);
   const [response, setResponse] = useState<any>(null);
-  const [boundingBox, setBoundingBox] = useState<number[]>([]);
   const [markers, setMarkers] = useState<Event[] | null>(null);
-
-  useEffect(() => {
-    setBoundingBox(boundingBoxesByCity[location]);
-  }, []);
 
   useEffect(() => {
     setEventsLoaded(false);
