@@ -24,7 +24,7 @@ export default function MinimizedGallery(props: MinimizedGalleryProps) {
       </div>
       <div className="bg-slate-300 flex justify-center gap-2 p-2">
         {markers.map((event: Event) => (
-          <MinimizedEvent event={event} />
+          <MinimizedEvent event={event} key={event.id}/>
         ))}
       </div>
     </div>

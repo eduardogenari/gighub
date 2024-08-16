@@ -12,7 +12,7 @@ export default function MinimizedGallery(props: MinimizedEventProps) {
   const { event } = props;
   const router = useRouter();
   return (
-    <div key={event.id}>
+    <div>
       {event?.image[0].url !== null ? (
         <div
           className="w-[100px] h-[100px] relative hover:cursor-pointer"
