@@ -13,10 +13,26 @@ interface MapFiltersProps {
   artist: string;
   genre: string;
   bounds: number[];
+  locations: {
+    id: number;
+    city: string;
+    country: string;
+    boundingBox: number[];
+  }[];
+  location: string;
 }
 
 export default function MapFilters(props: MapFiltersProps) {
-  const { startDate, endDate, price, artist, genre, bounds } = props;
+  const {
+    startDate,
+    endDate,
+    price,
+    artist,
+    genre,
+    bounds,
+    locations,
+    location,
+  } = props;
   // Initialise map
   const Map = useMemo(
     () =>
@@ -34,7 +50,9 @@ export default function MapFilters(props: MapFiltersProps) {
   const [artistNames, setArtistNames] = useState<string[]>([]);
   const [genreNames, setGenreNames] = useState<string[]>([]);
   const [eventsNumber, setEventsNumber] = useState<number>(0);
-  const [boundingBox, setBoundingBox] = useState<number[]>(bounds);
+  const locationNames = locations.map(
+    (location) => `${location.city}, ${location.country}`
+  );
 
   return (
     <>
@@ -44,11 +62,13 @@ export default function MapFilters(props: MapFiltersProps) {
         <Filters
           artists={artistNames}
           genres={genreNames}
+          locations={locationNames}
           startDate={startDate}
           endDate={endDate}
           price={price}
           artist={artist}
           genre={genre}
+          location={location}
         />
         <p className="text-sm mt-4 text-orange-600">
           Number of events: {eventsNumber}
@@ -59,8 +79,7 @@ export default function MapFilters(props: MapFiltersProps) {
           setArtistNames={setArtistNames}
           setGenreNames={setGenreNames}
           setEventsNumber={setEventsNumber}
-          setBoundingBox={setBoundingBox}
-          boundingBox={boundingBox}
+          bounds={bounds}
           startDate={startDate}
           endDate={endDate}
           price={price}

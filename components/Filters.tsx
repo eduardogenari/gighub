@@ -16,24 +16,29 @@ const FormSchema = z.object({
   endDate: z.date().optional(),
   genre: z.string().optional(),
   price: z.array(z.number()).length(2).optional(),
+  location: z.string().optional(),
 });
 
 export default function Filters({
   artists,
   genres,
+  locations,
   startDate,
   endDate,
   price,
   artist,
   genre,
+  location,
 }: {
   artists: string[];
   genres: string[];
+  locations: string[];
   startDate: Date;
   endDate: Date;
   price: number[];
   artist: string;
   genre: string;
+  location: string;
 }) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -57,6 +62,14 @@ export default function Filters({
           placeholder={"Type a genre"}
           options={genres}
           value={genre}
+        />
+        <SearchItem
+          form={form}
+          name={"location"}
+          label={"Location"}
+          placeholder={"Type a location"}
+          options={locations}
+          value={location}
         />
         <CalendarItem
           form={form}

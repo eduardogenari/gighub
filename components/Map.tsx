@@ -1,6 +1,7 @@
 import {
   MapContainer,
   TileLayer,
+  useMap,
   useMapEvents,
   ZoomControl,
 } from "react-leaflet";
@@ -12,7 +13,6 @@ import type { Event } from "@/types/event";
 import { useEffect, useState } from "react";
 import { updateEventsFromBounds } from "@/actions/markers";
 import Spinner from "./Spinner";
-import { LatLngExpression, LatLngTuple } from "leaflet";
 import { useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -20,8 +20,7 @@ interface MapProps {
   setArtistNames: React.Dispatch<React.SetStateAction<string[]>>;
   setGenreNames: React.Dispatch<React.SetStateAction<string[]>>;
   setEventsNumber: React.Dispatch<React.SetStateAction<number>>;
-  setBoundingBox: React.Dispatch<React.SetStateAction<number[]>>;
-  boundingBox: number[];
+  bounds: number[];
   startDate: Date;
   endDate: Date;
   price: number[];
@@ -59,13 +58,26 @@ function CustomEvents({
   return null;
 }
 
+function ChangeView({ boundingBox }: { boundingBox: number[] }) {
+  const map = useMap();
+  const mapBounds: [number, number][] = [
+    [boundingBox[2], boundingBox[0]], // South - West
+    [boundingBox[3], boundingBox[1]], // North - East
+  ];
+  useEffect(() => {
+    if (boundingBox) {
+      map.fitBounds(mapBounds);
+    }
+  }, [boundingBox, map]);
+  return null;
+}
+
 export default function Map(props: MapProps) {
   const {
     setArtistNames,
     setGenreNames,
     setEventsNumber,
-    setBoundingBox,
-    boundingBox,
+    bounds,
     startDate,
     endDate,
     price,
@@ -74,11 +86,14 @@ export default function Map(props: MapProps) {
   } = props;
 
   const searchParams = useSearchParams();
-  const center: LatLngExpression | LatLngTuple = [41.38, 2.17];
-  const zoom = 13.3;
   const [eventsLoaded, setEventsLoaded] = useState(true);
   const [response, setResponse] = useState<any>(null);
   const [markers, setMarkers] = useState<Event[] | null>(null);
+  const [boundingBox, setBoundingBox] = useState<number[]>(bounds);
+
+  useEffect(() => {
+    setBoundingBox(bounds);
+  }, [bounds]);
 
   useEffect(() => {
     setEventsLoaded(false);
@@ -108,10 +123,14 @@ export default function Map(props: MapProps) {
     }
   }, [response]);
 
+  const mapBounds: [number, number][] = [
+    [boundingBox[2], boundingBox[0]], // South - West
+    [boundingBox[3], boundingBox[1]], // North - East
+  ];
+
   return (
     <MapContainer
-      center={center}
-      zoom={zoom}
+      bounds={mapBounds}
       scrollWheelZoom={true}
       style={{
         height: "100%",
@@ -126,6 +145,7 @@ export default function Map(props: MapProps) {
       <CustomEvents setBoundingBox={setBoundingBox} />
       <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/spotify_dark/{z}/{x}/{y}{r}.png" />
       <ZoomControl position="bottomright" />
+      <ChangeView boundingBox={boundingBox} />
       {!eventsLoaded ? (
         <div className="relative bg-gray-800/50 w-full flex justify-center z-[10000] items-center h-full">
           <Spinner />

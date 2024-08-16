@@ -26,13 +26,18 @@ export default async function Page({
   }
 
   // TODO: Detect user location
-  let city = "Barcelona";
-  let country = "Spain";
+  if (!location) {
+    location = "Barcelona, Spain";
+  }
   let locations = await getLocations();
   let bounds = locations
-    .filter((location) => location.city == city && location.country == country)
-    .map((location) => location.boundingBox)[0];
-
+    .filter(
+      (dbLocation) =>
+        dbLocation.city == location.split(",")[0].trim() &&
+        dbLocation.country == location.split(",")[1].trim()
+    )
+    .map((dbLocation) => dbLocation.boundingBox)[0];
+  
   // Convert strings for comparison
   startDate =
     typeof startDate === "string" ? YYYYMMDDToDate(startDate) : startDate;
@@ -52,6 +57,8 @@ export default async function Page({
           genre={genre}
           price={price}
           bounds={bounds}
+          locations={locations}
+          location={location}
         />
       </div>
     </main>
