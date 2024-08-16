@@ -1,43 +1,136 @@
-"use client";
-
-import { latLngBounds, LatLngExpression, LatLngTuple, PointExpression } from "leaflet";
-import { MapContainer, TileLayer, useMap, ZoomControl } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  useMap,
+  useMapEvents,
+  ZoomControl,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
 import Markers from "./Markers";
 import type { Event } from "@/types/event";
+import { useEffect, useState } from "react";
+import { updateEventsFromBounds } from "@/actions/markers";
+import Spinner from "./Spinner";
+import { useSearchParams } from "next/navigation";
+import { useDebouncedCallback } from "use-debounce";
 
 interface MapProps {
-  markers: Event[];
+  setArtistNames: React.Dispatch<React.SetStateAction<string[]>>;
+  setGenreNames: React.Dispatch<React.SetStateAction<string[]>>;
+  setEventsNumber: React.Dispatch<React.SetStateAction<number>>;
+  bounds: number[];
+  startDate: Date;
+  endDate: Date;
+  price: number[];
+  artist: string;
+  genre: string;
 }
 
-export default function Map(Map: MapProps) {
-  const { markers } = Map;
-  const center: LatLngExpression | LatLngTuple = [53, 20];
-  const zoom = 4;
+function CustomEvents({
+  setBoundingBox,
+}: {
+  setBoundingBox: React.Dispatch<React.SetStateAction<number[]>>;
+}) {
+  const updateBounds = () => {
+    let bounds = map.getBounds();
+    const coordinates = [
+      bounds.getWest(),
+      bounds.getEast(),
+      bounds.getSouth(),
+      bounds.getNorth(),
+    ];
+    setBoundingBox(coordinates);
+  };
+  const debouncedUpdateBounds = useDebouncedCallback(() => {
+    updateBounds();
+  }, 300);
+  const map = useMapEvents({
+    zoomend() {
+      debouncedUpdateBounds();
+    },
+    dragend() {
+      debouncedUpdateBounds();
+    },
+  });
 
-  // Fit view
-  function ChangeView({ markers }: { markers: Event[] }) {
-    const map = useMap();
-    if (markers.length > 0) {
-      let markerBounds = latLngBounds([]);
-      markers.forEach((marker) => {
-        markerBounds.extend([
-          marker.venue[0].latitude,
-          marker.venue[0].longitude,
-        ]);
-      });
-      var padding: PointExpression = [150, 150];
-      map.fitBounds(markerBounds, { padding: padding });
-      return null;
+  return null;
+}
+
+function ChangeView({ boundingBox }: { boundingBox: number[] }) {
+  const map = useMap();
+  const mapBounds: [number, number][] = [
+    [boundingBox[2], boundingBox[0]], // South - West
+    [boundingBox[3], boundingBox[1]], // North - East
+  ];
+  useEffect(() => {
+    if (boundingBox) {
+      map.fitBounds(mapBounds);
     }
-  }
+  }, [boundingBox, map]);
+  return null;
+}
+
+export default function Map(props: MapProps) {
+  const {
+    setArtistNames,
+    setGenreNames,
+    setEventsNumber,
+    bounds,
+    startDate,
+    endDate,
+    price,
+    artist,
+    genre,
+  } = props;
+
+  const searchParams = useSearchParams();
+  const [eventsLoaded, setEventsLoaded] = useState(true);
+  const [response, setResponse] = useState<any>(null);
+  const [markers, setMarkers] = useState<Event[] | null>(null);
+  const [boundingBox, setBoundingBox] = useState<number[]>(bounds);
+
+  useEffect(() => {
+    setBoundingBox(bounds);
+  }, [bounds]);
+
+  useEffect(() => {
+    setEventsLoaded(false);
+    updateEventsFromBounds(
+      startDate,
+      endDate,
+      boundingBox,
+      price,
+      artist,
+      genre
+    )
+      .then((response) => {
+        setResponse(response);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, [boundingBox, searchParams]);
+
+  useEffect(() => {
+    if (response) {
+      setMarkers(response.events);
+      setArtistNames(response.artistNames);
+      setGenreNames(response.genreNames);
+      setEventsNumber(response.events.length);
+      setEventsLoaded(true);
+    }
+  }, [response]);
+
+  const mapBounds: [number, number][] = [
+    [boundingBox[2], boundingBox[0]], // South - West
+    [boundingBox[3], boundingBox[1]], // North - East
+  ];
 
   return (
     <MapContainer
-      center={center}
-      zoom={zoom}
+      bounds={mapBounds}
       scrollWheelZoom={true}
       style={{
         height: "100%",
@@ -46,13 +139,20 @@ export default function Map(Map: MapProps) {
       }}
       zoomControl={false}
       zoomSnap={0.1}
-      minZoom={zoom}
+      minZoom={4}
       attributionControl={false}
     >
-      <ChangeView markers={markers} />
+      <CustomEvents setBoundingBox={setBoundingBox} />
       <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/spotify_dark/{z}/{x}/{y}{r}.png" />
       <ZoomControl position="bottomright" />
-      <Markers markers={markers} />
+      <ChangeView boundingBox={boundingBox} />
+      {!eventsLoaded ? (
+        <div className="relative bg-gray-800/50 w-full flex justify-center z-[10000] items-center h-full">
+          <Spinner />
+        </div>
+      ) : markers !== null ? (
+        <Markers markers={markers} />
+      ) : null}
     </MapContainer>
   );
 }

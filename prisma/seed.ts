@@ -4,7 +4,59 @@ import { getEventsEurope } from "../lib/events";
 
 const prisma = new PrismaClient();
 
-export default async function loadData() {
+async function loadLocations() {
+  try {
+    // Get all events
+    let allEvents = await prisma.event.findMany({
+      include: {
+        venue: true,
+      },
+    });
+
+    // Calculate bounding box for each city
+    let venues = allEvents.flatMap((event) => event.venue);
+    let locations: Record<string, number[]> = {};
+    venues.forEach((venue) => {
+      const city = `${venue.city}, ${venue.country}`;
+      if (!locations[city]) {
+        locations[city] = [
+          venue.longitude,
+          venue.longitude,
+          venue.latitude,
+          venue.latitude,
+        ];
+      } else {
+        // Minimum longitude
+        locations[city][0] = Math.min(locations[city][0], venue.longitude);
+        // Maximum longitude
+        locations[city][1] = Math.max(locations[city][1], venue.longitude);
+        // Minimum latitude
+        locations[city][2] = Math.min(locations[city][2], venue.latitude);
+        // Maximum latitude
+        locations[city][3] = Math.max(locations[city][3], venue.latitude);
+      }
+    });
+
+    // Load locations
+    for (const [key, value] of Object.entries(locations)) {
+      await prisma.location.create({
+        data: {
+          city: key.split(",")[0].trim(),
+          country: key.split(",")[1].trim(),
+          boundingBox: value,
+        },
+      });
+    }
+
+    console.log("Got locations");
+  } catch (error) {
+    console.error("Error loading locations:", error);
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+async function loadData() {
   try {
     // Get events from Ticketmaster
     console.log('Getting events by country...')
@@ -113,7 +165,7 @@ async function main() {
 main()
   .then(async () => {
     loadData();
-    await prisma.$disconnect();
+    loadLocations();
   })
   .catch(async (e) => {
     console.error(e);

@@ -14,40 +14,30 @@ export default function SearchItem({
   label,
   placeholder,
   options,
-  setInput,
-  input,  
-  country,
-  citiesByCountry,
+  value,
 }: {
   form: any;
   name: string;
   label: string;
   placeholder: string;
   options: string[];
-  setInput: React.Dispatch<React.SetStateAction<string>>;
-  input: string;
-  country?: string;
-  citiesByCountry?: Record<string, string[]>
+  value: string;
 }) {
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [input, setInput] = useState<string>(value ? value : "");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Get input value
     const input = e.target.value;
     setInput(input);
 
-    // For city field, if country is defined, show only cities in that country
-    if (name === "city" && country !== undefined && citiesByCountry !== undefined) {
-      options = citiesByCountry[country];
-    }
-
     // Filter options and get first 5 suggestions
     let filteredOptions: string[] = options.filter((suggestion) =>
       suggestion.toLowerCase().includes(input.toLowerCase())
     );
 
-    setSuggestions(filteredOptions.slice(0, 5));
+    setSuggestions(filteredOptions.slice(0, 5).sort());
 
     // Show options only if the input value is not an empty string
     if (input.length !== 0) {
@@ -71,7 +61,7 @@ export default function SearchItem({
           <FormControl>
             <Input
               {...field}
-              type="text"
+              type="search"
               value={input}
               placeholder={placeholder}
               onChange={(e) => {
@@ -81,7 +71,7 @@ export default function SearchItem({
               className="border border-gray-200 rounded"
             />
           </FormControl>
-          {showSuggestions ? (
+          {showSuggestions && suggestions.length > 0 ? (
             <ul className="border border-gray-200 rounded absolute z-10 w-[21.2rem]">
               {suggestions.map((suggestion, index) => (
                 <li

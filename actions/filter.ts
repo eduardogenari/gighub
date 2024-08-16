@@ -9,8 +9,7 @@ export async function filter(formData: FormData) {
   const endDate = formData.get("endDate") as string;
   const artist = formData.get("artist") as string;
   const genre = formData.get("genre") as string;
-  const city = formData.get("city") as string;
-  const country = formData.get("country") as string;
+  const location = formData.get("location") as string;
   const price = formData.getAll("price");
 
   // Add new keys if they are submitted
@@ -30,11 +29,8 @@ export async function filter(formData: FormData) {
   if (price) {
     query.price = price.toString();
   }
-  if (city) {
-    query.city = city;
-  }
-  if (country) {
-    query.country = country;
+  if (location) {
+    query.location = location;
   }
 
   // Construct URL to pass variables to backend

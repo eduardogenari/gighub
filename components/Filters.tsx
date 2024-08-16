@@ -8,55 +8,41 @@ import { useForm } from "react-hook-form";
 import CalendarItem from "./CalendarItem";
 import SearchItem from "./SearchItem";
 import SliderItem from "./SliderItem";
-import CheckboxItem from "./CheckboxItem";
 import { filter } from "@/actions/filter";
-import { useState } from "react";
 
 const FormSchema = z.object({
   artist: z.string().optional(),
   startDate: z.date().optional(),
   endDate: z.date().optional(),
-  country: z.string().optional(),
-  city: z.string().optional(),
   genre: z.string().optional(),
   price: z.array(z.number()).length(2).optional(),
+  location: z.string().optional(),
 });
 
 export default function Filters({
   artists,
   genres,
-  countries,
-  cities,
+  locations,
   startDate,
   endDate,
-  country,
-  city,
   price,
   artist,
   genre,
-  citiesByCountry
+  location,
 }: {
   artists: string[];
   genres: string[];
-  countries: string[];
-  cities: string[];
+  locations: string[];
   startDate: Date;
   endDate: Date;
-  country: string;
-  city: string;
   price: number[];
   artist: string;
   genre: string;
-  citiesByCountry: Record<string, string[]>
+  location: string;
 }) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
-
-  const [inputArtist, setInputArtist] = useState<string>(artist ? artist : "");
-  const [inputCountry, setInputCountry] = useState<string>(country ? country : "");
-  const [inputCity, setInputCity] = useState<string>(city ? city : "");
-  const [inputGenre, setInputGenre] = useState<string>(genre ? genre : "");
 
   return (
     <Form {...form}>
@@ -67,8 +53,7 @@ export default function Filters({
           label={"Artist"}
           placeholder={"Type an artist name"}
           options={artists}
-          setInput={setInputArtist}
-          input={inputArtist}
+          value={artist}
         />
         <SearchItem
           form={form}
@@ -76,28 +61,15 @@ export default function Filters({
           label={"Genre"}
           placeholder={"Type a genre"}
           options={genres}
-          setInput={setInputGenre}
-          input={inputGenre}
+          value={genre}
         />
         <SearchItem
           form={form}
-          name={"country"}
-          label={"Country"}
-          placeholder={"Search a country"}
-          options={countries}
-          setInput={setInputCountry}
-          input={inputCountry}
-        />
-        <SearchItem
-          form={form}
-          name={"city"}
-          label={"City"}
-          placeholder={"Search a city"}
-          options={cities}
-          setInput={setInputCity}
-          input={inputCity}
-          country={inputCountry}
-          citiesByCountry={citiesByCountry}
+          name={"location"}
+          label={"Location"}
+          placeholder={"Type a location"}
+          options={locations}
+          value={location}
         />
         <CalendarItem
           form={form}
