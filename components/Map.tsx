@@ -15,6 +15,7 @@ import { updateEventsFromBounds } from "@/actions/markers";
 import Spinner from "./Spinner";
 import { useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
+import MinimizedGallery from "./MinimizedGallery";
 
 interface MapProps {
   setArtistNames: React.Dispatch<React.SetStateAction<string[]>>;
@@ -129,30 +130,35 @@ export default function Map(props: MapProps) {
   ];
 
   return (
-    <MapContainer
-      bounds={mapBounds}
-      scrollWheelZoom={true}
-      style={{
-        height: "100%",
-        width: "100%",
-        zIndex: 1,
-      }}
-      zoomControl={false}
-      zoomSnap={0.1}
-      minZoom={4}
-      attributionControl={false}
-    >
-      <CustomEvents setBoundingBox={setBoundingBox} />
-      <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/spotify_dark/{z}/{x}/{y}{r}.png" />
-      <ZoomControl position="bottomright" />
-      <ChangeView boundingBox={boundingBox} />
-      {!eventsLoaded ? (
-        <div className="relative bg-gray-800/50 w-full flex justify-center z-[10000] items-center h-full">
-          <Spinner />
-        </div>
-      ) : markers !== null ? (
-        <Markers markers={markers} />
-      ) : null}
-    </MapContainer>
+    <>
+      <MapContainer
+        bounds={mapBounds}
+        scrollWheelZoom={true}
+        style={{
+          height: "100%",
+          width: "100%",
+          zIndex: 1,
+        }}
+        zoomControl={false}
+        zoomSnap={0.1}
+        minZoom={4}
+        attributionControl={false}
+      >
+        <CustomEvents setBoundingBox={setBoundingBox} />
+        <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/spotify_dark/{z}/{x}/{y}{r}.png" />
+        <ZoomControl position="bottomright" />
+        <ChangeView boundingBox={boundingBox} />
+        {!eventsLoaded ? (
+          <div className="relative bg-gray-800/50 w-full flex justify-center z-[10000] items-center h-full">
+            <Spinner />
+          </div>
+        ) : markers !== null ? (
+          <Markers markers={markers} />
+        ) : null}
+      </MapContainer>
+      <div className="absolute bottom-0 z-50">
+        {markers !== null ? <MinimizedGallery markers={markers} /> : null}
+      </div>
+    </>
   );
 }
