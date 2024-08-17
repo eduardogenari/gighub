@@ -2,7 +2,7 @@
 
 import { YYYYMMDDToDate } from "@/lib/utils";
 import { getLocations } from "@/actions/markers";
-import MapFilters from "@/components/MapFilters";
+import Results from "@/components/Results";
 
 export default async function Page({
   searchParams,
@@ -51,19 +51,17 @@ export default async function Page({
       : price;
 
   return (
-    <main className="flex flex-grow">
-      <div className="bg-gray-200">
-        <MapFilters
-          startDate={startDate}
-          endDate={endDate}
-          artist={artist}
-          genre={genre}
-          price={price}
-          bounds={bounds}
-          locationNames={locationNames}
-          location={location}
-        />
-      </div>
+    <main>
+      <Results
+        startDate={startDate}
+        endDate={endDate}
+        artist={artist}
+        genre={genre}
+        price={price}
+        bounds={bounds}
+        locationNames={locationNames}
+        location={location}
+      />
     </main>
   );
 }

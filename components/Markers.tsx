@@ -16,11 +16,11 @@ import Spinner from "./Spinner";
 import { LatLngTuple } from "leaflet";
 
 interface MarkersProps {
-  markers: Event[];
+  events: Event[];
 }
 
 export default function Markers(props: MarkersProps) {
-  const { markers } = props;
+  const { events } = props;
   const [isImageLoaded, setImageLoading] = useState(true);
   const [currentEvents, setCurrentEvents] = useState<number[]>([]);
 
@@ -30,8 +30,8 @@ export default function Markers(props: MarkersProps) {
 
   // Memoize unique coordinates
   const uniqueCoordinates = useMemo(() => {
-    const coordinates: LatLngTuple[] = markers.flatMap((marker) =>
-      marker.venue.map(
+    const coordinates: LatLngTuple[] = events.flatMap((event) =>
+      event.venue.map(
         (venue) => [venue.latitude, venue.longitude] as LatLngTuple
       )
     );
@@ -48,18 +48,18 @@ export default function Markers(props: MarkersProps) {
 
     setCurrentEvents(new Array(uniqueCoords.length).fill(0));
     return uniqueCoords;
-  }, [markers]);
+  }, [events]);
 
   // Memoize event filtering
   const filteredEventsByCoord = useMemo(() => {
     return uniqueCoordinates.map((coordinates) =>
-      markers.filter(
-        (marker) =>
-          marker.venue[0].latitude === coordinates[0] &&
-          marker.venue[0].longitude === coordinates[1]
+      events.filter(
+        (event) =>
+          event.venue[0].latitude === coordinates[0] &&
+          event.venue[0].longitude === coordinates[1]
       )
     );
-  }, [markers, uniqueCoordinates]);
+  }, [events, uniqueCoordinates]);
 
   // Callback to go to next event in popup
   const handleNext = useCallback((index: number) => {
