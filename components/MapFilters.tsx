@@ -13,24 +13,19 @@ interface MapFiltersProps {
   artist: string;
   genre: string;
   bounds: number[];
-  locations: {
-    id: number;
-    city: string;
-    country: string;
-    boundingBox: number[];
-  }[];
+  locationNames: string[];
   location: string;
 }
 
 export default function MapFilters(props: MapFiltersProps) {
-  const {
+  let {
     startDate,
     endDate,
     price,
     artist,
     genre,
     bounds,
-    locations,
+    locationNames,
     location,
   } = props;
   // Initialise map
@@ -47,14 +42,19 @@ export default function MapFilters(props: MapFiltersProps) {
     []
   );
 
-  const locationNames = locations.map(
-    (location) => `${location.city}, ${location.country}`
-  );
-
   const [artistNames, setArtistNames] = useState<string[]>([]);
   const [genreNames, setGenreNames] = useState<string[]>([]);
   const [eventsNumber, setEventsNumber] = useState<number>(0);
   const [filtersVisibility, setFiltersVisibility] = useState<boolean>(false);
+
+  // Declare artist and genre as empty strings if they do not exist in options
+  // This can happen if the user passes them through the url
+  if (!artistNames.includes(artist)){
+    artist = ""
+  }
+  if (!genreNames.includes(genre)){
+    genre = ""
+  }
 
   return (
     <>

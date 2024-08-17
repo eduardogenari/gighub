@@ -25,11 +25,14 @@ export default async function Page({
     price = [0, 1000];
   }
 
-  // TODO: Detect user location
-  if (!location) {
+  let locations = await getLocations();
+  const locationNames = locations.map(
+    (location) => `${location.city}, ${location.country}`
+  );
+  if (!location || !locationNames.includes(location)) {
+    // TODO: Detect user location
     location = "Barcelona, Spain";
   }
-  let locations = await getLocations();
   let bounds = locations
     .filter(
       (dbLocation) =>
@@ -57,7 +60,7 @@ export default async function Page({
           genre={genre}
           price={price}
           bounds={bounds}
-          locations={locations}
+          locationNames={locationNames}
           location={location}
         />
       </div>
