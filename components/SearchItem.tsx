@@ -72,7 +72,7 @@ export default function SearchItem({
             />
           </FormControl>
           {showSuggestions && suggestions.length > 0 ? (
-            <ul className="border border-gray-200 rounded absolute z-10 w-[21.2rem]">
+            <ul className="border border-gray-200 rounded absolute z-10 w-[19.1rem]">
               {suggestions.map((suggestion, index) => (
                 <li
                   key={index}
