@@ -21,6 +21,8 @@ interface MapProps {
   setArtistNames: React.Dispatch<React.SetStateAction<string[]>>;
   setGenreNames: React.Dispatch<React.SetStateAction<string[]>>;
   setEventsNumber: React.Dispatch<React.SetStateAction<number>>;
+  setEvents: React.Dispatch<React.SetStateAction<Event[]>>;
+  events: Event[];
   bounds: number[];
   startDate: Date;
   endDate: Date;
@@ -78,6 +80,8 @@ export default function Map(props: MapProps) {
     setArtistNames,
     setGenreNames,
     setEventsNumber,
+    setEvents,
+    events,
     bounds,
     startDate,
     endDate,
@@ -89,7 +93,6 @@ export default function Map(props: MapProps) {
   const searchParams = useSearchParams();
   const [eventsLoaded, setEventsLoaded] = useState(true);
   const [response, setResponse] = useState<any>(null);
-  const [markers, setMarkers] = useState<Event[] | null>(null);
   const [boundingBox, setBoundingBox] = useState<number[]>(bounds);
 
   useEffect(() => {
@@ -116,7 +119,7 @@ export default function Map(props: MapProps) {
 
   useEffect(() => {
     if (response) {
-      setMarkers(response.events);
+      setEvents(response.events);
       setArtistNames(response.artistNames);
       setGenreNames(response.genreNames);
       setEventsNumber(response.events.length);
@@ -152,13 +155,15 @@ export default function Map(props: MapProps) {
           <div className="relative bg-gray-800/50 w-full flex justify-center z-[10000] items-center h-full">
             <Spinner />
           </div>
-        ) : markers !== null ? (
-          <Markers markers={markers} />
+        ) : events !== null ? (
+          <Markers events={events} />
         ) : null}
       </MapContainer>
-      <div className="absolute bottom-0 z-50">
-        {markers !== null ? <MinimizedGallery markers={markers} /> : null}
-      </div>
+      {events.length > 0 && events !== null ? (
+        <div className="absolute bottom-0 z-50">
+          <MinimizedGallery events={events} />
+        </div>
+      ) : null}
     </>
   );
 }
