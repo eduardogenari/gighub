@@ -52,7 +52,7 @@ export default async function Page({
 
   return (
     <main className="flex flex-grow">
-      <div className="flex flex-grow overflow-hidden bg-gray-200">
+      <div className="bg-gray-200">
         <MapFilters
           startDate={startDate}
           endDate={endDate}

@@ -58,7 +58,7 @@ export default function MapFilters(props: MapFiltersProps) {
 
   return (
     <>
-      <div className="absolute z-50 w-1/5 p-4 m-4">
+      <div className="absolute z-50 md:w-1/5 p-4">
         <Button
         variant={"secondary"}
           className="text-lg font-bold"
@@ -67,7 +67,7 @@ export default function MapFilters(props: MapFiltersProps) {
           Filters
         </Button>
         {filtersVisibility ? (
-          <div className="bg-white p-4 mt-4 rounded">
+          <div className="bg-white p-4 mt-2 rounded">
             <Filters
               artists={artistNames}
               genres={genreNames}
@@ -85,7 +85,7 @@ export default function MapFilters(props: MapFiltersProps) {
           </div>
         ) : null}
       </div>
-      <div className="w-full bg-gray-100">
+      <div className="w-screen h-full w-full bg-gray-100">
         <Map
           setArtistNames={setArtistNames}
           setGenreNames={setGenreNames}
