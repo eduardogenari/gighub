@@ -146,7 +146,7 @@ export default function Map(props: MapProps) {
       >
         <CustomEvents setBoundingBox={setBoundingBox} />
         <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/spotify_dark/{z}/{x}/{y}{r}.png" />
-        <ZoomControl position="bottomright" />
+        <ZoomControl position="topright" />
         <ChangeView boundingBox={boundingBox} />
         {!eventsLoaded ? (
           <div className="relative bg-gray-800/50 w-full flex justify-center z-[10000] items-center h-full">
