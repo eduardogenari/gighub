@@ -198,14 +198,44 @@ async function updateVenues() {
   country = "Germany";
   updateVenue(venues, name, latitude, longitude, address, city, country);
 
+  // Update Open Air Arena - Messe Munchen
+  venues = [2160, 2300, 2271, 2417, 2161, 2545, 2672, 2690, 2348, 2570];
+  latitude = 48.140701;
+  longitude = 11.68427;
+  name = "Open Air Arena - Messe Munchen";
+  address = "Am Messefreigelände";
+  city = "Munich";
+  country = "Germany";
+  updateVenue(venues, name, latitude, longitude, address, city, country);
+
   // Update KK's Steel Mill
-  venues = [2669];
+  venues = [2669, 2147, 2642];
   latitude = 52.5786863;
   longitude = -2.1297049;
   name = "KK's Steel Mill";
   address = "Frederick Street";
   city = "Wolverhampton";
   country = "Great Britain";
+  updateVenue(venues, name, latitude, longitude, address, city, country);
+
+  // Update La Scène - Malmedy
+  venues = [494];
+  latitude = 50.431666;
+  longitude = 6.027924;
+  name = "La Scène - Malmedy";
+  address = "Avenue de la Libération 1";
+  city = "Malmedy";
+  country = "Belgium";
+  updateVenue(venues, name, latitude, longitude, address, city, country);
+
+  // Update Larnaca Marina
+  venues = [2875, 2844];
+  latitude = 34.91764;
+  longitude = 33.63933;
+  name = "Larnaca Marina";
+  address = "Marina";
+  city = "Larnaca";
+  country = "Cyprus";
   updateVenue(venues, name, latitude, longitude, address, city, country);
 
   // Update Curraghmore House
@@ -297,7 +327,7 @@ async function loadLocations() {
 
 main()
   .then(async () => {
-    loadData();
+    // loadData();
     updateVenues();
     loadLocations();
   })
