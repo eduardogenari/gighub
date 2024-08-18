@@ -26,21 +26,40 @@ export default async function Page({
   }
 
   let locations = await getLocations();
-  const locationNames = locations.map(
+  const cityCountryNames = locations.map(
     (location) => `${location.city}, ${location.country}`
   );
+  const countryNames = [
+    ...new Set(locations.map((location) => location.country)),
+  ];
+  const locationNames = cityCountryNames.concat(countryNames);
+
   if (!location || !locationNames.includes(location)) {
     // TODO: Detect user location
     location = "Barcelona, Spain";
   }
-  let bounds = locations
-    .filter(
-      (dbLocation) =>
-        dbLocation.city == location.split(",")[0].trim() &&
-        dbLocation.country == location.split(",")[1].trim()
-    )
-    .map((dbLocation) => dbLocation.boundingBox)[0];
 
+  let bounds;
+  if (location.includes(",")) {
+    bounds = locations
+      .filter(
+        (dbLocation) =>
+          dbLocation.city == location.split(",")[0].trim() &&
+          dbLocation.country == location.split(",")[1].trim()
+      )
+      .map((dbLocation) => dbLocation.boundingBox)[0];
+  } else {
+    let allBounds = locations
+      .filter((dbLocation) => dbLocation.country == location.replace('- ', ''))
+      .map((dbLocation) => dbLocation.boundingBox);
+    const west = Math.min(...allBounds.map((bounds) => bounds[0]));
+    const east = Math.max(...allBounds.map((bounds) => bounds[1]));
+    const south = Math.min(...allBounds.map((bounds) => bounds[2]));
+    const north = Math.max(...allBounds.map((bounds) => bounds[3]));
+    bounds = [west, east, south, north];
+  }
+
+  console.log(location, bounds);
   // Convert strings for comparison
   startDate =
     typeof startDate === "string" ? YYYYMMDDToDate(startDate) : startDate;

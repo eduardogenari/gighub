@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/form";
 import { useState } from "react";
 import { Input } from "./ui/input";
+import { sortWithCommas } from "@/lib/utils";
 
 export default function SearchItem({
   form,
@@ -37,7 +38,7 @@ export default function SearchItem({
       suggestion.toLowerCase().includes(input.toLowerCase())
     );
 
-    setSuggestions(filteredOptions.slice(0, 5).sort());
+   setSuggestions(sortWithCommas(filteredOptions).slice(0, 5));
 
     // Show options only if the input value is not an empty string
     if (input.length !== 0) {

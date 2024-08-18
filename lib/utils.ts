@@ -42,3 +42,19 @@ export function withinRange(rangeToCheck: number[], range: number[]) {
     range[0] <= rangeToCheck[1] && range[1] >= rangeToCheck[0];
   return isWithinRange || isOverlappingRange;
 }
+
+export function sortWithCommas(array: string[]) {
+  const sortedArray = array.sort((a, b) => {
+    const aWithComma = a.includes(',');
+    const bWithComma = b.includes(',');
+
+    // Sort alphabetically if there are commas
+    if (aWithComma === bWithComma) {
+      return a.localeCompare(b);
+    }
+
+    // Go first if there are no commas
+    return aWithComma ? 1 : -1;
+  }) 
+  return sortedArray
+}
