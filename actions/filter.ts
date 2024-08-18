@@ -25,6 +25,43 @@ export async function filter(
   console.log("Hide without price:", hideWithoutPrice);
   console.log("Bounding box:", bounds);
 
+  const priceFilter = [
+    {
+      AND: [
+        {
+          min: {
+            gte: price[0],
+          },
+        },
+        {
+          max: {
+            lte: price[1],
+          },
+        },
+        {
+          type: "standard",
+        },
+      ],
+    },
+    {
+      AND: [
+        {
+          min: {
+            lte: price[1],
+          },
+        },
+        {
+          max: {
+            gte: price[0],
+          },
+        },
+        {
+          type: "standard",
+        },
+      ],
+    },
+  ];
+
   let events = await prisma.event.findMany({
     include: {
       artist: true,
@@ -63,46 +100,30 @@ export async function filter(
           },
         },
       }),
-      priceRange: {
-        some: {
-          OR: [
-            {
-              AND: [
-                {
-                  min: {
-                    gte: price[0],
-                  },
-                },
-                {
-                  max: {
-                    lte: price[1],
-                  },
-                },
-                {
-                  type: "standard",
-                },
-              ],
+      ...(hideWithoutPrice === "on"
+        ? {
+            priceRange: {
+              some: {
+                OR: priceFilter,
+              },
             },
-            {
-              AND: [
-                {
-                  min: {
-                    lte: price[1],
+          }
+        : {
+            OR: [
+              {
+                priceRange: {
+                  some: {
+                    OR: priceFilter,
                   },
                 },
-                {
-                  max: {
-                    gte: price[0],
-                  },
+              },
+              {
+                priceRange: {
+                  none: {},
                 },
-                {
-                  type: "standard",
-                },
-              ],
-            },
-          ],
-        },
-      },
+              },
+            ],
+          }),
     },
   });
 

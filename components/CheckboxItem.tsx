@@ -8,6 +8,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useState } from "react";
 
 export default function CheckboxItem({
   form,
@@ -20,7 +21,9 @@ export default function CheckboxItem({
   label: string;
   value: string;
 }) {
-  const checked = value === "on" ? true : false;
+  const [checked, setChecked] = useState<boolean>(
+    value === "on" ? true : false
+  );
   return (
     <FormField
       control={form.control}
@@ -28,7 +31,13 @@ export default function CheckboxItem({
       render={({ field }) => (
         <FormItem>
           <FormControl>
-            <Checkbox {...field} id={name} className="mr-2" checked={checked} />
+            <Checkbox
+              {...field}
+              id={name}
+              className="mr-2"
+              checked={checked}
+              onClick={() => setChecked(!checked)}
+            />
           </FormControl>
           <FormLabel>{label}</FormLabel>
           <FormMessage />

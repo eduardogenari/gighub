@@ -34,7 +34,9 @@ export async function search(formData: FormData) {
     query.location = location;
   }
   if (hideWithoutPrice) {
-    query.hideWithoutPrice = hideWithoutPrice;
+    query.hideWithoutPrice = "on";
+  } else {
+    query.hideWithoutPrice = "off";
   }
 
   // Construct URL to pass variables to backend
