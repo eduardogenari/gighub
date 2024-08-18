@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 export default function Header() {
   return (
-    <header className="h-16 flex items-center justify-between px-96">
+    <header className="h-16 flex items-center justify-between px-4 lg:px-96">
       <Link href="/">
         <p>logo</p>
       </Link>
