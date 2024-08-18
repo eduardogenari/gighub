@@ -1,7 +1,7 @@
 "use server";
 
 import { YYYYMMDDToDate } from "@/lib/utils";
-import { getLocations } from "@/actions/markers";
+import { getLocations } from "@/actions/filter";
 import Results from "@/components/Results";
 
 export default async function Page({
