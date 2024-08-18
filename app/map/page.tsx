@@ -10,7 +10,7 @@ export default async function Page({
   searchParams?: { [key: string]: any };
 }) {
   // Get filter values from URL
-  let { startDate, endDate, artist, genre, price, location } =
+  let { startDate, endDate, artist, genre, price, location, hideWithoutPrice } =
     searchParams ?? {};
 
   // Set default values
@@ -23,6 +23,9 @@ export default async function Page({
   }
   if (!price) {
     price = [0, 1000];
+  }
+  if (!hideWithoutPrice) {
+    hideWithoutPrice = "off";
   }
 
   let locations = await getLocations();
@@ -50,7 +53,7 @@ export default async function Page({
       .map((dbLocation) => dbLocation.boundingBox)[0];
   } else {
     let allBounds = locations
-      .filter((dbLocation) => dbLocation.country == location.replace('- ', ''))
+      .filter((dbLocation) => dbLocation.country == location.replace("- ", ""))
       .map((dbLocation) => dbLocation.boundingBox);
     const west = Math.min(...allBounds.map((bounds) => bounds[0]));
     const east = Math.max(...allBounds.map((bounds) => bounds[1]));
@@ -80,6 +83,7 @@ export default async function Page({
         bounds={bounds}
         locationNames={locationNames}
         location={location}
+        hideWithoutPrice={hideWithoutPrice}
       />
     </main>
   );

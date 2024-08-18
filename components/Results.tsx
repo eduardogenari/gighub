@@ -17,6 +17,7 @@ interface ResultsProps {
   bounds: number[];
   locationNames: string[];
   location: string;
+  hideWithoutPrice: string;
 }
 
 export default function Results(props: ResultsProps) {
@@ -29,6 +30,7 @@ export default function Results(props: ResultsProps) {
     bounds,
     locationNames,
     location,
+    hideWithoutPrice,
   } = props;
   // Initialise map
   const Map = useMemo(
@@ -82,6 +84,7 @@ export default function Results(props: ResultsProps) {
                 artist={artist}
                 genre={genre}
                 location={location}
+                hideWithoutPrice={hideWithoutPrice}
               />
               <p className="text-sm mt-4 text-orange-600">
                 Number of events: {eventsNumber}
@@ -102,6 +105,7 @@ export default function Results(props: ResultsProps) {
             price={price}
             artist={artist}
             genre={genre}
+            hideWithoutPrice={hideWithoutPrice}
           />
         </div>
       </div>

@@ -11,7 +11,7 @@ import "leaflet-defaulticon-compatibility";
 import Markers from "./Markers";
 import type { Event } from "@/types/event";
 import { useEffect, useState } from "react";
-import { updateEventsFromBounds } from "@/actions/markers";
+import { filter } from "@/actions/filter";
 import Spinner from "./Spinner";
 import { useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
@@ -29,6 +29,7 @@ interface MapProps {
   price: number[];
   artist: string;
   genre: string;
+  hideWithoutPrice: string;
 }
 
 function CustomEvents({
@@ -88,6 +89,7 @@ export default function Map(props: MapProps) {
     price,
     artist,
     genre,
+    hideWithoutPrice,
   } = props;
 
   const searchParams = useSearchParams();
@@ -101,13 +103,14 @@ export default function Map(props: MapProps) {
 
   useEffect(() => {
     setEventsLoaded(false);
-    updateEventsFromBounds(
+    filter(
       startDate,
       endDate,
       boundingBox,
       price,
       artist,
-      genre
+      genre,
+      hideWithoutPrice
     )
       .then((response) => {
         setResponse(response);

@@ -1,44 +1,126 @@
 "use server";
 
-import { format } from "url";
-import { dateToYYYYMMDD } from "@/lib/utils";
-import { redirect } from "next/navigation";
+import prisma from "@/lib/prisma";
 
-export async function filter(formData: FormData) {
-  const startDate = formData.get("startDate") as string;
-  const endDate = formData.get("endDate") as string;
-  const artist = formData.get("artist") as string;
-  const genre = formData.get("genre") as string;
-  const location = formData.get("location") as string;
-  const price = formData.getAll("price");
+export async function getLocations() {
+  let locations = await prisma.location.findMany({});
+  return locations;
+}
 
-  // Add new keys if they are submitted
-  let query: { [key: string]: string } = {};
-  if (startDate) {
-    query.startDate = dateToYYYYMMDD(new Date(startDate));
-  }
-  if (endDate) {
-    query.endDate = dateToYYYYMMDD(new Date(endDate));
-  }
-  if (artist) {
-    query.artist = artist;
-  }
-  if (genre) {
-    query.genre = genre;
-  }
-  if (price) {
-    query.price = price.toString();
-  }
-  if (location) {
-    query.location = location;
-  }
+export async function filter(
+  startDate: Date,
+  endDate: Date,
+  bounds: number[],
+  price: number[],
+  artist: string,
+  genre: string,
+  hideWithoutPrice: string
+) {
+  console.log("Filters");
+  console.log("Start date:", startDate);
+  console.log("End date:", endDate);
+  console.log("Artist:", artist);
+  console.log("Genre:", genre);
+  console.log("Price:", price);
+  console.log("Hide without price:", hideWithoutPrice);
+  console.log("Bounding box:", bounds);
 
-  // Construct URL to pass variables to backend
-  const url = format({
-    pathname: "/map",
-    query: query,
+  let events = await prisma.event.findMany({
+    include: {
+      artist: true,
+      venue: true,
+      priceRange: true,
+      image: true,
+    },
+    where: {
+      venue: {
+        some: {
+          AND: [
+            {
+              latitude: { gte: bounds[2], lte: bounds[3] }, // South - North
+            },
+            {
+              longitude: { gte: bounds[0], lte: bounds[1] }, // West - East
+            },
+          ],
+        },
+      },
+      startDate: {
+        gte: startDate,
+      },
+      endDate: {
+        lte: endDate,
+      },
+      ...(genre && {
+        genre: {
+          has: genre,
+        },
+      }),
+      ...(artist && {
+        artist: {
+          some: {
+            name: artist,
+          },
+        },
+      }),
+      priceRange: {
+        some: {
+          OR: [
+            {
+              AND: [
+                {
+                  min: {
+                    gte: price[0],
+                  },
+                },
+                {
+                  max: {
+                    lte: price[1],
+                  },
+                },
+                {
+                  type: "standard",
+                },
+              ],
+            },
+            {
+              AND: [
+                {
+                  min: {
+                    lte: price[1],
+                  },
+                },
+                {
+                  max: {
+                    gte: price[0],
+                  },
+                },
+                {
+                  type: "standard",
+                },
+              ],
+            },
+          ],
+        },
+      },
+    },
   });
 
-  console.log("Redirecting to...", url);
-  redirect(url);
+  // Get artists and genres in current location
+  const artistNames = [
+    ...new Set(
+      events.flatMap(
+        (event) => event.artist?.map((artist) => artist.name) || []
+      )
+    ),
+  ];
+  const genreNames = [...new Set(events.flatMap((event) => event.genre || []))];
+
+  console.log(`Got ${events.length} events after filtering!`);
+  return {
+    success: true,
+    events: events,
+    artistNames: artistNames,
+    genreNames: genreNames,
+  };
 }

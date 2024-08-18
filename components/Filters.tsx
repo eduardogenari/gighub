@@ -8,7 +8,8 @@ import { useForm } from "react-hook-form";
 import CalendarItem from "./CalendarItem";
 import SearchItem from "./SearchItem";
 import SliderItem from "./SliderItem";
-import { filter } from "@/actions/filter";
+import { search } from "@/actions/search";
+import CheckboxItem from "./CheckboxItem";
 
 const FormSchema = z.object({
   artist: z.string().optional(),
@@ -17,6 +18,7 @@ const FormSchema = z.object({
   genre: z.string().optional(),
   price: z.array(z.number()).length(2).optional(),
   location: z.string().optional(),
+  hideWithoutPrice: z.string().optional(),
 });
 
 export default function Filters({
@@ -29,6 +31,7 @@ export default function Filters({
   artist,
   genre,
   location,
+  hideWithoutPrice,
 }: {
   artists: string[];
   genres: string[];
@@ -39,6 +42,7 @@ export default function Filters({
   artist: string;
   genre: string;
   location: string;
+  hideWithoutPrice: string;
 }) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -46,7 +50,7 @@ export default function Filters({
 
   return (
     <Form {...form}>
-      <form action={filter} className="space-y-4">
+      <form action={search} className="space-y-4">
         <SearchItem
           form={form}
           name={"artist"}
@@ -90,6 +94,12 @@ export default function Filters({
           name={"price"}
           label={"Price range"}
           value={price}
+        />
+        <CheckboxItem
+          form={form}
+          name={"hideWithoutPrice"}
+          label={"Hide events without information on price"}
+          value={hideWithoutPrice}
         />
         <Button type="submit">Apply</Button>
       </form>
