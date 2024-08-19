@@ -18,7 +18,7 @@ interface EventCardProps {
 export default function EventCard({ event }: EventCardProps) {
   const startDate = new Date(event.dates.start.localDate);
   return (
-    <Link href={`/app/events/${event.id}/page`}>
+    <Link href={`/events/${event.id}`}>
       <Card className="m-3 w-72 aspect-[1/2] border border-white rounded-none shadow-none transition duration-200 transform hover:scale-105 cursor-pointer">
         <CardHeader className="p-0 w-72 h-72 border-red-500">
           <div className="relative h-full w-full">
