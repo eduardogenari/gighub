@@ -9,7 +9,6 @@ import {
 } from "./ui/card";
 import type { Event } from "@/types/event";
 import Image from "next/image";
-import Link from "next/link";
 
 interface EventCardProps {
   event: Event;
@@ -17,9 +16,16 @@ interface EventCardProps {
 
 export default function ResultsEventCard({ event }: EventCardProps) {
   const startDate = new Date(event.startDate);
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const url = `/events/${event.id}`;
+    window.open(url, "_blank");
+  };
+
   return (
-    <Link href={`/events/${event.id}`}>
-      <Card className="m-3 w-72 aspect-[1/2] border border-white rounded-none shadow-none transition duration-200 transform hover:scale-105 cursor-pointer">
+    <div onClick={handleClick} className="cursor-pointer">
+      <Card className="m-3 w-72 aspect-[1/2] border border-white rounded-none shadow-none transition duration-200 transform hover:scale-105">
         <CardHeader className="p-0 w-72 h-72 border-red-500">
           <div className="relative h-full w-full">
             <Image
@@ -37,6 +43,6 @@ export default function ResultsEventCard({ event }: EventCardProps) {
           <CardDescription>{event.venue[0].name}</CardDescription>
         </CardContent>
       </Card>
-    </Link>
+    </div>
   );
 }

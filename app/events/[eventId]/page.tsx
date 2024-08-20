@@ -1,5 +1,7 @@
 import ArtistTopTracks from "@/components/ArtistTopTracks";
+import { Button } from "@/components/ui/button";
 import prisma from "@/lib/prisma";
+import Image from "next/image";
 
 type PageProps = {
   params: {
@@ -38,38 +40,45 @@ export default async function Page({ params }: PageProps) {
     );
   }
 
-  console.log("event detail page");
-  console.log(event);
-
   // Find the image with the largest width
-  const largestImage = event.image.reduce((max, img) => (img.width > max.width ? img : max), event.image[0]);
+  const largestImage = event.image.reduce(
+    (max, img) => (img.width > max.width ? img : max),
+    event.image[0]
+  );
+
+  // Concatenate artist names
+  const artistNames = event.artist.map((artist) => artist.name).join(", ");
 
   return (
-    <main className="p-6">
-      <div className="image-gallery">
+    <main className="flex flex-col items-center justify-center">
+      <div className="h-[85vh] w-[85vw]">
         {largestImage && (
-          <img key={largestImage.id} src={largestImage.url} alt={`Image ${largestImage.id}`} width={largestImage.width} height={largestImage.height} />
+          <div className="relative h-full w-full">
+            <Image
+              fill
+              style={{ objectFit: "cover" }}
+              alt={`Image ${largestImage.id}`}
+              src={largestImage.url}
+              className="rounded-[0px]"
+            />
+          </div>
         )}
       </div>
-      <h1>{event.name}</h1>
-      <p>Start Date: {new Date(event.startDate).toLocaleDateString()}</p>
-      <p>End Date: {new Date(event.endDate).toLocaleDateString()}</p>
-      <p>Genre: {event.genre.join(", ")}</p>
-      <h2>Artist</h2>
-      <ul>
-        {event.artist.map((artist) => (
-          <li key={artist.id}>{artist.name}</li>
-        ))}
-      </ul>
-      <h2>Venue</h2>
-      <ul>
-        {event.venue.map((venue) => (
-          <li key={venue.id}>
-            {venue.name}, {venue.address}, {venue.city}, {venue.country}
-          </li>
-        ))}
-      </ul>
-      <div>
+      <div className="w-[85vw] mt-4 flex flex-col items-start">
+        <h2>{event.name}</h2>
+        <p>Start Date: {new Date(event.startDate).toLocaleDateString()}</p>
+        <p>End Date: {new Date(event.endDate).toLocaleDateString()}</p>
+        <p>Genre: {event.genre.join(", ")}</p>
+        <p>Artist: {artistNames}</p>
+        <p>
+          Venue:{" "}
+          {event.venue
+            .map((venue) => `${venue.name}, ${venue.address}`)
+            .join(", ")}
+        </p>
+        <Button className="w-[200px] mt-20 mb-10">Buy Ticket</Button>
+      </div>
+      <div className="w-[65vw] mt-4">
         {event.artist.map((artist) => (
           <ArtistTopTracks key={artist.id} artistName={artist.name} />
         ))}
@@ -77,3 +86,4 @@ export default async function Page({ params }: PageProps) {
     </main>
   );
 }
+

@@ -7,6 +7,7 @@ import {
   actionGetFirstArtistByName,
 } from "@/actions/artists";
 import Image from "next/image";
+import ReactAudioPlayer from "react-audio-player";
 
 type ArtistTopTracksProps = {
   artistName: string;
@@ -60,30 +61,43 @@ export default function ArtistTopTracks({ artistName }: ArtistTopTracksProps) {
     <main className="p-6">
       {artist && (
         <div>
-          <h2>{artist.name}</h2>
+          <h3>{artist.name} Top Tracks</h3>
         </div>
       )}
-      <h3>Top Tracks</h3>
-      <ul>
-        {topTracks.map((track, index) => (
-          <li key={track.id}>
-            {index + 1}. {track.name}
-            {track.album && track.album.images && track.album.images.length > 0 && (
-              <div>
-                <Image src={track.album.images[0].url} alt={`${track.name} song album`} width={200} height={200} />
-              </div>
-            )}
-            {track.preview_url && (
-              <div>
-                <audio controls>
-                  <source src={track.preview_url} type="audio/mpeg" />
-                  Your browser does not support the audio element.
-                </audio>
-              </div>
-            )}
-          </li>
-        ))}
-      </ul>
+      <div className="flex justify-center w-full">
+        <div className="w-[65vw]">
+          <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+            {topTracks.map((track, index) => (
+              <li key={track.id} className="flex flex-col items-start">
+                {track.album &&
+                  track.album.images &&
+                  track.album.images.length > 0 && (
+                    <div>
+                      <Image
+                        src={track.album.images[0].url}
+                        alt={`${track.name} song album`}
+                        width={200}
+                        height={200}
+                      />
+                    </div>
+                  )}
+                {track.preview_url && (
+                  <div>
+                    <ReactAudioPlayer
+                      src={track.preview_url}
+                      controls
+                      className="w-[200px] bg-white rounded-none mt-3"
+                    />
+                  </div>
+                )}
+                <div className="mt-3 mb-3">
+                  {index + 1}. {track.name}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </main>
   );
 }
