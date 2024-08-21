@@ -27,8 +27,8 @@ export default function LoginCard() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log(`email: ${email}`);
-    console.log(`password: ${password}`);
+    //console.log(`email: ${email}`);
+    //console.log(`password: ${password}`);
   };
 
   return (

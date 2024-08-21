@@ -86,7 +86,7 @@ export default function ArtistTopTracks({ artistName }: ArtistTopTracksProps) {
                     <ReactAudioPlayer
                       src={track.preview_url}
                       controls
-                      className="w-[200px] bg-white rounded-none mt-3"
+                      className="w-[200px] mt-3 "
                     />
                   </div>
                 )}

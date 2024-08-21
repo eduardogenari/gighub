@@ -62,7 +62,7 @@ export default async function Page({
     bounds = [west, east, south, north];
   }
 
-  console.log(location, bounds);
+  //console.log(location, bounds);
   // Convert strings for comparison
   startDate =
     typeof startDate === "string" ? YYYYMMDDToDate(startDate) : startDate;

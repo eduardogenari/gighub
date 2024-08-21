@@ -61,6 +61,8 @@ export default function Results(props: ResultsProps) {
     genre = "";
   }
 
+  console.log(events[0])
+
   return (
     <>
       <div className="bg-gray-200 overflow-hidden">
@@ -110,7 +112,7 @@ export default function Results(props: ResultsProps) {
         </div>
       </div>
       {events.length > 0 && events !== null ? (
-        <div className="bg-slate-100">
+        <div>
           <h2 className="flex items-center justify-center mt-0 p-4 text-2xl">
             Events in the area
           </h2>

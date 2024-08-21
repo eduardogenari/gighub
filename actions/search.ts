@@ -45,6 +45,6 @@ export async function search(formData: FormData) {
     query: query,
   });
 
-  console.log("Redirecting to...", url);
+  //console.log("Redirecting to...", url);
   redirect(url);
 }

@@ -6,8 +6,8 @@ export default async function EventsPage() {
   // Get events from Ticketmaster
   let events = await actionGetAllEvents();
 
-  console.log("Number of concerts before filtering", events.length);
-  console.log("Number of concerts before filtering", events[0].name);
+  //console.log("Number of concerts before filtering", events.length);
+  //console.log("Number of concerts before filtering", events[0].name);
 
   return (
     <main className="flex-grow flex items-center justify-center">

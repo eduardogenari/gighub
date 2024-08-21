@@ -32,6 +32,8 @@ export default async function Page({ params }: PageProps) {
     },
   });
 
+  console.log(event)
+
   if (!event) {
     return (
       <main className="p-6">
@@ -64,7 +66,7 @@ export default async function Page({ params }: PageProps) {
           </div>
         )}
       </div>
-      <div className="w-[85vw] mt-4 flex flex-col items-start">
+      <div className="w-[85vw] mt-6 flex flex-col items-start">
         <h2>{event.name}</h2>
         <p>Start Date: {new Date(event.startDate).toLocaleDateString()}</p>
         <p>End Date: {new Date(event.endDate).toLocaleDateString()}</p>
