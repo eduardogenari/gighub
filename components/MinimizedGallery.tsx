@@ -2,6 +2,15 @@
 
 import type { Event } from "@/types/event";
 import MinimizedEvent from "./MinimizedEvent";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "./ui/carousel";
+import { Card, CardContent } from "./ui/card";
+
 interface MinimizedGalleryProps {
   events: Event[];
 }
@@ -10,10 +19,22 @@ export default function MinimizedGallery(props: MinimizedGalleryProps) {
   const { events } = props;
   return (
     // TODO: Remove right padding
-    <div className="w-screen bg-slate-100 overflow-x-auto flex justify-center gap-2 p-2">
-      {events.map((event: Event) => (
-        <MinimizedEvent event={event} key={event.id} />
-      ))}
+    <div className="bg-slate-100 rounded-full px-16">
+      <Carousel className="w-full max-w-6xl">
+        <CarouselContent>
+          {events.map((event: Event) => (
+            <CarouselItem key={event.id} className="basis-auto py-1 pl-1">
+              <Card>
+                <CardContent className="p-0">
+                  <MinimizedEvent event={event} key={event.id} />
+                </CardContent>
+              </Card>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
     </div>
   );
 }
