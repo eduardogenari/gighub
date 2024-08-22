@@ -8,8 +8,8 @@ export default function Header() {
       <Link href="/">
         <h3><strong>gighub</strong></h3>
       </Link>
-      <Link href="/map">
-        <p>map</p>
+      <Link href="/events">
+        <p>events</p>
       </Link>
       <Link href="/login">
         <p>login</p>

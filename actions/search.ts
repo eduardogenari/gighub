@@ -41,7 +41,7 @@ export async function search(formData: FormData) {
 
   // Construct URL to pass variables to backend
   const url = format({
-    pathname: "/map",
+    pathname: "/events",
     query: query,
   });
 
