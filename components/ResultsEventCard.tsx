@@ -48,11 +48,6 @@ export default function ResultsEventCard({ event }: EventCardProps) {
             {event.venue[0].name}, {event.venue[0].city},{" "}
             {event.venue[0].country}
           </CardDescription>
-          {event.priceRange ? (
-            <CardDescription>
-              From: {event.priceRange[0].min} {event.priceRange[0].currency}
-            </CardDescription>
-          ) : null}
         </CardContent>
       </Card>
     </div>
