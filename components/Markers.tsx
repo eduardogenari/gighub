@@ -14,6 +14,7 @@ import {
 import { useState, useMemo, useCallback } from "react";
 import Spinner from "./Spinner";
 import { LatLngTuple } from "leaflet";
+import { useRouter } from "next/navigation";
 
 interface MarkersProps {
   events: Event[];
@@ -23,6 +24,7 @@ export default function Markers(props: MarkersProps) {
   const { events } = props;
   const [isImageLoaded, setImageLoading] = useState(true);
   const [currentEvents, setCurrentEvents] = useState<number[]>([]);
+  const router = useRouter();
 
   function onImageLoad() {
     setImageLoading(false);
@@ -166,7 +168,12 @@ export default function Markers(props: MarkersProps) {
                           </p>
                         ))
                     : null}
-                  <Button className="bg-orange-600">Go to event &rarr;</Button>
+                  <Button
+                    className="bg-orange-600"
+                    onClick={() => router.push(`/events/${event.id}/`)}
+                  >
+                    Go to event &rarr;
+                  </Button>
                 </div>
               </div>
               {filteredEvents.length > 1 ? (
