@@ -23,7 +23,7 @@ export default function ResultsEventCard({ event }: EventCardProps) {
     window.open(url, "_blank");
   };
 
-  const suitableImage = event.image.find(img => img.height > 300);
+  const suitableImage = event.image.find((img) => img.height > 300);
 
   return (
     <div onClick={handleClick} className="cursor-pointer">
@@ -44,8 +44,15 @@ export default function ResultsEventCard({ event }: EventCardProps) {
         <CardContent className="p-4 w-72">
           <CardTitle>{event.name}</CardTitle>
           <CardDescription>{startDate.toLocaleDateString()}</CardDescription>
-          <CardDescription>{event.venue[0].name}, {event.venue[0].city}, {event.venue[0].country}</CardDescription>
-          <CardDescription>From: {event.priceRange[0].min} {event.priceRange[0].currency}</CardDescription>
+          <CardDescription>
+            {event.venue[0].name}, {event.venue[0].city},{" "}
+            {event.venue[0].country}
+          </CardDescription>
+          {event.priceRange ? (
+            <CardDescription>
+              From: {event.priceRange[0].min} {event.priceRange[0].currency}
+            </CardDescription>
+          ) : null}
         </CardContent>
       </Card>
     </div>
