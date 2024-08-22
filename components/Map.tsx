@@ -163,7 +163,7 @@ export default function Map(props: MapProps) {
         ) : null}
       </MapContainer>
       {events.length > 0 && events !== null ? (
-        <div className="absolute bottom-0 z-50">
+        <div className="absolute bottom-0 z-50 m-6 flex justify-center w-full">
           <MinimizedGallery events={events} />
         </div>
       ) : null}
