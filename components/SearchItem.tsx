@@ -69,7 +69,7 @@ export default function SearchItem({
                 field.onChange(e);
                 handleInputChange(e);
               }}
-              className="border border-gray-200 rounded"
+              className="border border-gray-200 rounded w-[250px]"
             />
           </FormControl>
           {showSuggestions && suggestions.length > 0 ? (

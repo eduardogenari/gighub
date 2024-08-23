@@ -2,6 +2,9 @@ import ArtistTopTracks from "@/components/ArtistTopTracks";
 import { Button } from "@/components/ui/button";
 import prisma from "@/lib/prisma";
 import Image from "next/image";
+import { CiCalendar, CiLocationOn } from "react-icons/ci";
+import { PiMicrophoneThin } from "react-icons/pi";
+import { IoMdOptions } from "react-icons/io";
 
 type PageProps = {
   params: {
@@ -32,7 +35,7 @@ export default async function Page({ params }: PageProps) {
     },
   });
 
-  console.log(event)
+  console.log(event);
 
   if (!event) {
     return (
@@ -68,16 +71,26 @@ export default async function Page({ params }: PageProps) {
       </div>
       <div className="w-[85vw] mt-6 flex flex-col items-start">
         <h2>{event.name}</h2>
-        <p>Start Date: {new Date(event.startDate).toLocaleDateString()}</p>
-        <p>End Date: {new Date(event.endDate).toLocaleDateString()}</p>
-        <p>Genre: {event.genre.join(", ")}</p>
-        <p>Artist: {artistNames}</p>
-        <p>
-          Venue:{" "}
-          {event.venue
-            .map((venue) => `${venue.name}, ${venue.address}`)
-            .join(", ")}
-        </p>
+        <div className="flex items-center space-x-2">
+          <CiCalendar />
+          <p>{new Date(event.startDate).toLocaleDateString()}</p>
+        </div>
+        <div className="flex items-center space-x-2">
+          <PiMicrophoneThin />
+          <p>{artistNames}</p>
+        </div>
+        <div className="flex items-center space-x-2">
+          <CiLocationOn />
+          <p>
+            {event.venue
+              .map((venue) => `${venue.name}, ${venue.address}`)
+              .join(", ")}
+          </p>
+        </div>
+        <div className="flex items-center space-x-2">
+          <IoMdOptions />
+          <p>{event.genre.join(", ")}</p>
+        </div>
         <Button className="w-[200px] mt-20 mb-10">Buy Ticket</Button>
       </div>
       <div className="w-[65vw] mt-4">
@@ -89,3 +102,4 @@ export default async function Page({ params }: PageProps) {
   );
 }
 
+<PiMicrophoneThin />;

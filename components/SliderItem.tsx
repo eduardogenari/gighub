@@ -52,7 +52,7 @@ export default function SliderItem({
             onValueChange={handleChange}
             className={cn("w-full pt-1")}
           />
-          <div className="grid grid-cols-2 justify-between text-gray-500 gap-2">
+          <div className="grid grid-cols-2 justify-between text-gray-500 gap-2 w-[250px]">
             <FormControl>
               <Input
                 {...field}
@@ -70,7 +70,7 @@ export default function SliderItem({
                 value={max}
                 onChange={handleMaxChange}
                 placeholder={"Max"}
-                className="text-right focus-visible:ring-0 text-right shadow-none p-0"
+                className="text-right focus-visible:ring-0 shadow-none p-0"
               />
             </FormControl>
           </div>

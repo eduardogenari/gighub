@@ -37,7 +37,7 @@ export default function CalendarItem({
       control={form.control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex flex-col">
+        <FormItem className="flex flex-col w-[250px]">
           <FormLabel>{label}</FormLabel>
           <Popover>
             <PopoverTrigger asChild>

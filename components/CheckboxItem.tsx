@@ -29,7 +29,7 @@ export default function CheckboxItem({
       control={form.control}
       name={name}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className="w-[250px]">
           <FormControl>
             <Checkbox
               {...field}
