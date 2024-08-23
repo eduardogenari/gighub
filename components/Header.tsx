@@ -11,13 +11,10 @@ export default function Header() {
       <Link href="/events">
         <p>events</p>
       </Link>
-      <Link href="/login">
-        <p>login</p>
-      </Link>
       <ModeToggle />
-      <Link href="/profile">
-        <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+      <Link href="/login">
+        <Avatar className="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full">
+          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn"/>
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </Link>
