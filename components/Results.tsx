@@ -7,6 +7,7 @@ import { useMemo, useState } from "react";
 import { Button } from "./ui/button";
 import type { Event } from "@/types/event";
 import ResultsEventCard from "./ResultsEventCard";
+import ScrollToTopButton from "./ScrollToTopButton";
 
 interface ResultsProps {
   startDate: Date;
@@ -123,6 +124,7 @@ export default function Results(props: ResultsProps) {
           </div>
         </div>
       ) : null}
+      <ScrollToTopButton />
     </>
   );
 }
