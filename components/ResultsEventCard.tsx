@@ -9,6 +9,7 @@ import {
 } from "./ui/card";
 import type { Event } from "@/types/event";
 import Image from "next/image";
+import { CiCalendar, CiLocationOn } from "react-icons/ci";
 
 interface EventCardProps {
   event: Event;
@@ -43,11 +44,18 @@ export default function ResultsEventCard({ event }: EventCardProps) {
         </CardHeader>
         <CardContent className="p-4 w-72">
           <CardTitle>{event.name}</CardTitle>
+          <div className="flex items-center space-x-2 text-sm">
+          <CiCalendar />
           <CardDescription>{startDate.toLocaleDateString()}</CardDescription>
+        </div>
+        <div className="flex items-start space-x-2 text-sm">
+        <CiLocationOn />
           <CardDescription>
             {event.venue[0].name}, {event.venue[0].city},{" "}
             {event.venue[0].country}
           </CardDescription>
+        </div>
+
         </CardContent>
       </Card>
     </div>

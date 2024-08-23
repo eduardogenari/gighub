@@ -8,6 +8,8 @@ import { Button } from "./ui/button";
 import type { Event } from "@/types/event";
 import ResultsEventCard from "./ResultsEventCard";
 import ScrollToTopButton from "./ScrollToTopButton";
+import { IoOptionsOutline } from "react-icons/io5";
+import { IoMdOptions } from "react-icons/io";
 
 interface ResultsProps {
   startDate: Date;
@@ -67,13 +69,13 @@ export default function Results(props: ResultsProps) {
   return (
     <>
       <div className="bg-gray-200 overflow-hidden">
-        <div className="absolute z-50 xl:w-1/5 p-4">
+        <div className="fixed top-20 left-12 z-50">
           <Button
-            variant={"secondary"}
-            className="text-lg font-bold"
+            variant={"destructive"}
+            className="text-lg font-bold h-[50px] w-[50px] rounded-full transform hover:scale-110"
             onClick={() => setFiltersVisibility(!filtersVisibility)}
           >
-            Filters
+            <IoMdOptions />
           </Button>
           {filtersVisibility ? (
             <div className="bg-white p-4 mt-2 rounded">
