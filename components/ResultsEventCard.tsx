@@ -28,8 +28,8 @@ export default function ResultsEventCard({ event }: EventCardProps) {
 
   return (
     <div onClick={handleClick} className="cursor-pointer">
-      <Card className="m-3 w-72 aspect-[3/5] border border-none rounded-none shadow-none transition duration-200 transform hover:scale-105">
-        <CardHeader className="p-0 w-72 h-72 border-red-500">
+      <Card className="ml-5 mr-5 w-[200px] aspect-[1/2] border border-none rounded-none shadow-none transition duration-200 transform hover:scale-105">
+        <CardHeader className="p-0 w-[200px] h-[200px]">
           <div className="relative h-full w-full">
             {suitableImage && (
               <Image
@@ -42,8 +42,8 @@ export default function ResultsEventCard({ event }: EventCardProps) {
             )}
           </div>
         </CardHeader>
-        <CardContent className="p-4 w-72">
-          <CardTitle>{event.name}</CardTitle>
+        <CardContent className="p-0 w-[200px]">
+          <CardTitle className="text-base">{event.name}</CardTitle>
           <div className="flex items-center space-x-2 text-sm">
             <CiCalendar />
             <CardDescription>{startDate.toLocaleDateString()}</CardDescription>

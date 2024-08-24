@@ -119,10 +119,12 @@ export default function Results(props: ResultsProps) {
           <h2 className="flex items-center justify-center mt-0 p-4 text-2xl">
             Events in the area
           </h2>
-          <div className="self-center flex-grow flex items-center justify-center flex-wrap">
-            {events.map((event: Event) => (
-              <ResultsEventCard key={event.id} event={event} />
-            ))}
+          <div className="w-full flex justify-center">
+            <div className="w-[65vw] flex items-center justify-center flex-wrap">
+              {events.map((event: Event) => (
+                <ResultsEventCard key={event.id} event={event} />
+              ))}
+            </div>
           </div>
         </div>
       ) : null}
