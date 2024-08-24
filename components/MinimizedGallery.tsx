@@ -19,7 +19,7 @@ export default function MinimizedGallery(props: MinimizedGalleryProps) {
   const { events } = props;
   return (
     <div className="w-[55vw] mx-auto">
-      <Carousel className="w-full overflow-x-auto no-scrollbar">
+      <Carousel className="w-full">
         <CarouselContent>
           {events.map((event: Event) => (
             <CarouselItem key={event.id} className="basis-auto py-1 pl-1">
