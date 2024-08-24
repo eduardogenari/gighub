@@ -8,7 +8,6 @@ import { Button } from "./ui/button";
 import type { Event } from "@/types/event";
 import ResultsEventCard from "./ResultsEventCard";
 import ScrollToTopButton from "./ScrollToTopButton";
-import { IoOptionsOutline } from "react-icons/io5";
 import { IoMdOptions } from "react-icons/io";
 
 interface ResultsProps {
@@ -40,7 +39,7 @@ export default function Results(props: ResultsProps) {
     () =>
       dynamic(() => import("@/components/Map"), {
         loading: () => (
-          <div className="flex justify-center items-center h-[calc(100vh-4rem)]">
+          <div className="flex justify-center items-center h-[calc(100vh-6rem)]">
             <Spinner />
           </div>
         ),
@@ -69,7 +68,7 @@ export default function Results(props: ResultsProps) {
   return (
     <>
       <div className="bg-gray-200 overflow-hidden">
-        <div className="fixed top-20 left-12 z-50">
+        <div className="fixed top-20 left-7 z-50">
           <Button
             variant={"destructive"}
             className="text-lg font-bold h-[50px] w-[50px] rounded-full transform hover:scale-110"
@@ -78,7 +77,7 @@ export default function Results(props: ResultsProps) {
             <IoMdOptions />
           </Button>
           {filtersVisibility ? (
-            <div className="bg-white p-4 mt-2 rounded">
+            <div className="bg-background p-4 mt-2 rounded">
               <Filters
                 artists={artistNames}
                 genres={genreNames}
@@ -97,7 +96,7 @@ export default function Results(props: ResultsProps) {
             </div>
           ) : null}
         </div>
-        <div className="w-full h-[calc(100vh-4rem)] bg-gray-100 flex-grow relative">
+        <div className="w-full h-[calc(100vh-6rem)] bg-gray-100 flex-grow relative">
           <Map
             setArtistNames={setArtistNames}
             setGenreNames={setGenreNames}
@@ -115,18 +114,15 @@ export default function Results(props: ResultsProps) {
         </div>
       </div>
       {events.length > 0 && events !== null ? (
-        <div>
-          <h2 className="flex items-center justify-center mt-0 p-4 text-2xl">
-            Events in the area
-          </h2>
-          <div className="w-full flex justify-center">
+
+          <div className="mt-28 w-full flex justify-center">
             <div className="w-[65vw] flex items-center justify-center flex-wrap">
               {events.map((event: Event) => (
                 <ResultsEventCard key={event.id} event={event} />
               ))}
             </div>
           </div>
-        </div>
+
       ) : null}
       <ScrollToTopButton />
     </>

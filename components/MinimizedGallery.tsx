@@ -18,9 +18,8 @@ interface MinimizedGalleryProps {
 export default function MinimizedGallery(props: MinimizedGalleryProps) {
   const { events } = props;
   return (
-    // TODO: Remove right padding
-    <div className="bg-slate-100 rounded-full px-16">
-      <Carousel className="w-full max-w-6xl">
+    <div className="w-[55vw] mx-auto">
+      <Carousel className="w-full">
         <CarouselContent>
           {events.map((event: Event) => (
             <CarouselItem key={event.id} className="basis-auto py-1 pl-1">

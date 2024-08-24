@@ -2,21 +2,26 @@
 
 import type { Event } from "@/types/event";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 interface MinimizedEventProps {
   event: Event;
 }
 
-export default function MinimizedGallery(props: MinimizedEventProps) {
+export default function MinimizedEvent(props: MinimizedEventProps) {
   const { event } = props;
-  const router = useRouter();
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const url = `/events/${event.id}`;
+    window.open(url, "_blank");
+  };
+
   return (
     <div>
       {event?.image[0].url !== null ? (
         <div
           className="w-[100px] h-[100px] relative hover:cursor-pointer"
-          onClick={() => router.push(`/events/${event.id}/`)}
+          onClick={handleClick}
         >
           <Image
             layout="fill"

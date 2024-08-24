@@ -73,7 +73,7 @@ export default function SearchItem({
             />
           </FormControl>
           {showSuggestions && suggestions.length > 0 ? (
-            <ul className="border border-gray-200 rounded absolute z-10 w-[19.1rem]">
+            <ul className="border border-gray-200 rounded absolute z-10 w-[250px]">
               {suggestions.map((suggestion, index) => (
                 <li
                   key={index}
@@ -81,7 +81,7 @@ export default function SearchItem({
                     field.onChange(suggestion);
                     handleClick(suggestion);
                   }}
-                  className="px-3 cursor-pointer bg-white hover:bg-orange-100 text-sm p-2"
+                  className="px-3 cursor-pointer bg-background hover:bg-slate-500 text-sm p-2"
                 >
                   {suggestion}
                 </li>
