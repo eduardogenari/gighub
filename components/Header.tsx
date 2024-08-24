@@ -5,7 +5,7 @@ import { RiSearchLine } from "react-icons/ri";
 
 export default function Header() {
   return (
-    <header className="h-14 w-[65vw] mx-auto flex items-center justify-between">
+    <header className="h-14 w-[65vw] mx-2 md:mx-auto flex items-center justify-between">
       <div className="flex items-center space-x-20">
         <Link href="/">
           <h3>

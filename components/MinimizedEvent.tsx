@@ -20,7 +20,7 @@ export default function MinimizedEvent(props: MinimizedEventProps) {
     <div>
       {event?.image[0].url !== null ? (
         <div
-          className="w-[100px] h-[100px] relative hover:cursor-pointer"
+          className="w-[60px] h-[60px] md:w-[100px] md:h-[100px] relative hover:cursor-pointer"
           onClick={handleClick}
         >
           <Image
