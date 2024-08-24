@@ -1,10 +1,9 @@
 import { useShoppingCart } from "use-shopping-cart";
-import { formatCurrencyString } from "use-shopping-cart";
-import Image from "next/image";
 import { CartEntry } from "use-shopping-cart/core";
+import { CiCircleMinus } from "react-icons/ci";
 
 export default function CartItem({ item }: { item: CartEntry }) {
-  const { name, quantity, price } = item;
+  const { name, quantity, price, currency } = item;
   const { removeItem } = useShoppingCart();
 
   const removeItemFromCart = () => {
@@ -14,17 +13,12 @@ export default function CartItem({ item }: { item: CartEntry }) {
   return (
     <div className="flex items-center gap-4 mb-3">
       <div>
-        {name} <span className="text-xs">({quantity})</span>
+        {name} <span className="text-xs text-orange-700">({quantity})</span>
       </div>
       <div className="ml-auto">
-        {formatCurrencyString({ value: price, currency: "GBP" })}
+        {price} {currency}
       </div>
-      <button
-        onClick={() => removeItemFromCart()}
-        className="hover:bg-emerald-50 transition-colors rounded-full duration-500 p-1"
-      >
-        <Image alt="delete icon" src="./trash.svg" width={20} height={20} />
-      </button>
+      <CiCircleMinus onClick={() => removeItemFromCart()} className="w-5 h-5" />
     </div>
   );
 }

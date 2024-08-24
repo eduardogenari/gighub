@@ -4,6 +4,7 @@ import { useShoppingCart } from "use-shopping-cart";
 import { Button } from "@/components/ui/button";
 import type { Event } from "@/types/event";
 import { useState } from "react";
+import { dateToYYYYMMDD } from "@/lib/utils";
 
 type PaymentButtonsProps = {
   event: Event;
@@ -12,6 +13,12 @@ type PaymentButtonsProps = {
 export default function PaymentButtons({ event }: PaymentButtonsProps) {
   const { addItem } = useShoppingCart();
   const [quantity, setQuantity] = useState(1);
+
+  const standardPrice = event.priceRange
+    .filter((priceRange) => priceRange.type == "standard")
+    .map((priceRange) => priceRange)[0];
+  const price = standardPrice.min ? standardPrice.min : 0;
+  const currency = standardPrice.currency;
 
   const decreaseQuantity = () => {
     if (quantity > 1) {
@@ -26,15 +33,11 @@ export default function PaymentButtons({ event }: PaymentButtonsProps) {
   const addToCart = () => {
     addItem(
       {
-        name: event.name,
+        name: `${event.name} (${dateToYYYYMMDD(event.startDate)})`,
         description: event.name,
         id: event.id.toString(),
-        price:
-          event.priceRange[0]["min"] !== null ? event.priceRange[0]["min"] : 0,
-        currency:
-          event.priceRange[0]["currency"] !== null
-            ? event.priceRange[0]["currency"]
-            : "Unknown",
+        price: price,
+        currency: currency,
         image: event.image[0].url,
       },
       { count: quantity }
@@ -58,7 +61,7 @@ export default function PaymentButtons({ event }: PaymentButtonsProps) {
         +
       </button>
       <Button className="w-[200px]" onClick={() => addToCart()}>
-        Buy Ticket
+        Add to cart
       </Button>
     </div>
   );

@@ -28,27 +28,23 @@ export default function CheckoutButton() {
   }
 
   return (
-    <article className="mt-3 flex flex-col">
-      <div className="text-red-700 text-xs mb-3 h-5 text-center">
-        {totalPrice && totalPrice < 30
-          ? "You must have at least £0.30 in your basket"
-          : cartCount && cartCount > 20
-          ? "You cannot have more than 20 items"
-          : status === "redirect-error"
-          ? "Unable to redirect to Stripe checkout page"
-          : status === "no-items"
-          ? "Please add some items to your cart"
-          : null}
-      </div>
+    <article className="flex flex-col gap-4">
+      {totalPrice ? (
+        <div className="text-red-700 text-xs text-center">
+          {cartCount && cartCount > 5
+            ? "You cannot have more than 5 items"
+            : status === "redirect-error"
+            ? "Unable to redirect to Stripe checkout page"
+            : status === "no-items"
+            ? "Please add some items to your cart"
+            : null}
+        </div>
+      ) : null}
       <Button
         onClick={handleClick}
         className="disabled:bg-slate-300 disabled:cursor-not-allowed disabled:text-white"
         disabled={
-          (totalPrice && totalPrice < 30) ||
-          (cartCount && cartCount > 20) ||
-          status == "no-items"
-            ? true
-            : false
+          (cartCount && cartCount > 20) || status == "no-items" ? true : false
         }
       >
         {status !== "loading" ? "Proceed to checkout" : "Loading..."}

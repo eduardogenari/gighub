@@ -26,7 +26,7 @@ export default function Header() {
       <div className="flex items-center space-x-20">
         <div>
           <Button
-            className="flex gap-2 items-center"
+            className="flex gap-2 items-center m-0 p-0"
             variant={"ghost"}
             onClick={() => handleCartClick()}
           >
