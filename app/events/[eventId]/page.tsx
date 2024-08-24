@@ -1,5 +1,5 @@
 import ArtistTopTracks from "@/components/ArtistTopTracks";
-import { Button } from "@/components/ui/button";
+import BuyTicketButton from "@/components/BuyTicketButton";
 import prisma from "@/lib/prisma";
 import Image from "next/image";
 import { CiCalendar, CiLocationOn } from "react-icons/ci";
@@ -35,7 +35,7 @@ export default async function Page({ params }: PageProps) {
     },
   });
 
-  console.log(event);
+  //console.log(event);
 
   if (!event) {
     return (
@@ -69,8 +69,8 @@ export default async function Page({ params }: PageProps) {
           </div>
         )}
       </div>
-      <div className="w-[85vw] mt-6 flex flex-col items-start">
-        <h2>{event.name}</h2>
+      <div className="w-[85vw] mt-4 flex flex-col items-start">
+        <h2 className="mb-8">{event.name}</h2>
         <div className="flex items-center space-x-2">
           <CiCalendar />
           <p>{new Date(event.startDate).toLocaleDateString()}</p>
@@ -91,7 +91,7 @@ export default async function Page({ params }: PageProps) {
           <IoMdOptions />
           <p>{event.genre.join(", ")}</p>
         </div>
-        <Button className="w-[200px] mt-20 mb-10">Buy Ticket</Button>
+        <BuyTicketButton event={event} />
       </div>
       <div className="w-[65vw] mt-4">
         {event.artist.map((artist) => (
@@ -101,4 +101,3 @@ export default async function Page({ params }: PageProps) {
     </main>
   );
 }
-

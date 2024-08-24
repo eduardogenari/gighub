@@ -22,7 +22,10 @@ export default function EventCarousel({ events }: EventCarouselProps) {
   );
 
   return (
-    <Carousel className="h-[85vh] w-[85vw] flex flex-col" plugins={[plugin.current]}>
+    <Carousel
+      className="h-[85vh] w-[85vw] flex flex-col"
+      plugins={[plugin.current]}
+    >
       <CarouselContent>
         {events.map((event) => (
           <CarouselItem key={event.id}>
@@ -37,7 +40,11 @@ export default function EventCarousel({ events }: EventCarouselProps) {
                 />
               </div>
               <div>
-                <h3>{event.name}  |  {new Date(event.startDate).toLocaleDateString()}  |  {event.venue[0].city}, {event.venue[0].country}</h3>
+                <h3>
+                  {event.name} |{" "}
+                  {new Date(event.startDate).toLocaleDateString()} |{" "}
+                  {event.venue[0].city}, {event.venue[0].country}
+                </h3>
               </div>
             </div>
           </CarouselItem>
