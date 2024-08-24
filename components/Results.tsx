@@ -127,10 +127,13 @@ export default function Results(props: ResultsProps) {
           </div>
           {visibleEvents < events.length && (
             <div className="w-full flex justify-center mt-4">
-              <Button 
-              onClick={loadMoreEvents} 
-              variant={"secondary"}
-              className="w-[250px] mt-28 mb-28">Load More Events</Button>
+              <Button
+                onClick={loadMoreEvents}
+                variant={"secondary"}
+                className="w-[250px] mt-28 mb-28"
+              >
+                Load More Events
+              </Button>
             </div>
           )}
         </>

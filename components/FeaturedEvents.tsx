@@ -17,15 +17,15 @@ export default async function FeaturedEvents() {
   const today = new Date();
   const todayStr = today.toISOString().split("T")[0];
 
-  // Calculate the date 3 days from today
-  const threeDaysFromNow = new Date(today);
-  threeDaysFromNow.setDate(today.getDate() + 3);
-  const threeDaysFromNowStr = threeDaysFromNow.toISOString().split("T")[0];
+  // Calculate the date 5 days from today
+  const fiveDaysFromNow = new Date(today);
+  fiveDaysFromNow.setDate(today.getDate() + 5);
+  const fiveDaysFromNowStr = fiveDaysFromNow.toISOString().split("T")[0];
 
-  // Filter events with startDate within the next 3 days
+  // Filter events with startDate within the next 5 days
   const upcomingEvents = events.filter((event) => {
     const eventDateStr = event.startDate.toISOString().split("T")[0];
-    return eventDateStr >= todayStr && eventDateStr <= threeDaysFromNowStr;
+    return eventDateStr >= todayStr && eventDateStr <= fiveDaysFromNowStr;
   });
 
   // Filter events to include only those with the first image width greater than 1000
@@ -47,9 +47,23 @@ export default async function FeaturedEvents() {
     }
   });
 
+  // Create a set to keep track of unique 10-character segments from the image URLs
+  const uniqueImageSegments = new Set<string>();
+
+  // Filter events to exclude those with repeated 10-character segments in the image URLs
+  const finalFilteredEvents = uniqueUpcomingEvents.filter((event) => {
+    const imageSegment = event.image[0].url.substring(24, 34);
+    if (uniqueImageSegments.has(imageSegment)) {
+      return false;
+    } else {
+      uniqueImageSegments.add(imageSegment);
+      return true;
+    }
+  });
+
   return (
     <div className="flex-grow flex items-center justify-center">
-      <EventCarousel events={uniqueUpcomingEvents} />
+      <EventCarousel events={finalFilteredEvents} />
     </div>
   );
 }

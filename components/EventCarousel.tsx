@@ -37,7 +37,7 @@ export default function EventCarousel({ events }: EventCarouselProps) {
                 />
               </div>
               <div>
-                <h3>{event.name}  -  {new Date(event.startDate).toLocaleDateString()}</h3>
+                <h3>{event.name}  |  {new Date(event.startDate).toLocaleDateString()}  |  {event.venue[0].city}, {event.venue[0].country}</h3>
               </div>
             </div>
           </CarouselItem>
