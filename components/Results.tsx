@@ -53,6 +53,7 @@ export default function Results(props: ResultsProps) {
   const [eventsNumber, setEventsNumber] = useState<number>(0);
   const [filtersVisibility, setFiltersVisibility] = useState<boolean>(false);
   const [events, setEvents] = useState<Event[]>([]);
+  const [visibleEvents, setVisibleEvents] = useState<number>(50);
 
   // Declare artist and genre as empty strings if they do not exist in options
   // This can happen if the user passes them through the url
@@ -63,7 +64,9 @@ export default function Results(props: ResultsProps) {
     genre = "";
   }
 
-  console.log(events[0])
+  const loadMoreEvents = () => {
+    setVisibleEvents((prev) => prev + 50);
+  };
 
   return (
     <>
@@ -114,15 +117,23 @@ export default function Results(props: ResultsProps) {
         </div>
       </div>
       {events.length > 0 && events !== null ? (
-
+        <>
           <div className="mt-28 w-full flex justify-center">
             <div className="w-[65vw] flex items-center justify-center flex-wrap">
-              {events.map((event: Event) => (
+              {events.slice(0, visibleEvents).map((event: Event) => (
                 <ResultsEventCard key={event.id} event={event} />
               ))}
             </div>
           </div>
-
+          {visibleEvents < events.length && (
+            <div className="w-full flex justify-center mt-4">
+              <Button 
+              onClick={loadMoreEvents} 
+              variant={"secondary"}
+              className="w-[250px] mt-28 mb-28">Load More Events</Button>
+            </div>
+          )}
+        </>
       ) : null}
       <ScrollToTopButton />
     </>
