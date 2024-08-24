@@ -10,7 +10,7 @@ type BuyTicketButtonProps = {
 
 export default function BuyTicketButton({ event }: BuyTicketButtonProps) {
   const handleButtonClick = () => {
-    alert(`ok event id: ${event.id}`);
+    alert(`to stripe: event id ${event.id}`);
   };
 
   return (

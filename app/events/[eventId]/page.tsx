@@ -5,6 +5,7 @@ import Image from "next/image";
 import { CiCalendar, CiLocationOn } from "react-icons/ci";
 import { PiMicrophoneThin } from "react-icons/pi";
 import { IoMdOptions } from "react-icons/io";
+import GenerateTicketButton from "@/components/GenerateTicketButton";
 
 type PageProps = {
   params: {
@@ -91,7 +92,8 @@ export default async function Page({ params }: PageProps) {
           <IoMdOptions />
           <p>{event.genre.join(", ")}</p>
         </div>
-        <BuyTicketButton event={event} />
+        <BuyTicketButton event={event} /> {/* Alba, use this button to integrate with stripe :) */}
+        <GenerateTicketButton event={event} /> {/* This button is temporary, later the PDF will be sent with the confirmation email */}
       </div>
       <div className="w-[65vw] mt-4">
         {event.artist.map((artist) => (
