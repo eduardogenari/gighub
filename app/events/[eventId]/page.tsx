@@ -98,18 +98,15 @@ export default async function Page({ params }: PageProps) {
               .filter((priceRange) => priceRange.type == "standard")
               .map((priceRange, rangeIndex) =>
                 priceRange.min !== null && priceRange.currency !== null ? (
-                  <>
-                    <p
-                      key={rangeIndex}
-                      className="flex justify-start gap-2 items-center"
-                    >
+                  <span key={rangeIndex}>
+                    <p className="flex justify-start gap-2 items-center">
                       <CoinsIcon className="h-4 w-4 shrink-0" />
                       {priceRange.min} {priceRange.currency}
                     </p>
                     <PaymentButtons event={event} />
                     <GenerateTicketButton event={event} />
                     {/* This button is temporary, later the PDF will be sent with the confirmation email */}
-                  </>
+                  </span>
                 ) : null
               )
           : null}
