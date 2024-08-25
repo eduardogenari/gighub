@@ -16,8 +16,8 @@ function CartProvider({ children }: { children: React.ReactNode }) {
       currency={"EUR"}
       allowedCountries={countryList}
       billingAddressCollection={true}
-      successUrl={"http://localhost:3000?session_id={CHECKOUT_SESSION_ID}"}
-      cancelUrl={"http://localhost:3000"}
+      successUrl={process.env.NEXT_PUBLIC_SUCCESS_URL!}
+      cancelUrl={process.env.NEXT_PUBLIC_CANCEL_URL!}
       shouldPersist={false}
       cartMode="client-only"
     >
