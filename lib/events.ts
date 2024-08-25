@@ -215,7 +215,7 @@ const getEventsByCountryPage = async (country: string, page: number) => {
 };
 
 export const getEventsEurope = async () => {
-  const countries = env("EUROPE_COUNTRIES").split(",");
+  const countries = env("NEXT_PUBLIC_EUROPE_COUNTRIES").split(",");
   const allEventsEurope = [];
 
   for (const country of countries) {

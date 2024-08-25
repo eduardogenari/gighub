@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 
 export default function CheckoutButton() {
   const [status, setStatus] = useState("idle");
-  const { redirectToCheckout, cartCount, totalPrice } = useShoppingCart();
+  const { redirectToCheckout, cartCount, totalPrice, currency } = useShoppingCart();
 
   async function handleClick(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault();

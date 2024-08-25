@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import type { Event } from "@/types/event";
 import { useState } from "react";
 import { dateToYYYYMMDD } from "@/lib/utils";
+import { getPriceId } from "@/actions/stripe";
 
 type PaymentButtonsProps = {
   event: Event;
@@ -30,12 +31,21 @@ export default function PaymentButtons({ event }: PaymentButtonsProps) {
     setQuantity(quantity + 1);
   };
 
-  const addToCart = () => {
+  const location =
+    event.venue[0].name !== null
+      ? `${event.venue[0].name} (${event.venue[0].city}, ${event.venue[0].country})`
+      : `${event.venue[0].city}, ${event.venue[0].country}`;
+
+  const name = `${dateToYYYYMMDD(event.startDate)} - ${
+    event.name
+  } - ${location}`;
+
+  const addToCart = (priceId: string) => {
     addItem(
       {
-        name: `${event.name} (${dateToYYYYMMDD(event.startDate)})`,
+        name,
         description: event.name,
-        id: event.id.toString(),
+        id: priceId,
         price: price,
         currency: currency,
         image: event.image[0].url,
@@ -60,7 +70,13 @@ export default function PaymentButtons({ event }: PaymentButtonsProps) {
       >
         +
       </button>
-      <Button className="w-[200px]" onClick={() => addToCart()}>
+      <Button
+        className="w-[200px]"
+        onClick={async () => {
+          const priceId = await getPriceId(name);
+          addToCart(priceId);
+        }}
+      >
         Add to cart
       </Button>
     </div>

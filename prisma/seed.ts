@@ -1,6 +1,8 @@
 import * as bcrypt from "bcryptjs";
 import { PrismaClient } from "@prisma/client";
 import { getEventsEurope } from "../lib/events";
+import { stripe } from "../lib/stripe";
+import { dateToYYYYMMDD } from "../lib/utils";
 
 const prisma = new PrismaClient();
 
@@ -267,6 +269,18 @@ async function updateVenues() {
   city = "Sligo";
   country = "Ireland";
   updateVenue(venues, name, latitude, longitude, address, city, country);
+
+  // Update all venues from Antwerp to have the same city name
+  await prisma.venue.updateMany({
+    where: {
+      city: {
+        in: ["Merksem (Antwerpen)", "Antwerpen", "Antwerpen 1"],
+      },
+    },
+    data: {
+      city: "Antwerp",
+    },
+  });
 }
 
 async function loadLocations() {
@@ -325,11 +339,56 @@ async function loadLocations() {
   }
 }
 
+async function loadToStripe() {
+  console.log("Loading events as products into Stripe dashboard...");
+
+  const events = await prisma.event.findMany({
+    include: {
+      artist: true,
+      venue: true,
+      priceRange: true,
+      image: true,
+    },
+  });
+
+  for (const event of events) {
+    // Save only minimum prices
+    const standardPrice = event.priceRange
+      .filter((priceRange) => priceRange.type == "standard")
+      .map((priceRange) => priceRange)[0];
+
+    // If price is defined, save product
+    if (standardPrice !== undefined && standardPrice.min !== null) {
+      const price = standardPrice.min;
+      const currency = standardPrice.currency;
+      const location =
+        event.venue[0].name !== null
+          ? `${event.venue[0].name} (${event.venue[0].city}, ${event.venue[0].country})`
+          : `${event.venue[0].city}, ${event.venue[0].country}`;
+
+      // Create product with associated price
+      const product = await stripe.products.create({
+        name: `${dateToYYYYMMDD(event.startDate)} - ${
+          event.name
+        } - ${location}`,
+        description: `Ticket for ${event.name} in ${location} on ${event.startDate}`,
+        images: [event.image[0].url !== null ? event.image[0].url : ""],
+      });
+      await stripe.prices.create({
+        product: product.id,
+        unit_amount: Math.round(price * 100),
+        currency: currency,
+      });
+    }
+  }
+}
+
 main()
   .then(async () => {
     // loadData();
     updateVenues();
     loadLocations();
+    // loadToStripe();
   })
   .catch(async (e) => {
     console.error(e);
