@@ -170,8 +170,13 @@ export default function Markers(props: MarkersProps) {
                     : null}
                   <Button
                     className="bg-orange-600"
-                    onClick={() => router.push(`/events/${event.id}/`)}
+                    onClick={(e: React.MouseEvent) => {
+                      e.preventDefault();
+                      const url = `/events/${event.id}`;
+                      window.open(url, "_blank");
+                    }}
                   >
+
                     Go to event &rarr;
                   </Button>
                 </div>

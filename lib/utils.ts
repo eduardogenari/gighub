@@ -45,8 +45,8 @@ export function withinRange(rangeToCheck: number[], range: number[]) {
 
 export function sortWithCommas(array: string[]) {
   const sortedArray = array.sort((a, b) => {
-    const aWithComma = a.includes(',');
-    const bWithComma = b.includes(',');
+    const aWithComma = a.includes(",");
+    const bWithComma = b.includes(",");
 
     // Sort alphabetically if there are commas
     if (aWithComma === bWithComma) {
@@ -55,6 +55,6 @@ export function sortWithCommas(array: string[]) {
 
     // Go first if there are no commas
     return aWithComma ? 1 : -1;
-  }) 
-  return sortedArray
+  });
+  return sortedArray;
 }
