@@ -1,3 +1,5 @@
+"use client";
+
 import {
   MapContainer,
   TileLayer,
@@ -16,6 +18,7 @@ import Spinner from "./Spinner";
 import { useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import MinimizedGallery from "./MinimizedGallery";
+import { useTheme } from "next-themes";
 
 interface MapProps {
   setArtistNames: React.Dispatch<React.SetStateAction<string[]>>;
@@ -135,9 +138,26 @@ export default function Map(props: MapProps) {
     [boundingBox[3], boundingBox[1]], // North - East
   ];
 
+  const { theme } = useTheme();
+  const [basemapURL, setBasemapURL] = useState("light_all");
+  const [mapKey, setMapKey] = useState(0);
+  useEffect(() => {
+    let basemapName;
+    if (theme == "dark") {
+      basemapName = "dark_all";
+    } else {
+      basemapName = "light_all";
+    }
+    setBasemapURL(
+      `https://{s}.basemaps.cartocdn.com/rastertiles/${basemapName}/{z}/{x}/{y}{r}.png`
+    );
+    setMapKey((prevKey) => prevKey + 1);
+  }, [theme]);
+
   return (
     <>
       <MapContainer
+        key={mapKey}
         bounds={mapBounds}
         scrollWheelZoom={true}
         style={{
@@ -151,7 +171,7 @@ export default function Map(props: MapProps) {
         attributionControl={false}
       >
         <CustomEvents setBoundingBox={setBoundingBox} />
-        <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/spotify_dark/{z}/{x}/{y}{r}.png" />
+        <TileLayer url={basemapURL} />
         <ZoomControl position="topright" />
         <ChangeView boundingBox={boundingBox} />
         {!eventsLoaded ? (
