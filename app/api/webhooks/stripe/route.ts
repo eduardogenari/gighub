@@ -41,6 +41,7 @@ export async function POST(req: Request) {
         case "checkout.session.completed":
           data = event.data.object as Stripe.Checkout.Session;
           console.log(`💰 CheckoutSession status: ${data.payment_status}`);
+          await fetch(`${process.env.NEXT_PUBLIC_SUCCESS_URL}/api/resend`)
           break;
         case "payment_intent.payment_failed":
           data = event.data.object as Stripe.PaymentIntent;
