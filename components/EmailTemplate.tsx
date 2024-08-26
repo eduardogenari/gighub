@@ -1,15 +1,15 @@
 import * as React from "react";
 import type { Stripe } from "stripe";
 interface EmailTemplateProps {
-  firstName: string;
+  name: string;
   products: Stripe.Response<Stripe.ApiList<Stripe.LineItem>>;
 }
 export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
-  firstName,
+  name,
   products,
 }) => (
   <div>
-    <h1>Hi {firstName}!</h1>
+    <h1>Hi {name}!</h1>
     <h2>Products</h2>
     {products.data.map((product, index) => (
       <div key={index}>
