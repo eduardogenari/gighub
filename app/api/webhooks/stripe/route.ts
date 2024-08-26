@@ -1,8 +1,7 @@
-import type { Stripe } from "stripe";
-
 import { NextResponse } from "next/server";
-
 import { stripe } from "@/lib/stripe";
+import { sendEmail } from "@/actions/stripe";
+import type { Stripe } from "stripe";
 
 export async function POST(req: Request) {
   let event: Stripe.Event;
@@ -41,8 +40,7 @@ export async function POST(req: Request) {
         case "checkout.session.completed":
           data = event.data.object as Stripe.Checkout.Session;
           console.log(`💰 CheckoutSession status: ${data.payment_status}`);
-          // TODO: Call resend API to send email
-          // await fetch(`${process.env.NEXT_PUBLIC_SUCCESS_URL}/api/resend`)
+          sendEmail(data)
           break;
         case "payment_intent.payment_failed":
           data = event.data.object as Stripe.PaymentIntent;
