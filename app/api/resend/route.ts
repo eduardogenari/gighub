@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     id = "None";
   }
 
-  console.log("in post", data);
+  console.log("POST", id);
   try {
     const { data, error } = await resend.emails.send({
       from: "Alba <hello@resend.dev>",

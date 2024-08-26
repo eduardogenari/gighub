@@ -16,7 +16,7 @@ export async function getPriceId(name: string) {
 }
 
 export async function sendEmail(data: Stripe.Checkout.Session) {
-  await fetch(`${process.env.NEXT_PUBLIC_SUCCESS_URL}/api/resend`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_SUCCESS_URL}/api/resend`, {
     method: "POST",
     body: JSON.stringify({
       id: data.id,
@@ -25,4 +25,5 @@ export async function sendEmail(data: Stripe.Checkout.Session) {
       "content-type": "application/json",
     },
   });
+  return response;
 }
