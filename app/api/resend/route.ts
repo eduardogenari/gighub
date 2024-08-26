@@ -7,13 +7,12 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(req: Request) {
   const body = await req.json();
   let id;
-  if (body.id !== null) {
+  if (body !== null) {
     id = body.id;
   } else {
     id = "None";
   }
 
-  console.log("POST", id);
   try {
     const { data, error } = await resend.emails.send({
       from: "Alba <hello@resend.dev>",
