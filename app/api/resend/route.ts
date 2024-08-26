@@ -13,7 +13,6 @@ export async function POST(req: Request) {
   const name = session.customer_details.name;
   const email = session.customer_details.email;
   const address = session.customer_details.address;
-  console.log(email);
 
   try {
     const { data, error } = await resend.emails.send({

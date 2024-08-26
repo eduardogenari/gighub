@@ -16,6 +16,7 @@ export async function getPriceId(name: string) {
 }
 
 export async function sendEmail(data: Stripe.Checkout.Session) {
+  console.log("Data", data);
   const session = await stripe.checkout.sessions.retrieve(data.id);
   const products = await stripe.checkout.sessions.listLineItems(data.id);
 
@@ -24,7 +25,7 @@ export async function sendEmail(data: Stripe.Checkout.Session) {
     method: "POST",
     body: JSON.stringify({
       products,
-      session
+      session,
     }),
     headers: {
       "content-type": "application/json",

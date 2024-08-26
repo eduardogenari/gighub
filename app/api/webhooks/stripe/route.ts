@@ -41,8 +41,9 @@ export async function POST(req: Request) {
           data = event.data.object as Stripe.Checkout.Session;
           console.log(`💰 CheckoutSession status: ${data.payment_status}`);
           const response = await sendEmail(data);
+          console.log(response);
           if (!response.ok) {
-            console.error("Failed to send email");
+            console.error(`Failed to send email: ${response.statusText}`);
           } else {
             console.log("Email sent")
           }
