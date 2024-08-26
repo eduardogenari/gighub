@@ -6,19 +6,14 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   const body = await req.json();
-  let id;
-  if (body !== null) {
-    id = body.id;
-  } else {
-    id = "None";
-  }
+  let products = body.products;
 
   try {
     const { data, error } = await resend.emails.send({
       from: "Alba <hello@resend.dev>",
       to: ["alba.vilanova@outlook.com"],
       subject: "Receipt from Stripe",
-      react: EmailTemplate({ firstName: "Alba", id }),
+      react: EmailTemplate({ firstName: "Alba", products }),
       attachments: [], // TODO: Add PDF
     });
 
