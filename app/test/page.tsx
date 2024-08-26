@@ -21,7 +21,7 @@ export default async function Page() {
 
   //const concerts = await actionGetEventsByDate(
   //  formatDateToISO("2024-08-11"),
-  //  formatDateToISO("2024-08-31")
+  //  formatDateToISO("2024-08-31") 
   //);
 
   //const concert = await actionGetEventById("G5d0Z9YlaQsP_");
