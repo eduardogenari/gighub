@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import ArtistTopTracks from "@/components/ArtistTopTracks";
 import { generatePDF, generateAndSavePDF } from "@/lib/pdf";
@@ -19,7 +21,7 @@ export default function Page() {
     <>
       <div>
         <ArtistTopTracks artistName="The Tyets" />
-        <div className="flex gap-2 mt-4"> 
+        <div className="flex gap-2 mt-4">
           <Button onClick={handleGeneratePDF}>Generar PDF</Button>
           <Button onClick={handleSavePDF}>Guardar PDF como archivo</Button>
         </div>
