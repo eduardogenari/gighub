@@ -28,7 +28,7 @@ export default function EventCarousel({ events }: EventCarouselProps) {
     >
       <CarouselContent>
         {events.map((event) => (
-          <CarouselItem key={event.id}>
+          <CarouselItem key={event.id} className="pl-0">
             <div className="h-[85vh] w-[85vw] flex flex-col">
               <div className="relative h-full w-full">
                 <Image

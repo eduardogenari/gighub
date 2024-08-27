@@ -23,31 +23,17 @@ export default function Header() {
 
   return (
     <header className="h-14 w-[65vw] mx-2 md:mx-auto flex items-center justify-between">
-      <div className="flex items-center">
+      <div className="flex items-center space-x-10">
         <Link href="/">
-          <h3 className="hover:text-destructive mr-10">
+          <h3 className="hover:text-destructive">
             <strong>gighub</strong>
           </h3>
         </Link>
-        <Input
-          type="search"
-          placeholder="Barcelona, Spain"
-          ref={inputRef}
-          style={{
-            width: "170px",
-            border: "none",
-            outline: "none",
-            boxShadow: "none",
-            WebkitAppearance: "none",
-            MozAppearance: "none",
-            appearance: "none",
-          }}
-        />
         <Link href="/events">
-          <RiSearchLine className="w-6 h-6 hover:text-destructive" />
+          <p className="hover:text-destructive">events</p>
         </Link>
       </div>
-      <div className="flex items-center space-x-20">
+      <div className="flex items-center space-x-10">
         <ModeToggle />
         <div>
           <Button
