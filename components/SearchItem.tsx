@@ -69,11 +69,11 @@ export default function SearchItem({
                 field.onChange(e);
                 handleInputChange(e);
               }}
-              className="border border-gray-200 rounded w-[250px]"
+              className="border rounded w-[250px]"
             />
           </FormControl>
           {showSuggestions && suggestions.length > 0 ? (
-            <ul className="border border-gray-200 rounded absolute z-10 w-[250px]">
+            <ul className="border rounded absolute z-10 w-[250px]">
               {suggestions.map((suggestion, index) => (
                 <li
                   key={index}
