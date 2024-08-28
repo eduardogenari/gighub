@@ -43,12 +43,12 @@ export default function ResultsEventCard({ event }: EventCardProps) {
         </CardHeader>
         <CardContent className="p-0 w-[200px]">
           <CardTitle className="text-base">{event.name}</CardTitle>
-          <div className="flex items-center space-x-2 text-sm">
-            <CiCalendar />
+          <div className="flex items-center text-sm text-muted-foreground">
+            <CiCalendar className="w-4 h-4 mr-2" />
             <CardDescription>{startDate.toLocaleDateString()}</CardDescription>
           </div>
-          <div className="flex items-start space-x-2 text-sm">
-            <CiLocationOn />
+          <div className="flex items-start text-sm text-muted-foreground">
+            <CiLocationOn className="w-4 h-4 mr-2 flex-shrink-0" />
             <CardDescription>
               {event.venue[0].name}, {event.venue[0].city},{" "}
               {event.venue[0].country}
