@@ -130,7 +130,7 @@ export default function Results(props: ResultsProps) {
               <Button
                 onClick={loadMoreEvents}
                 variant={"secondary"}
-                className="w-[250px] mt-28 mb-28"
+                className="w-[250px] mt-6 mb-16"
               >
                 Load More Events
               </Button>

@@ -24,18 +24,16 @@ export default function Header() {
 
   return (
     <header className="h-14 w-[65vw] mx-2 md:mx-auto flex items-center justify-between">
-      <div className="flex items-center space-x-10">
-        <Link href="/">
-          <h3 className="hover:text-destructive">
-            <strong>gighub</strong>
-          </h3>
-        </Link>
+      <Link href="/">
+        <h3 className="hover:text-destructive">
+          <strong>gighub</strong>
+        </h3>
+      </Link>
+      <div className="flex justify-end gap-10 items-center">
         <Link href="/events">
           <p className="hover:text-destructive">events</p>
         </Link>
         <ModeToggle />
-      </div>
-      <div className="flex items-center space-x-10">
         {isEventDetailPage && (
           <div>
             <Button

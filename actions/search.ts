@@ -48,3 +48,12 @@ export async function search(formData: FormData) {
   //console.log("Redirecting to...", url);
   redirect(url);
 }
+
+export async function searchLocation(formData: FormData) {
+  const location = formData.get("location") as string;
+  const url = format({
+    pathname: "/events",
+    query: { location },
+  });
+  redirect(url);
+}
