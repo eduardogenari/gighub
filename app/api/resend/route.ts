@@ -1,5 +1,5 @@
 import { EmailTemplate } from "@/components/EmailTemplate";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { streamToBuffer } from "@/lib/utils";
 import { generatePDF } from "@/lib/pdf";

@@ -7,6 +7,7 @@ import { PiMicrophoneThin } from "react-icons/pi";
 import { IoMdOptions } from "react-icons/io";
 import GenerateTicketButton from "@/components/GenerateTicketButton";
 import { CoinsIcon } from "lucide-react";
+import SendEmailButton from "@/components/SendEmailButton";
 
 type PageProps = {
   params: {
@@ -52,6 +53,8 @@ export default async function Page({ params }: PageProps) {
     (max, img) => (img.width > max.width ? img : max),
     event.image[0]
   );
+
+  console.log("event" + event)
 
   // Concatenate artist names
   const artistNames = event.artist.map((artist) => artist.name).join(", ");
@@ -104,8 +107,7 @@ export default async function Page({ params }: PageProps) {
                       {priceRange.min} {priceRange.currency}
                     </p>
                     <PaymentButtons event={event} />
-                    <GenerateTicketButton event={event} />
-                    {/* This button is temporary, later the PDF will be sent with the confirmation email */}
+                    <SendEmailButton event={event} />
                   </span>
                 ) : null
               )

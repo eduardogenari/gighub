@@ -10,7 +10,6 @@ export default function CartItem({ item }: { item: CartEntry }) {
   const removeItemFromCart = () => {
     removeItem(item.id);
   };
-  console.log(image);
 
   return (
     <div className="flex items-center gap-4 mb-3">
