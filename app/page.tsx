@@ -17,8 +17,10 @@ export default async function Home() {
   return (
     <main className="relative w-full h-full flex items-center justify-center overflow-hidden">
       <FeaturedEvents />
-      <div className="absolute top-14 left-0 right-0 bottom-14 flex items-center justify-center">
-        <LocationSearch locations={locationNames} />
+      <div className="absolute top-14 left-0 right-0 bottom-14 flex items-center justify-center z-10 pointer-events-none">
+        <div className="pointer-events-auto">
+          <LocationSearch locations={locationNames} />
+        </div>
       </div>
     </main>
   );

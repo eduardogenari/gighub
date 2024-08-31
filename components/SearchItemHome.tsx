@@ -66,7 +66,7 @@ import {
                   field.onChange(e);
                   handleInputChange(e);
                 }}
-                className="mb-4 mt-0 px-0 py-0 border-none rounded-none w-[400px] h-[35px] focus:rounded-none focus:outline-transparent focus:ring-transparent focus:border-none focus-visible:outline-transparent"
+                className="mb-4 mt-0 px-0 py-0 border-none rounded-none w-[400px] h-[35px] shadow-none outline outline-0 focus:rounded-none focus:outline-0 focus:border-none focus-visible:ring-0 focus-visible:ring-transparent"
               />
             </FormControl>
             {showSuggestions && suggestions.length > 0 ? (
