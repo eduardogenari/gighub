@@ -62,7 +62,7 @@ export default async function FeaturedEvents() {
   });
 
   return (
-    <div className="flex-grow flex items-center justify-center">
+    <div className="h-[85vh] w-[85vw] flex items-center justify-center">
       <EventCarousel events={finalFilteredEvents} />
     </div>
   );

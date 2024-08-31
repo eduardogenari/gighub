@@ -7,6 +7,8 @@ import { useForm } from "react-hook-form";
 import SearchItem from "@/components/SearchItem";
 import { searchLocation } from "@/actions/search";
 import { Button } from "./ui/button";
+import { FaArrowRight } from "react-icons/fa";
+import SearchItemHome from "./SearchItemHome";
 
 const FormSchema = z.object({
   location: z.string(),
@@ -21,18 +23,17 @@ export default function LocationSearch({ locations }: { locations: string[] }) {
     <Form {...form}>
       <form
         action={searchLocation}
-        className="flex justify-center items-end gap-2"
+        className="w-[455px] h-[55px] flex flex-row justify-center items-center bg-background p-[10px]"
       >
-        <SearchItem
+        <SearchItemHome
           form={form}
           name={"location"}
-          label={"Location"}
-          placeholder={"Type a location"}
+          label={""}
           options={locations}
           value={"Barcelona, Spain"}
         />
-        <Button type="submit" className="">
-          Search
+        <Button type="submit" className="h-[35px] w-[35px] rounded-none mt-2 mb-2 border-[1px] border-primary">
+          <FaArrowRight className="h-4 w-4 shrink-0"/>
         </Button>
       </form>
     </Form>

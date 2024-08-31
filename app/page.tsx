@@ -15,9 +15,11 @@ export default async function Home() {
   const locationNames = cityCountryNames.concat(countryNames);
 
   return (
-    <main className="w-[65vw] mx-2 md:mx-auto flex-1 flex flex-row items-center justify-start gap-20">
-      <LocationSearch locations={locationNames} />
+    <main className="relative w-full h-full flex items-center justify-center overflow-hidden">
       <FeaturedEvents />
+      <div className="absolute top-14 left-0 right-0 bottom-14 flex items-center justify-center">
+        <LocationSearch locations={locationNames} />
+      </div>
     </main>
   );
 }

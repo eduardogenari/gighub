@@ -24,14 +24,14 @@ export default function EventCarousel({ events }: EventCarouselProps) {
 
   return (
     <Carousel
-      className="h-[60vh] w-[60vw] flex flex-col"
+      className="h-[85vh] w-[85vw] flex flex-col"
       plugins={[plugin.current]}
     >
       <CarouselContent>
         {events.map((event) => (
           <CarouselItem key={event.id} className="pl-0">
             <Link href={`/events/${event.id}`}>
-              <div className="h-[60vh] w-[60vw] flex flex-col">
+              <div className="h-[85vh] w-[85vw] flex flex-col">
                 <div className="relative h-full w-full">
                   <Image
                     fill
