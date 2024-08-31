@@ -93,7 +93,7 @@ export default function Results(props: ResultsProps) {
                 location={location}
                 hideWithoutPrice={hideWithoutPrice}
               />
-              <p className="text-sm mt-4 text-orange-600">
+              <p className="text-sm mt-4 text-[hsl(var(--destructive))]">
                 Number of events: {eventsNumber}
               </p>
             </div>

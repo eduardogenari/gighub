@@ -23,17 +23,17 @@ export default async function Page({
       // TODO: Style this
       return (
         <div className="w-[65vw] mx-2 md:mx-auto my-10 flex-1">
-          <h1 className="text-2xl font-medium">Confirmation</h1>
-          <h2 className="text-xl font-medium text-destructive">
+          <h2 className="my-16">Purchase confirmation</h2>
+          <h3 className="text-destructive">
             Payment status
-          </h2>
+          </h3>
           <p>
             {session.payment_status.charAt(0).toUpperCase() +
               session.payment_status.slice(1)}
           </p>
-          <h2 className="text-xl font-medium text-destructive">
+          <h3 className="text-destructive">
             Customer details
-          </h2>
+          </h3>
           <p>{session.customer_details?.name}</p>
           <p>{session.customer_details?.email}</p>
           <p>
@@ -44,7 +44,7 @@ export default async function Page({
             {session.customer_details?.address?.state},{" "}
             {session.customer_details?.address?.country}
           </p>
-          <h2 className="text-xl font-medium text-destructive">Products</h2>
+          <h3 className="text-destructive">Products</h3>
           {products.data.map((product, index) => (
             <div key={index}>
               <p>{product.id}</p>
@@ -55,18 +55,18 @@ export default async function Page({
               </p>
             </div>
           ))}
-          <h2 className="text-xl font-medium text-destructive">Total amount</h2>
+          <h3 className="text-destructive">Total amount</h3>
           <p>
             {session.amount_total ? session.amount_total / 100 : "Unknown"}{" "}
             {session.currency}
           </p>
-          <Button onClick={handleSendEmail} className="my-4">Send confirmation e-mail</Button>
+          <Button onClick={handleSendEmail} className="my-16 w-[200px]">Send confirmation e-mail</Button>
         </div>
       );
     } else {
       return (
         <div className="w-[65vw] mx-2 md:mx-auto my-10 flex-1">
-          <h1 className="text-2xl font-medium">Confirmation</h1>
+          <h2 className="my-16">Purchase confirmation</h2>
           <p className="my-2">Information could not be retrieved</p>
         </div>
       );

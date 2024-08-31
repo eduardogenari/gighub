@@ -42,7 +42,7 @@ export default function Header() {
               onClick={() => handleCartClick()}
             >
               <IoMdCart className="w-6 h-6 hover:text-destructive" />
-              <div className="rounded-full bg-orange-500 text-xs text-white w-6 h-6 flex justify-center items-center">
+              <div className="rounded-full bg-[hsl(var(--destructive))] text-xs text-white w-6 h-6 flex justify-center items-center">
                 {cartCount}
               </div>
             </Button>

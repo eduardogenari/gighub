@@ -57,21 +57,8 @@ export default function PaymentButtons({ event }: PaymentButtonsProps) {
 
   return (
     <div className="flex justify-around items-center mt-20 mb-10">
-      <button
-        onClick={decreaseQuantity}
-        className="hover:text-white hover:bg-orange-500 w-8 h-8 rounded-full transition-colors duration-500"
-      >
-        -
-      </button>
-      <span className="w-10 text-center rounded-md mx-3">{quantity}</span>
-      <button
-        onClick={increaseQuantity}
-        className="hover:text-white hover:bg-orange-500 w-8 h-8 rounded-full transition-colors duration-500"
-      >
-        +
-      </button>
       <Button
-        className="w-[200px]"
+        className="w-[200px] mr-10"
         onClick={async () => {
           const priceId = await getPriceId(name);
           addToCart(priceId);
@@ -79,6 +66,19 @@ export default function PaymentButtons({ event }: PaymentButtonsProps) {
       >
         Add to cart
       </Button>
+      <button
+        onClick={decreaseQuantity}
+        className="hover:text-white hover:bg-[hsl(var(--destructive))] w-8 h-8 rounded-full transition-colors duration-500"
+      >
+        -
+      </button>
+      <span className="w-10 text-center rounded-md mx-3">{quantity}</span>
+      <button
+        onClick={increaseQuantity}
+        className="hover:text-white hover:bg-[hsl(var(--destructive))] w-8 h-8 rounded-full transition-colors duration-500"
+      >
+        +
+      </button>
     </div>
   );
 }

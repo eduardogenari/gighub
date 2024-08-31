@@ -128,7 +128,7 @@ export default function Markers(props: MarkersProps) {
                   </div>
                 ) : null}
                 <div className="px-4 pb-4 leading-3">
-                  <h2 className="font-bold text-orange-600 text-base">
+                  <h2 className="font-bold text-[hsl(var(--destructive))] text-base">
                     {event.name}
                   </h2>
                   <p className="flex justify-start gap-2 items-center">
@@ -169,7 +169,7 @@ export default function Markers(props: MarkersProps) {
                         ))
                     : null}
                   <Button
-                    className="bg-orange-600"
+                  variant="destructive"
                     onClick={(e: React.MouseEvent) => {
                       e.preventDefault();
                       const url = `/events/${event.id}`;
@@ -191,7 +191,7 @@ export default function Markers(props: MarkersProps) {
                           className={
                             "w-full h-1 border-0 rounded " +
                             (currentEvents[index] === filteredEventIndex
-                              ? "bg-orange-500"
+                              ? "bg-[hsl(var(--destructive))]"
                               : "bg-gray-300 hover:cursor-pointer")
                           }
                           onClick={() => {
