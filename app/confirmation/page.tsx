@@ -39,9 +39,8 @@ export default async function Page({
           <p>
             {session.customer_details?.address?.line1},{" "}
             {session.customer_details?.address?.line2},{" "}
-            {session.customer_details?.address?.postal_code}
+            {session.customer_details?.address?.postal_code},{" "}
             {session.customer_details?.address?.city},{" "}
-            {session.customer_details?.address?.state},{" "}
             {session.customer_details?.address?.country}
           </p>
           <h3 className="text-destructive">Products</h3>
