@@ -373,6 +373,9 @@ async function loadToStripe() {
         } - ${location}`,
         description: `Ticket for ${event.name} in ${location} on ${event.startDate}`,
         images: [event.image[0].url !== null ? event.image[0].url : ""],
+        metadata: {
+          id: event.id,
+        },
       });
       await stripe.prices.create({
         product: product.id,
@@ -386,9 +389,9 @@ async function loadToStripe() {
 main()
   .then(async () => {
     // loadData();
-    updateVenues();
-    loadLocations();
-    // loadToStripe();
+    // updateVenues();
+    // loadLocations();
+    loadToStripe();
   })
   .catch(async (e) => {
     console.error(e);
