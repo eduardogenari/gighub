@@ -24,9 +24,9 @@ export async function POST(req: Request) {
     const pdfBuffer = await streamToBuffer(pdfStream);
 
     const { data, error } = await resend.emails.send({
-      from: "Alba <hello@resend.dev>",
+      from: "GigHub <hello@resend.dev>",
       to: ["laia.valenti@gmail.com"],
-      subject: "Receipt from Stripe",
+      subject: "Your order...",
       react: EmailTemplate({ name, products }),
       attachments:  [
         {

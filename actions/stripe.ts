@@ -1,6 +1,7 @@
 "use server";
 
 import { stripe } from "@/lib/stripe";
+import { env } from "@/lib/env";
 import type { Stripe } from "stripe";
 
 export async function getPriceId(name: string) {
@@ -21,7 +22,7 @@ export async function sendEmail(data: Stripe.Checkout.Session) {
   const products = await stripe.checkout.sessions.listLineItems(data.id);
 
   console.log(`Sending email to ${session.customer_details?.email}...`);
-  const response = await fetch(`${process.env.RESEND_URL}/api/resend`, {
+  const response = await fetch(`${env("RESEND_URL")}/api/resend`, {
     method: "POST",
     body: JSON.stringify({
       products,
