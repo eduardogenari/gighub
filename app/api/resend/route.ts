@@ -1,8 +1,11 @@
-import { EmailTemplate } from "@/components/EmailTemplate";
+
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { streamToBuffer } from "@/lib/utils";
 import { generatePDF } from "@/lib/pdf";
+import { getProductDetailsFromSession } from "@/lib/stripe";
+import { EmailTemplate } from "@/components/EmailTemplate";
+
 
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -19,18 +22,18 @@ export async function POST(req: Request) {
 
   try {
 
-
-    const pdfStream = await generatePDF();
+    let event = await getProductDetailsFromSession(session.id);
+    const pdfStream = await generatePDF(event);
     const pdfBuffer = await streamToBuffer(pdfStream);
 
     const { data, error } = await resend.emails.send({
       from: "GigHub <hello@resend.dev>",
       to: ["laia.valenti@gmail.com"],
-      subject: "Your order...",
-      react: EmailTemplate({ name, products }),
-      attachments:  [
+      subject: `Your order for: ${event.name}`,
+      react: EmailTemplate({ event }),
+      attachments: [
         {
-          filename: 'document.pdf',
+          filename: 'GigHubTicket.pdf',
           content: pdfBuffer,
         },
       ],
