@@ -1,13 +1,11 @@
-import ArtistTopTracks from "@/components/ArtistTopTracks";
 import PaymentButtons from "@/components/PaymentButtons";
 import prisma from "@/lib/prisma";
 import Image from "next/image";
 import { CiCalendar, CiLocationOn } from "react-icons/ci";
 import { PiMicrophoneThin } from "react-icons/pi";
 import { IoMdOptions } from "react-icons/io";
-import GenerateTicketButton from "@/components/GenerateTicketButton";
 import { CoinsIcon } from "lucide-react";
-import SendEmailButton from "@/components/SendEmailButton";
+import ArtistTopTracksGrid from "@/components/ArtistTopTracksGrid";
 
 type PageProps = {
   params: {
@@ -54,8 +52,6 @@ export default async function Page({ params }: PageProps) {
     event.image[0]
   );
 
-  console.log("event" + event)
-
   // Concatenate artist names
   const artistNames = event.artist.map((artist) => artist.name).join(", ");
 
@@ -74,50 +70,59 @@ export default async function Page({ params }: PageProps) {
           </div>
         )}
       </div>
-      <div className="w-[85vw] mt-4 flex flex-col items-start">
-        <h2 className="mb-8">{event.name}</h2>
-        <div className="flex items-center space-x-2">
-          <CiCalendar />
-          <p>{new Date(event.startDate).toLocaleDateString()}</p>
-        </div>
-        <div className="flex items-center space-x-2">
-          <PiMicrophoneThin />
-          <p>{artistNames}</p>
-        </div>
-        <div className="flex items-center space-x-2">
-          <CiLocationOn />
-          <p>
-            {event.venue
-              .map((venue) => `${venue.name}, ${venue.address}`)
-              .join(", ")}
-          </p>
-        </div>
-        <div className="flex items-center space-x-2">
-          <IoMdOptions />
-          <p>{event.genre.join(", ")}</p>
+      <div className="w-[75vw] mt-4 flex flex-col md:flex-row items-center justify-center gap-20">
+        <div>
+          <h2 className="mb-8">{event.name}</h2>
+          <div className="flex items-center space-x-2">
+            <CiCalendar />
+            <p>{new Date(event.startDate).toLocaleDateString()}</p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <PiMicrophoneThin />
+            <p>{artistNames}</p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <CiLocationOn />
+            <p>
+              {event.venue
+                .map((venue) => `${venue.name}, ${venue.address}`)
+                .join(", ")}
+            </p>
+          </div>
+          {event.genre ? (
+            <div className="flex items-center space-x-2">
+              <IoMdOptions />
+              <p>{event.genre.join(", ")}</p>
+            </div>
+          ) : null}
+          {event.priceRange
+            ? event.priceRange
+                .filter((priceRange) => priceRange.type == "standard")
+                .map((priceRange, rangeIndex) =>
+                  priceRange.min !== null && priceRange.currency !== null ? (
+                    <span key={rangeIndex}>
+                      <p className="flex justify-start gap-2 items-center">
+                        <CoinsIcon className="h-4 w-4 shrink-0" />
+                        {priceRange.min} {priceRange.currency}
+                      </p>
+                    </span>
+                  ) : null
+                )
+            : null}
         </div>
         {event.priceRange
           ? event.priceRange
               .filter((priceRange) => priceRange.type == "standard")
               .map((priceRange, rangeIndex) =>
                 priceRange.min !== null && priceRange.currency !== null ? (
-                  <span key={rangeIndex}>
-                    <p className="flex justify-start gap-2 items-center">
-                      <CoinsIcon className="h-4 w-4 shrink-0" />
-                      {priceRange.min} {priceRange.currency}
-                    </p>
+                  <div>
                     <PaymentButtons event={event} />
-                    <SendEmailButton event={event} />
-                  </span>
+                  </div>
                 ) : null
               )
           : null}
       </div>
-      <div className="w-[65vw] mt-4">
-        {event.artist.map((artist) => (
-          <ArtistTopTracks key={artist.id} artistName={artist.name} />
-        ))}
-      </div>
+      <ArtistTopTracksGrid event={event} />
     </main>
   );
 }

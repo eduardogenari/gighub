@@ -59,7 +59,7 @@ export default async function Page({
             {session.amount_total ? session.amount_total / 100 : "Unknown"}{" "}
             {session.currency}
           </p>
-          <Button onClick={handleSendEmail} className="my-16 w-[200px]">Send confirmation e-mail</Button>
+          <Button onClick={handleSendEmail} className="my-16 w-[200px]">Resend confirmation e-mail</Button>
         </div>
       );
     } else {
