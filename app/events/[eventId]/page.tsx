@@ -115,7 +115,7 @@ export default async function Page({ params }: PageProps) {
               .filter((priceRange) => priceRange.type == "standard")
               .map((priceRange, rangeIndex) =>
                 priceRange.min !== null && priceRange.currency !== null ? (
-                  <div>
+                  <div key={rangeIndex}>
                     <PaymentButtons event={event} />
                   </div>
                 ) : null

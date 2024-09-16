@@ -25,6 +25,7 @@ export default function ArtistTopTracksGrid({ event }: { event: Event }) {
                   selectedArray[index] = true;
                   setSelected(selectedArray);
                 }}
+                key={index}
                 className={
                   (isSelected[index] === true
                     ? "text-destructive font-semibold "
@@ -34,8 +35,9 @@ export default function ArtistTopTracksGrid({ event }: { event: Event }) {
               >
                 <div
                   className={
-                    (isSelected[index] === true ? "border-solid border-destructive border-[1px] " : "") +
-                    "rounded-full w-12 h-12 bg-gray-200 m-2"
+                    (isSelected[index] === true
+                      ? "border-solid border-destructive border-[1px] "
+                      : "") + "rounded-full w-12 h-12 bg-gray-200 m-2"
                   }
                 ></div>
                 <p>{artist.name}</p>
