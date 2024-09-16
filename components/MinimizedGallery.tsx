@@ -20,7 +20,7 @@ export default function MinimizedGallery(props: MinimizedGalleryProps) {
   return (
     <div className="w-[55vw] mx-auto">
       <Carousel className="w-full">
-        <CarouselContent>
+        <CarouselContent className="justify-center">
           {events.map((event: Event) => (
             <CarouselItem key={event.id} className="basis-auto py-1 pl-1">
               <Card>
