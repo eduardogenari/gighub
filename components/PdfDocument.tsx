@@ -39,12 +39,12 @@ const stylesPDF = StyleSheet.create({
     paddingRight: 1,
   },
   text: {
-    fontSize: 6,
+    fontSize: 12,
     fontFamily: "Open Sans",
     marginBottom: 5,
   },
   title: {
-    fontSize: 8,
+    fontSize: 16,
     fontFamily: "Open Sans",
     fontWeight: 600,
     marginBottom: 10,
@@ -78,7 +78,7 @@ const PdfDocument: React.FC<PdfDocumentProps> = ({ event }) => (
         </View>
         <Image
           style={stylesPDF.barCode}
-          src="../gighub/public/images/bar.png"
+          src="/gighub/public/images/bar.png"
         />
       </View>
       <View style={stylesPDF.line}></View>
