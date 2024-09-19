@@ -39,7 +39,12 @@ const stylesPDF = StyleSheet.create({
     paddingRight: 1,
   },
   text: {
-    fontSize: 12,
+    fontSize: 10,
+    fontFamily: "Open Sans",
+    marginBottom: 5,
+  },
+  textSmall: {
+    fontSize: 8,
     fontFamily: "Open Sans",
     marginBottom: 5,
   },
@@ -50,7 +55,7 @@ const stylesPDF = StyleSheet.create({
     marginBottom: 10,
   },
   image: {
-    width: 400,
+    width: 300,
     aspectRatio: "3/2",
   },
   barCode: {
@@ -78,7 +83,7 @@ const PdfDocument: React.FC<PdfDocumentProps> = ({ event }) => (
         </View>
         <Image
           style={stylesPDF.barCode}
-          src="/images/bar.png"
+          src="../gighub/public/images/bar.png"
         />
       </View>
       <View style={stylesPDF.line}></View>
@@ -111,7 +116,7 @@ const PdfDocument: React.FC<PdfDocumentProps> = ({ event }) => (
       <View style={stylesPDF.line}></View>
       <View style={stylesPDF.section}>
         <View style={stylesPDF.left}>
-          <Text style={stylesPDF.text}>
+          <Text style={stylesPDF.textSmall}>
             * Ticket not valid. This is a student project.
           </Text>
         </View>
