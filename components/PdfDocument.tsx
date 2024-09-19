@@ -50,7 +50,7 @@ const stylesPDF = StyleSheet.create({
     marginBottom: 10,
   },
   image: {
-    width: 500,
+    width: 400,
     aspectRatio: "3/2",
   },
   barCode: {
@@ -78,7 +78,7 @@ const PdfDocument: React.FC<PdfDocumentProps> = ({ event }) => (
         </View>
         <Image
           style={stylesPDF.barCode}
-          src="/gighub/public/images/bar.png"
+          src="/images/bar.png"
         />
       </View>
       <View style={stylesPDF.line}></View>
