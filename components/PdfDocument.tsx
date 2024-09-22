@@ -39,18 +39,23 @@ const stylesPDF = StyleSheet.create({
     paddingRight: 1,
   },
   text: {
-    fontSize: 6,
+    fontSize: 10,
+    fontFamily: "Open Sans",
+    marginBottom: 5,
+  },
+  textSmall: {
+    fontSize: 8,
     fontFamily: "Open Sans",
     marginBottom: 5,
   },
   title: {
-    fontSize: 8,
+    fontSize: 16,
     fontFamily: "Open Sans",
     fontWeight: 600,
     marginBottom: 10,
   },
   image: {
-    width: 500,
+    width: 300,
     aspectRatio: "3/2",
   },
   barCode: {
@@ -111,7 +116,7 @@ const PdfDocument: React.FC<PdfDocumentProps> = ({ event }) => (
       <View style={stylesPDF.line}></View>
       <View style={stylesPDF.section}>
         <View style={stylesPDF.left}>
-          <Text style={stylesPDF.text}>
+          <Text style={stylesPDF.textSmall}>
             * Ticket not valid. This is a student project.
           </Text>
         </View>
