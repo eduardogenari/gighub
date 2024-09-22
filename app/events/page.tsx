@@ -35,7 +35,7 @@ export default async function Page({
   const countryNames = [
     ...new Set(locations.map((location) => location.country)),
   ];
-  const locationNames = cityCountryNames.concat(countryNames);
+  const locationNames = cityCountryNames.concat(countryNames, "Europe");
 
   // Convert strings for comparison
   startDate =

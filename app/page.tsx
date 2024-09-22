@@ -12,7 +12,7 @@ export default async function Home() {
   const countryNames = [
     ...new Set(locations.map((location) => location.country)),
   ];
-  const locationNames = cityCountryNames.concat(countryNames);
+  const locationNames = cityCountryNames.concat(countryNames, "Europe");
 
   return (
     <main className="relative w-full h-full flex items-center justify-center overflow-hidden">

@@ -9,15 +9,18 @@ export function getBounds(
   locationNames: string[]
 ) {
   let bounds;
-  let selectedLocation;
+  let selectedLocation = null;
   if (!location || !locationNames.includes(location)) {
     // TODO: Detect user location
     selectedLocation = "Barcelona, Spain";
-  } else {
+  } else if (location !== "Europe") {
     selectedLocation = location;
   }
 
-  if (selectedLocation.includes(",")) {
+  // If null, get all events in Europe
+  if (selectedLocation === null) {
+    bounds = [-29, 25, 28, 70]
+  } else if (selectedLocation.includes(",")) {
     bounds = locations
       .filter(
         (dbLocation) =>
