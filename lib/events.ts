@@ -1,4 +1,4 @@
-import { env } from "@/lib/env";
+import { env } from "./env";
 import type { Event } from "@/types/apiEvent";
 
 const urlEU = `${env("URL_TICKETMASTER")}events.json?classificationName=music
