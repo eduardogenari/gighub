@@ -106,14 +106,7 @@ export default function Map(props: MapProps) {
   } = props;
 
   const getInitialBounds = () => {
-    let selectedLocation;
-    if (!location || !locationNames.includes(location)) {
-      // TODO: Detect user location
-      selectedLocation = "Barcelona, Spain";
-    } else {
-      selectedLocation = location;
-    }
-    let bounds = getBounds(selectedLocation, locations);
+    let bounds = getBounds(location, locations, locationNames);
     return bounds;
   };
 
@@ -123,7 +116,7 @@ export default function Map(props: MapProps) {
   const [boundingBox, setBoundingBox] = useState<number[]>(getInitialBounds);
 
   useEffect(() => {
-    let bounds = getBounds(location, locations);
+    let bounds = getBounds(location, locations, locationNames);
     setBoundingBox(bounds);
   }, [location]);
 

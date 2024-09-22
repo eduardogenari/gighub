@@ -1,13 +1,22 @@
 export function getBounds(
-  selectedLocation: string,
+  location: string,
   locations: {
     id: number;
     city: string;
     country: string;
     boundingBox: number[];
-  }[]
+  }[],
+  locationNames: string[]
 ) {
   let bounds;
+  let selectedLocation;
+  if (!location || !locationNames.includes(location)) {
+    // TODO: Detect user location
+    selectedLocation = "Barcelona, Spain";
+  } else {
+    selectedLocation = location;
+  }
+
   if (selectedLocation.includes(",")) {
     bounds = locations
       .filter(
