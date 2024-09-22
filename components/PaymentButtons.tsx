@@ -73,10 +73,11 @@ export default function PaymentButtons({ event }: PaymentButtonsProps) {
         </button>
       </div>
       <Button
-        className="w-[200px]"
+        className="w-[200px] hover:bg-destructive"
         onClick={async () => {
           const priceId = await getPriceId(name);
           addToCart(priceId);
+          window.scrollTo({ top: 0, behavior: "smooth" });
         }}
       >
         Add to cart
