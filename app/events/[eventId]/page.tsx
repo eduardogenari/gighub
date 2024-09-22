@@ -83,11 +83,18 @@ export default async function Page({ params }: PageProps) {
           </div>
           <div className="flex items-center space-x-2">
             <CiLocationOn />
-            <p>
-              {event.venue
-                .map((venue) => `${venue.name}, ${venue.address}`)
-                .join(", ")}
-            </p>
+
+            {event.venue[0].name ? (
+              <p>
+                {event.venue[0].name}, {event.venue[0].address},{" "}
+                {event.venue[0].city}, {event.venue[0].country}
+              </p>
+            ) : (
+              <p>
+                {event.venue[0].address}, {event.venue[0].city}, ,{" "}
+                {event.venue[0].country}
+              </p>
+            )}
           </div>
           {event.genre ? (
             <div className="flex items-center space-x-2">

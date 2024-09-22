@@ -78,7 +78,7 @@ export default function SearchItemHome({
                     field.onChange(suggestion);
                     handleClick(suggestion);
                   }}
-                  className="px-3 cursor-pointer bg-background hover:bg-slate-500 text-sm p-2"
+                  className="px-3 cursor-pointer bg-background hover:bg-slate-200 text-sm p-2"
                 >
                   {suggestion}
                 </li>

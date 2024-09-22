@@ -49,10 +49,16 @@ export default function ResultsEventCard({ event }: EventCardProps) {
           </div>
           <div className="flex items-start text-sm text-muted-foreground">
             <CiLocationOn className="w-4 h-4 mr-2 flex-shrink-0" />
-            <CardDescription>
-              {event.venue[0].name}, {event.venue[0].city},{" "}
-              {event.venue[0].country}
-            </CardDescription>
+            {event.venue[0].name ? (
+              <CardDescription>
+                {event.venue[0].name}, {event.venue[0].city},{" "}
+                {event.venue[0].country}{" "}
+              </CardDescription>
+            ) : (
+              <CardDescription>
+                {event.venue[0].city}, {event.venue[0].country}{" "}
+              </CardDescription>
+            )}
           </div>
         </CardContent>
       </Card>
