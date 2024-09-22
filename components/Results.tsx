@@ -16,8 +16,13 @@ interface ResultsProps {
   price: number[];
   artist: string;
   genre: string;
-  bounds: number[];
   locationNames: string[];
+  locations: {
+    id: number;
+    city: string;
+    country: string;
+    boundingBox: number[];
+  }[];
   location: string;
   hideWithoutPrice: string;
 }
@@ -29,8 +34,8 @@ export default function Results(props: ResultsProps) {
     price,
     artist,
     genre,
-    bounds,
     locationNames,
+    locations,
     location,
     hideWithoutPrice,
   } = props;
@@ -106,7 +111,9 @@ export default function Results(props: ResultsProps) {
             setEventsNumber={setEventsNumber}
             setEvents={setEvents}
             events={events}
-            bounds={bounds}
+            locationNames={locationNames}
+            locations={locations}
+            location={location}
             startDate={startDate}
             endDate={endDate}
             price={price}

@@ -19,6 +19,7 @@ import { useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import MinimizedGallery from "./MinimizedGallery";
 import { useTheme } from "next-themes";
+import { getBounds } from "@/lib/locations";
 
 interface MapProps {
   setArtistNames: React.Dispatch<React.SetStateAction<string[]>>;
@@ -26,7 +27,14 @@ interface MapProps {
   setEventsNumber: React.Dispatch<React.SetStateAction<number>>;
   setEvents: React.Dispatch<React.SetStateAction<Event[]>>;
   events: Event[];
-  bounds: number[];
+  locationNames: string[];
+  locations: {
+    id: number;
+    city: string;
+    country: string;
+    boundingBox: number[];
+  }[];
+  location: string;
   startDate: Date;
   endDate: Date;
   price: number[];
@@ -52,7 +60,7 @@ function CustomEvents({
   };
   const debouncedUpdateBounds = useDebouncedCallback(() => {
     updateBounds();
-  }, 300);
+  }, 500);
   const map = useMapEvents({
     zoomend() {
       debouncedUpdateBounds();
@@ -86,7 +94,9 @@ export default function Map(props: MapProps) {
     setEventsNumber,
     setEvents,
     events,
-    bounds,
+    locationNames,
+    locations,
+    location,
     startDate,
     endDate,
     price,
@@ -95,14 +105,27 @@ export default function Map(props: MapProps) {
     hideWithoutPrice,
   } = props;
 
+  const getInitialBounds = () => {
+    let selectedLocation;
+    if (!location || !locationNames.includes(location)) {
+      // TODO: Detect user location
+      selectedLocation = "Barcelona, Spain";
+    } else {
+      selectedLocation = location;
+    }
+    let bounds = getBounds(selectedLocation, locations);
+    return bounds;
+  };
+
   const searchParams = useSearchParams();
   const [eventsLoaded, setEventsLoaded] = useState(true);
   const [response, setResponse] = useState<any>(null);
-  const [boundingBox, setBoundingBox] = useState<number[]>(bounds);
+  const [boundingBox, setBoundingBox] = useState<number[]>(getInitialBounds);
 
   useEffect(() => {
+    let bounds = getBounds(location, locations);
     setBoundingBox(bounds);
-  }, [bounds]);
+  }, [location]);
 
   useEffect(() => {
     setEventsLoaded(false);

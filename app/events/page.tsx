@@ -37,32 +37,6 @@ export default async function Page({
   ];
   const locationNames = cityCountryNames.concat(countryNames);
 
-  if (!location || !locationNames.includes(location)) {
-    // TODO: Detect user location
-    location = "Barcelona, Spain";
-  }
-
-  let bounds;
-  if (location.includes(",")) {
-    bounds = locations
-      .filter(
-        (dbLocation) =>
-          dbLocation.city == location.split(",")[0].trim() &&
-          dbLocation.country == location.split(",")[1].trim()
-      )
-      .map((dbLocation) => dbLocation.boundingBox)[0];
-  } else {
-    let allBounds = locations
-      .filter((dbLocation) => dbLocation.country == location.replace("- ", ""))
-      .map((dbLocation) => dbLocation.boundingBox);
-    const west = Math.min(...allBounds.map((bounds) => bounds[0]));
-    const east = Math.max(...allBounds.map((bounds) => bounds[1]));
-    const south = Math.min(...allBounds.map((bounds) => bounds[2]));
-    const north = Math.max(...allBounds.map((bounds) => bounds[3]));
-    bounds = [west, east, south, north];
-  }
-
-  //console.log(location, bounds);
   // Convert strings for comparison
   startDate =
     typeof startDate === "string" ? YYYYMMDDToDate(startDate) : startDate;
@@ -80,8 +54,8 @@ export default async function Page({
         artist={artist}
         genre={genre}
         price={price}
-        bounds={bounds}
         locationNames={locationNames}
+        locations={locations}
         location={location}
         hideWithoutPrice={hideWithoutPrice}
       />
