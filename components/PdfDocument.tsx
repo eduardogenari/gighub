@@ -9,6 +9,7 @@ import {
   Font,
 } from "@react-pdf/renderer";
 import { Event } from "@/types/event";
+import path from "path";
 
 Font.register({
   family: "Open Sans",
@@ -83,7 +84,7 @@ const PdfDocument: React.FC<PdfDocumentProps> = ({ event }) => (
         </View>
         <Image
           style={stylesPDF.barCode}
-          src="images/bar.png"
+          src={path.join(process.cwd(), "public", "/images/bar.png")}
         />
       </View>
       <View style={stylesPDF.line}></View>
