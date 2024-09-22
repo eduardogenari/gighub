@@ -1,11 +1,6 @@
 "use server";
 
-import {
-  getAllEvents,
-  getEventById,
-  getEventByIdEdu,
-  getEventsByDates,
-} from "@/lib/events";
+import { getAllEvents, getEventById, getEventsByDates } from "@/lib/events";
 
 export async function actionGetAllEvents() {
   const events = await getAllEvents();
@@ -14,11 +9,6 @@ export async function actionGetAllEvents() {
 
 export async function actionGetEventById(eventId: string) {
   const event = await getEventById(eventId);
-  return event;
-}
-
-export async function actionGetEventByIdEdu(eventId: string) {
-  const event = await getEventByIdEdu(eventId);
   return event;
 }
 

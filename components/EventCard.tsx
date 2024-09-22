@@ -7,9 +7,9 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import type { Event } from "@/types/api_event";
+import type { Event } from "@/types/apiEvent";
 import Image from "next/image";
-import Link from 'next/link';
+import Link from "next/link";
 
 interface EventCardProps {
   event: Event;

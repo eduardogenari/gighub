@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { streamToBuffer } from "@/lib/utils";
@@ -6,13 +5,10 @@ import { generatePDF } from "@/lib/pdf";
 import { getProductDetailsFromSession } from "@/lib/stripe";
 import { EmailTemplate } from "@/components/EmailTemplate";
 
-
-
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   const body = await req.json();
-  let products = body.products;
   let session = body.session;
 
   // TODO: Send to user email
@@ -21,7 +17,6 @@ export async function POST(req: Request) {
   const address = session.customer_details.address;
 
   try {
-
     let event = await getProductDetailsFromSession(session.id);
     const pdfStream = await generatePDF(event);
     const pdfBuffer = await streamToBuffer(pdfStream);
@@ -33,7 +28,7 @@ export async function POST(req: Request) {
       react: EmailTemplate({ event }),
       attachments: [
         {
-          filename: 'GigHubTicket.pdf',
+          filename: "GigHubTicket.pdf",
           content: pdfBuffer,
         },
       ],

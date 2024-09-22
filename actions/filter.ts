@@ -16,15 +16,6 @@ export async function filter(
   genre: string,
   hideWithoutPrice: string
 ) {
-  //console.log("Filters");
-  //console.log("Start date:", startDate);
-  //console.log("End date:", endDate);
-  //console.log("Artist:", artist);
-  //console.log("Genre:", genre);
-  //console.log("Price:", price);
-  //console.log("Hide without price:", hideWithoutPrice);
-  //console.log("Bounding box:", bounds);
-
   const priceFilter = [
     {
       AND: [
@@ -137,7 +128,6 @@ export async function filter(
   ];
   const genreNames = [...new Set(events.flatMap((event) => event.genre || []))];
 
-  //console.log(`Got ${events.length} events after filtering!`);
   return {
     success: true,
     events: events,

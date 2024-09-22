@@ -27,7 +27,8 @@ export default function CartItem({ item }: { item: CartEntry }) {
         </div>
       ) : null}
       <div className="w-52">
-        <span className="text-[hsl(var(--destructive))]">{quantity} x</span> {name}
+        <span className="text-[hsl(var(--destructive))]">{quantity} x</span>{" "}
+        {name}
       </div>
       <div className="ml-auto">
         {price} {currency}

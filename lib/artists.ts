@@ -1,24 +1,19 @@
 import { env } from "@/lib/env";
 import { Artist, Track } from "@/types/artist";
-import { writeFile } from "fs/promises";
 
-
-
-const jsonFilePath = "./tracks.json";
 const base64Credentials = Buffer.from(
   `${env("CLIENTID_SPOTIFY")}:${env("CLIENTSECRET_SPOTIFY")}`
 ).toString("base64");
-const urlSpotify = "https://api.spotify.com/v1"
+const urlSpotify = "https://api.spotify.com/v1";
 let accessToken: string | null = null;
 let tokenExpiresAt: number | null = null;
 
-const getAccessToken = async () => { 
-
+const getAccessToken = async () => {
   if (accessToken && tokenExpiresAt && Date.now() < tokenExpiresAt) {
     return accessToken;
   }
 
-  const options = { 
+  const options = {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -38,49 +33,35 @@ const getAccessToken = async () => {
 
   const token = await response.json();
   accessToken = token.access_token;
-  tokenExpiresAt = Date.now() + token.expires_in * 1000; 
+  tokenExpiresAt = Date.now() + token.expires_in * 1000;
   return token.access_token;
 };
-
-
 
 export const getTopTracksByArtistName = async (artistName: string) => {
   const token = await getAccessToken();
   const artist = await getFirstArtistByName(artistName);
-  const response = await fetch(
-    `${urlSpotify}/${artist?.id}/top-tracks`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const response = await fetch(`${urlSpotify}/${artist?.id}/top-tracks`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   const jsonTracks = await response.json();
- // await writeFile(jsonFilePath, JSON.stringify(jsonTracks))
- // console.log(jsonTracks);
   return jsonTracks.tracks as Track[];
 };
 
 export const getTopTracksByArtistId = async (artistId: string) => {
   const token = await getAccessToken();
-  const response = await fetch(
-    `${urlSpotify}/artists/${artistId}/top-tracks`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const response = await fetch(`${urlSpotify}/artists/${artistId}/top-tracks`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   const jsonTracks = await response.json();
- // await writeFile(jsonFilePath, JSON.stringify(jsonTracks))
- // console.log(jsonTracks);
   return jsonTracks.tracks as Track[];
 };
 
 export const getArtistByName = async (artistName: string) => {
-  
   const token = await getAccessToken();
-//  console.log('Using Access Token for getArtistByName:', token);
   const response = await fetch(
     `${urlSpotify}/search?q=${artistName}&type=artist`,
     {
@@ -96,22 +77,16 @@ export const getArtistByName = async (artistName: string) => {
   }
 
   try {
-  const jsonArtist = await response.json();
- // await writeFile(jsonFilePath, JSON.stringify(jsonArtist))
-  //console.log(jsonArtist);
- // console.log(jsonArtist.items);
-  return jsonArtist.artists.items as Artist[];
-  }
-  catch(error) {
+    const jsonArtist = await response.json();
+    return jsonArtist.artists.items as Artist[];
+  } catch (error) {
     console.error(`Error fetching artist  ${artistName}:`, error);
     return [];
   }
 };
 
 export const getFirstArtistByName = async (artistName: string) => {
-  
   const token = await getAccessToken();
-  //console.log('Using Access Token for getArtistByName:', token);
   const response = await fetch(
     `${urlSpotify}/search?q=${artistName}&type=artist`,
     {
@@ -127,13 +102,9 @@ export const getFirstArtistByName = async (artistName: string) => {
   }
 
   try {
-  const jsonArtist = await response.json();
- // await writeFile(jsonFilePath, JSON.stringify(jsonArtist))
-  //console.log(jsonArtist);
- // console.log(jsonArtist.items);
-  return jsonArtist.artists.items[0] as Artist;
-  }
-  catch(error) {
+    const jsonArtist = await response.json();
+    return jsonArtist.artists.items[0] as Artist;
+  } catch (error) {
     console.error(`Error fetching artist  ${artistName}:`, error);
     return null;
   }

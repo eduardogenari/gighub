@@ -32,8 +32,11 @@ export default function LocationSearch({ locations }: { locations: string[] }) {
           options={locations}
           value={"Barcelona, Spain"}
         />
-        <Button type="submit" className="h-[35px] w-[35px] rounded-none mt-2 mb-2 border-[1px] border-primary">
-          <FaArrowRight className="h-4 w-4 shrink-0"/>
+        <Button
+          type="submit"
+          className="h-[35px] w-[35px] rounded-none mt-2 mb-2 border-[1px] border-primary"
+        >
+          <FaArrowRight className="h-4 w-4 shrink-0" />
         </Button>
       </form>
     </Form>

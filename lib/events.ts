@@ -1,9 +1,6 @@
-import { env } from "./env";
-import { writeFile } from "fs/promises";
-import type { Event, PaginatedEvents } from "../types/api_event";
+import { env } from "@/lib/env";
+import type { Event } from "@/types/apiEvent";
 
-//const jsonFilePath = "./public/concerts.json";
-//&lat=${env("LATITUDE_EU")}&long=${env("LONGITUDE_EU")}&radius=${env("RADIUS_EU")}
 const urlEU = `${env("URL_TICKETMASTER")}events.json?classificationName=music
 )}&apikey=${env("APIKEY_TICKETMASTER")}`;
 
@@ -98,77 +95,6 @@ const getEventsByPage = async (page: number) => {
   }
 };
 
-export const getEventByIdEdu = async (id: string) => {
-  const response = await fetch(
-    `${env("URL_TICKETMASTER")}events/${id}.json?apikey=${env(
-      "APIKEY_TICKETMASTER"
-    )}`
-  );
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! Status: ${response.status}`);
-  }
-
-  try {
-    const jsonEvent = await response.json();
-
-    const event: Event = {
-      id: jsonEvent.id,
-      name: jsonEvent.name,
-      type: jsonEvent.type,
-      url: jsonEvent.url,
-      pleaseNote: jsonEvent.pleaseNote,
-      images: jsonEvent.images,
-      dates: {
-        start: {
-          localDate: new Date(jsonEvent.dates.start.localDate),
-          localTime: new Date(jsonEvent.dates.start.localTime),
-        },
-        end: jsonEvent.dates.end
-          ? {
-              localDate: new Date(jsonEvent.dates.end.localDate),
-              localTime: new Date(jsonEvent.dates.end.localTime),
-            }
-          : undefined,
-      },
-      _links: {
-        self: { href: jsonEvent._links.self.href },
-        attractions: jsonEvent._links.attractions.map((attraction: any) => ({
-          href: attraction.href,
-        })),
-        venues: jsonEvent._links.venues.map((venue: any) => ({
-          href: venue.href,
-        })),
-      },
-      _embedded: {
-        attractions: jsonEvent._embedded.attractions.map((attraction: any) => ({
-          name: attraction.name,
-          images: attraction.images,
-        })),
-      },
-      venues: jsonEvent._embedded.venues.map((venue: any) => ({
-        id: venue.id,
-        name: venue.name,
-        city: venue.city.name,
-        country: venue.country.name,
-        state: venue.state ? venue.state.name : null,
-        address: venue.address.line1,
-        location: {
-          longitude: venue.location.longitude,
-          latitude: venue.location.latitude,
-        },
-      })),
-      priceRanges: jsonEvent.priceRanges,
-      classifications: jsonEvent.classfications,
-    };
-
-    return event;
-  } catch (error) {
-    console.error(`Error fetching event with id ${id}:`, error);
-    return null;
-  }
-};
-
 export const getAllEventsByCountry = async (country: string) => {
   const allEvents: Event[] = [];
   let page = 0;
@@ -190,13 +116,11 @@ const getEventsByCountryPage = async (country: string, page: number) => {
   const response = await fetch(
     `${urlEU}&countryCode=${country}&size=75&page=${page}`
   );
-  //console.log(`page ${page}`);
 
   const jsonConcerts = await checkResponse(response);
   const events = jsonConcerts._embedded?.events
     ? processEvents(jsonConcerts._embedded.events)
     : [];
-  //const events: Event[] = processEvents(jsonConcerts._embedded.events);
 
   const pageInfo = {
     totalPages: jsonConcerts.page.totalPages,
@@ -222,7 +146,9 @@ export const getEventsEurope = async () => {
     try {
       const events = await getAllEventsByCountry(country);
       allEventsEurope.push(...events);
-      console.log(`Finished getting events for country ${country}: ${events.length}`)
+      console.log(
+        `Finished getting events for country ${country}: ${events.length}`
+      );
     } catch (error) {
       console.error(`Error fetching events for country ${country}:`, error);
     }

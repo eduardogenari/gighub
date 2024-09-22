@@ -17,8 +17,8 @@ async function main() {
           lastName: "Valentí",
           password: password,
           role: "admin",
-          email: "dave.testingson@test.com",
-          isAdmin: false,
+          email: "laia.valenti@test.com",
+          isAdmin: true,
         },
         {
           firstName: "Eduardo",
@@ -34,7 +34,7 @@ async function main() {
           password: password,
           role: "admin",
           email: "alba.vilanova@test.com",
-          isAdmin: false,
+          isAdmin: true,
         },
       ],
     });

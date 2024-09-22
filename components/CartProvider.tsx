@@ -5,9 +5,9 @@ import { CartProvider as USCProvider } from "use-shopping-cart";
 
 function CartProvider({ children }: { children: React.ReactNode }) {
   let countries = process.env.NEXT_PUBLIC_EUROPE_COUNTRIES;
-  let countryList = [""]
+  let countryList = [""];
   if (countries) {
-    countryList = countries.split(",")
+    countryList = countries.split(",");
   }
   return (
     <USCProvider

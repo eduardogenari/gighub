@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import CartProvider from '@/components/CartProvider'
+import CartProvider from "@/components/CartProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 

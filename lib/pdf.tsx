@@ -1,18 +1,17 @@
 "use server";
 
-import ReactPDF, { renderToStream } from "@react-pdf/renderer";
+import { renderToStream } from "@react-pdf/renderer";
 
 import { writeFile } from "fs/promises";
 import { Event } from "@/types/event";
 import PdfDocument from "@/components/PdfDocument";
 
-
 export const generatePDF = async (event: Event) => {
-    const pdfStream = await renderToStream(<PdfDocument event={event} />);
-    return pdfStream;
+  const pdfStream = await renderToStream(<PdfDocument event={event} />);
+  return pdfStream;
 };
 
-export const generateAndSavePDF = async (event: Event) =>  {
+export const generateAndSavePDF = async (event: Event) => {
   const pdfStream = await renderToStream(<PdfDocument event={event} />);
   const chunks: Uint8Array[] = [];
   pdfStream.on("data", (chunk) => {

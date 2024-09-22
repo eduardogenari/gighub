@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     event = stripe.webhooks.constructEvent(
       await (await req.blob()).text(),
       req.headers.get("stripe-signature") as string,
-      process.env.STRIPE_WEBHOOK_SECRET as string,
+      process.env.STRIPE_WEBHOOK_SECRET as string
     );
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : "Unknown error";
@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     console.log(`❌ Error message: ${errorMessage}`);
     return NextResponse.json(
       { message: `Webhook Error: ${errorMessage}` },
-      { status: 400 },
+      { status: 400 }
     );
   }
 
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
           if (!response.ok) {
             console.error(`Failed to send email: ${response.statusText}`);
           } else {
-            console.log("Email sent")
+            console.log("Email sent");
           }
           break;
         case "payment_intent.payment_failed":
@@ -63,7 +63,7 @@ export async function POST(req: Request) {
       console.log(error);
       return NextResponse.json(
         { message: "Webhook handler failed" },
-        { status: 500 },
+        { status: 500 }
       );
     }
   }

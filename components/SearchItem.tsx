@@ -38,7 +38,7 @@ export default function SearchItem({
       suggestion.toLowerCase().includes(input.toLowerCase())
     );
 
-   setSuggestions(sortWithCommas(filteredOptions).slice(0, 5));
+    setSuggestions(sortWithCommas(filteredOptions).slice(0, 5));
 
     // Show options only if the input value is not an empty string
     if (input.length !== 0) {
