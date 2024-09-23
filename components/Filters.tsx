@@ -121,7 +121,7 @@ export default function Filters({
           label={"Hide events without information on price"}
           value={hideWithoutPrice}
         />
-        <Button type="submit" className="w-[250px]">
+        <Button type="submit" className="w-[250px] hover:bg-destructive">
           Apply
         </Button>
       </form>

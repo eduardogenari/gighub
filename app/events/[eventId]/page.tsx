@@ -73,7 +73,7 @@ export default async function Page({ params }: PageProps) {
           <h2 className="mb-8">{event.name}</h2>
           <div className="flex items-center space-x-2">
             <CiCalendar />
-            <p>{new Date(event.startDate).toString()}</p>
+            <p>{new Date(event.startDate).toString().split('(')[0]}</p>
           </div>
           <div className="flex items-center space-x-2">
             <PiMicrophoneThin />

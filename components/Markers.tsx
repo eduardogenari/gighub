@@ -133,7 +133,7 @@ export default function Markers(props: MarkersProps) {
                   </h2>
                   <p className="flex justify-start gap-2 items-center">
                     <CalendarIcon className="h-4 w-4 shrink-0" />
-                    {event.startDate.toString()}
+                    {event.startDate.toString().split('(')[0]}
                   </p>
                   {event.venue[0].name !== null ? (
                     <p className="flex justify-start gap-2 items-center">

@@ -95,7 +95,7 @@ export default function ArtistTopTracks({ artistName }: ArtistTopTracksProps) {
                 />
               </div>
             )}
-            <div className="mt-3 mb-3">
+            <div className="mt-3 mb-3 w-[280px]">
               {index + 1}. {track.name}
             </div>
           </li>
