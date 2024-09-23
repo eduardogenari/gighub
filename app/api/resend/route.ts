@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
 
     const { data, error } = await resend.emails.send({
       from: "GigHub <hello@resend.dev>",
-      to: ["laia.valenti@gmail.com"],
+      to: ["emgenari@gmail.com"],
       subject: `Your order for: ${event.name}`,
       react: EmailTemplate({ event }),
       attachments: [
