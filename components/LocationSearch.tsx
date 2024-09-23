@@ -30,7 +30,7 @@ export default function LocationSearch({ locationNames }: { locationNames: strin
           name={"location"}
           label={""}
           options={locationNames}
-          value={"Barcelona, Spain"}
+          value={"Europe"}
         />
         <Button
           type="submit"

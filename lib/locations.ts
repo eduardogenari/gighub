@@ -9,7 +9,7 @@ export function getBounds(
   let selectedLocation = null;
   if (!location || !locationNames.includes(location)) {
     // TODO: Detect user location
-    selectedLocation = "Barcelona, Spain";
+    selectedLocation = "Europe";
   } else if (location !== "Europe") {
     selectedLocation = location;
   }
