@@ -16,11 +16,11 @@ export default async function Page({
 
   // Set default values
   if (!startDate) {
-    startDate = new Date();
+    startDate = new Date("2024-07-12");
   }
   if (!endDate) {
     endDate = new Date();
-    endDate.setMonth(endDate.getMonth() + 3);
+    endDate.setMonth(endDate.getMonth() + 6);
   }
   if (!price) {
     price = [0, 1000];
