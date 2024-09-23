@@ -196,7 +196,7 @@ export default function Map(props: MapProps) {
       </MapContainer>
       {eventsLoaded && events.length === 0 ? (
         <div className="fixed top-20 z-50 flex justify-center w-full">
-          <span className="bg-white w-fit py-2 px-4 rounded">No events in this area</span>
+          <span className="dark:bg-zinc-800 bg-white w-fit py-2 px-4 rounded">No events in this area</span>
         </div>
       ) : null}
       {events.length > 0 && events !== null ? (
