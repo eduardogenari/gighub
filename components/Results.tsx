@@ -9,6 +9,7 @@ import type { Event } from "@/types/event";
 import ResultsEventCard from "./ResultsEventCard";
 import ScrollToTopButton from "./ScrollToTopButton";
 import { IoMdOptions } from "react-icons/io";
+import type { Location } from "@/types/location";
 
 interface ResultsProps {
   startDate: Date;
@@ -17,14 +18,11 @@ interface ResultsProps {
   artist: string;
   genre: string;
   locationNames: string[];
-  locations: {
-    id: number;
-    city: string;
-    country: string;
-    boundingBox: number[];
-  }[];
+  locations: Location[];
   location: string;
   hideWithoutPrice: string;
+  initialArtistNames: string[];
+  initialGenreNames: string[];
 }
 
 export default function Results(props: ResultsProps) {
@@ -38,6 +36,8 @@ export default function Results(props: ResultsProps) {
     locations,
     location,
     hideWithoutPrice,
+    initialArtistNames,
+    initialGenreNames
   } = props;
   // Initialise map
   const Map = useMemo(
@@ -45,7 +45,7 @@ export default function Results(props: ResultsProps) {
       dynamic(() => import("@/components/Map"), {
         loading: () => (
           <div className="flex justify-center items-center h-[calc(100vh-6rem)]">
-            <Spinner />
+            <Spinner/>
           </div>
         ),
         ssr: false,
@@ -53,21 +53,12 @@ export default function Results(props: ResultsProps) {
     []
   );
 
-  const [artistNames, setArtistNames] = useState<string[]>([]);
-  const [genreNames, setGenreNames] = useState<string[]>([]);
+  const [artistNames, setArtistNames] = useState<string[]>(initialArtistNames);
+  const [genreNames, setGenreNames] = useState<string[]>(initialGenreNames);
   const [eventsNumber, setEventsNumber] = useState<number>(0);
   const [filtersVisibility, setFiltersVisibility] = useState<boolean>(false);
   const [events, setEvents] = useState<Event[]>([]);
   const [visibleEvents, setVisibleEvents] = useState<number>(50);
-
-  // Declare artist and genre as empty strings if they do not exist in options
-  // This can happen if the user passes them through the url
-  if (!artistNames.includes(artist)) {
-    artist = "";
-  }
-  if (!genreNames.includes(genre)) {
-    genre = "";
-  }
 
   const loadMoreEvents = () => {
     setVisibleEvents((prev) => prev + 50);
@@ -89,7 +80,7 @@ export default function Results(props: ResultsProps) {
               <Filters
                 artists={artistNames}
                 genres={genreNames}
-                locations={locationNames}
+                locationNames={locationNames}
                 startDate={startDate}
                 endDate={endDate}
                 price={price}
@@ -97,10 +88,9 @@ export default function Results(props: ResultsProps) {
                 genre={genre}
                 location={location}
                 hideWithoutPrice={hideWithoutPrice}
+                setArtistNames={setArtistNames}
+                setGenreNames={setGenreNames}
               />
-              <p className="text-sm mt-4 text-[hsl(var(--destructive))]">
-                Number of events: {eventsNumber}
-              </p>
             </div>
           ) : null}
         </div>

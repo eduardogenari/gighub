@@ -14,7 +14,7 @@ const FormSchema = z.object({
   location: z.string(),
 });
 
-export default function LocationSearch({ locations }: { locations: string[] }) {
+export default function LocationSearch({ locationNames }: { locationNames: string[] }) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
@@ -29,7 +29,7 @@ export default function LocationSearch({ locations }: { locations: string[] }) {
           form={form}
           name={"location"}
           label={""}
-          options={locations}
+          options={locationNames}
           value={"Barcelona, Spain"}
         />
         <Button

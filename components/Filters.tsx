@@ -10,6 +10,8 @@ import SearchItem from "./SearchItem";
 import SliderItem from "./SliderItem";
 import { search } from "@/actions/search";
 import CheckboxItem from "./CheckboxItem";
+import { useState } from "react";
+import Spinner from "./Spinner";
 
 const FormSchema = z.object({
   artist: z.string().optional(),
@@ -24,7 +26,7 @@ const FormSchema = z.object({
 export default function Filters({
   artists,
   genres,
-  locations,
+  locationNames,
   startDate,
   endDate,
   price,
@@ -32,10 +34,12 @@ export default function Filters({
   genre,
   location,
   hideWithoutPrice,
+  setArtistNames,
+  setGenreNames,
 }: {
   artists: string[];
   genres: string[];
-  locations: string[];
+  locationNames: string[];
   startDate: Date;
   endDate: Date;
   price: number[];
@@ -43,14 +47,32 @@ export default function Filters({
   genre: string;
   location: string;
   hideWithoutPrice: string;
+  setArtistNames: React.Dispatch<React.SetStateAction<string[]>>;
+  setGenreNames: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
+  const [loading, setLoading] = useState<boolean>(false);
 
   return (
     <Form {...form}>
       <form action={search} className="space-y-4">
+        <div className="flex flex-row gap-2 items-center">
+          <p className="font-semibold">Filters</p>
+          {loading ? <Spinner className="h-4 w-4" /> : null}
+        </div>
+        <SearchItem
+          form={form}
+          name={"location"}
+          label={"Location"}
+          placeholder={"Type a location"}
+          options={locationNames}
+          value={location}
+          setArtistNames={setArtistNames}
+          setGenreNames={setGenreNames}
+          setLoading={setLoading}
+        />
         <SearchItem
           form={form}
           name={"artist"}
@@ -58,6 +80,9 @@ export default function Filters({
           placeholder={"Type an artist name"}
           options={artists}
           value={artist}
+          setArtistNames={setArtistNames}
+          setGenreNames={setGenreNames}
+          setLoading={setLoading}
         />
         <SearchItem
           form={form}
@@ -66,14 +91,9 @@ export default function Filters({
           placeholder={"Type a genre"}
           options={genres}
           value={genre}
-        />
-        <SearchItem
-          form={form}
-          name={"location"}
-          label={"Location"}
-          placeholder={"Type a location"}
-          options={locations}
-          value={location}
+          setArtistNames={setArtistNames}
+          setGenreNames={setGenreNames}
+          setLoading={setLoading}
         />
         <CalendarItem
           form={form}

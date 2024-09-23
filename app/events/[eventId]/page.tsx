@@ -36,8 +36,6 @@ export default async function Page({ params }: PageProps) {
     },
   });
 
-  //console.log(event);
-
   if (!event) {
     return (
       <main className="p-6">

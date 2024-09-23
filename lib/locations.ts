@@ -1,11 +1,8 @@
+import type { Location } from "@/types/location";
+
 export function getBounds(
   location: string,
-  locations: {
-    id: number;
-    city: string;
-    country: string;
-    boundingBox: number[];
-  }[],
+  locations: Location[],
   locationNames: string[]
 ) {
   let bounds;
@@ -19,7 +16,7 @@ export function getBounds(
 
   // If null, get all events in Europe
   if (selectedLocation === null) {
-    bounds = [-29, 25, 28, 70]
+    bounds = [-29, 25, 28, 70];
   } else if (selectedLocation.includes(",")) {
     bounds = locations
       .filter(

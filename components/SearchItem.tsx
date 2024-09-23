@@ -8,6 +8,8 @@ import {
 import { useState } from "react";
 import { Input } from "./ui/input";
 import { sortWithCommas } from "@/lib/utils";
+import { getArtistsAndGenres, getLocations } from "@/actions/filter";
+import { getBounds } from "@/lib/locations";
 
 export default function SearchItem({
   form,
@@ -16,6 +18,9 @@ export default function SearchItem({
   placeholder,
   options,
   value,
+  setArtistNames,
+  setGenreNames,
+  setLoading,
 }: {
   form: any;
   name: string;
@@ -23,6 +28,9 @@ export default function SearchItem({
   placeholder: string;
   options: string[];
   value: string;
+  setArtistNames: React.Dispatch<React.SetStateAction<string[]>>;
+  setGenreNames: React.Dispatch<React.SetStateAction<string[]>>;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -48,9 +56,18 @@ export default function SearchItem({
     }
   };
 
-  const handleClick = (suggestion: string) => {
+  const handleClick = async (suggestion: string) => {
     setInput(suggestion);
     setShowSuggestions(false);
+    if (name === "location") {
+      setLoading(true);
+      let [locations, locationNames] = await getLocations();
+      let bounds = getBounds(suggestion, locations, locationNames);
+      const [artistNames, genreNames] = await getArtistsAndGenres(bounds);
+      setArtistNames(artistNames);
+      setGenreNames(genreNames);
+      setLoading(false);
+    }
   };
   return (
     <FormField

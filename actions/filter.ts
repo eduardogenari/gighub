@@ -1,10 +1,58 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import type { Location } from "@/types/location";
 
-export async function getLocations() {
+export async function getLocations(): Promise<[Location[], string[]]> {
   let locations = await prisma.location.findMany({});
-  return locations;
+
+  const cityCountryNames = locations.map(
+    (location) => `${location.city}, ${location.country}`
+  );
+  const countryNames = [
+    ...new Set(locations.map((location) => location.country)),
+  ];
+  const locationNames = cityCountryNames.concat(countryNames, "Europe");
+
+  return [locations, locationNames];
+}
+
+export async function getArtistsAndGenres(bounds: number[]) {
+  // Get artists and genres in current location
+  let locationEvents = await prisma.event.findMany({
+    include: {
+      artist: true,
+      venue: true,
+      priceRange: true,
+      image: true,
+    },
+    where: {
+      venue: {
+        some: {
+          AND: [
+            {
+              latitude: { gte: bounds[2], lte: bounds[3] }, // South - North
+            },
+            {
+              longitude: { gte: bounds[0], lte: bounds[1] }, // West - East
+            },
+          ],
+        },
+      },
+    },
+  });
+  const artistNames = [
+    ...new Set(
+      locationEvents.flatMap(
+        (event) => event.artist?.map((artist) => artist.name) || []
+      )
+    ),
+  ];
+  const genreNames = [
+    ...new Set(locationEvents.flatMap((event) => event.genre || [])),
+  ];
+
+  return [artistNames, genreNames];
 }
 
 export async function filter(
@@ -118,39 +166,7 @@ export async function filter(
     },
   });
 
-  // Get artists and genres in current location
-  let locationEvents = await prisma.event.findMany({
-    include: {
-      artist: true,
-      venue: true,
-      priceRange: true,
-      image: true,
-    },
-    where: {
-      venue: {
-        some: {
-          AND: [
-            {
-              latitude: { gte: bounds[2], lte: bounds[3] }, // South - North
-            },
-            {
-              longitude: { gte: bounds[0], lte: bounds[1] }, // West - East
-            },
-          ],
-        },
-      },
-    },
-  });
-  const artistNames = [
-    ...new Set(
-      locationEvents.flatMap(
-        (event) => event.artist?.map((artist) => artist.name) || []
-      )
-    ),
-  ];
-  const genreNames = [
-    ...new Set(locationEvents.flatMap((event) => event.genre || [])),
-  ];
+  const [artistNames, genreNames] = await getArtistsAndGenres(bounds);
 
   return {
     success: true,

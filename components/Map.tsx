@@ -20,6 +20,7 @@ import { useDebouncedCallback } from "use-debounce";
 import MinimizedGallery from "./MinimizedGallery";
 import { useTheme } from "next-themes";
 import { getBounds } from "@/lib/locations";
+import type { Location } from "@/types/location";
 
 interface MapProps {
   setArtistNames: React.Dispatch<React.SetStateAction<string[]>>;
@@ -28,12 +29,7 @@ interface MapProps {
   setEvents: React.Dispatch<React.SetStateAction<Event[]>>;
   events: Event[];
   locationNames: string[];
-  locations: {
-    id: number;
-    city: string;
-    country: string;
-    boundingBox: number[];
-  }[];
+  locations: Location[];
   location: string;
   startDate: Date;
   endDate: Date;
@@ -198,6 +194,11 @@ export default function Map(props: MapProps) {
           <Markers events={events} />
         ) : null}
       </MapContainer>
+      {eventsLoaded && events.length === 0 ? (
+        <div className="fixed top-20 z-50 flex justify-center w-full">
+          <span className="bg-white w-fit py-2 px-4 rounded">No events in this area</span>
+        </div>
+      ) : null}
       {events.length > 0 && events !== null ? (
         <div className="absolute bottom-0 z-50 mb-4 md:m-6 flex justify-center w-full">
           <div className="w-screen md:w-[55vw]">

@@ -1,8 +1,9 @@
 "use server";
 
 import { YYYYMMDDToDate } from "@/lib/utils";
-import { getLocations } from "@/actions/filter";
+import { getArtistsAndGenres, getLocations } from "@/actions/filter";
 import Results from "@/components/Results";
+import { getBounds } from "@/lib/locations";
 
 export default async function Page({
   searchParams,
@@ -28,14 +29,18 @@ export default async function Page({
     hideWithoutPrice = "off";
   }
 
-  let locations = await getLocations();
-  const cityCountryNames = locations.map(
-    (location) => `${location.city}, ${location.country}`
-  );
-  const countryNames = [
-    ...new Set(locations.map((location) => location.country)),
-  ];
-  const locationNames = cityCountryNames.concat(countryNames, "Europe");
+  let [locations, locationNames] = await getLocations();
+  let bounds = getBounds(location, locations, locationNames);
+  const [initialArtistNames, initialGenreNames] = await getArtistsAndGenres(bounds);
+  
+  // Declare artist and genre as empty strings if they do not exist in options
+  // This can happen if the user passes them through the url
+  if (!initialArtistNames.includes(artist)) {
+    artist = "";
+  }
+  if (!initialGenreNames.includes(genre)) {
+    genre = "";
+  }
 
   // Convert strings for comparison
   startDate =
@@ -58,6 +63,8 @@ export default async function Page({
         locations={locations}
         location={location}
         hideWithoutPrice={hideWithoutPrice}
+        initialArtistNames={initialArtistNames}
+        initialGenreNames={initialGenreNames}
       />
     </main>
   );
