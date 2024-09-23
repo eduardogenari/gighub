@@ -33,7 +33,9 @@ export default function EventCard({ event }: EventCardProps) {
         </CardHeader>
         <CardContent className="p-0 w-72 h-64">
           <CardTitle>{event.name}</CardTitle>
-          <CardDescription>{startDate.toLocaleDateString()}</CardDescription>
+          <CardDescription>
+            {startDate.toLocaleDateString("es-ES")}
+          </CardDescription>
           <CardDescription>{event.venues[0].name}</CardDescription>
         </CardContent>
         <CardFooter className="p-0 w-72 h-8">

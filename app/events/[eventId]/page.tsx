@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 import Image from "next/image";
 import { CiCalendar, CiLocationOn } from "react-icons/ci";
 import { PiMicrophoneThin } from "react-icons/pi";
-import { IoMdOptions } from "react-icons/io";
+import { CiMusicNote1 } from "react-icons/ci";
 import { CoinsIcon } from "lucide-react";
 import ArtistTopTracksGrid from "@/components/ArtistTopTracksGrid";
 
@@ -73,7 +73,7 @@ export default async function Page({ params }: PageProps) {
           <h2 className="mb-8">{event.name}</h2>
           <div className="flex items-center space-x-2">
             <CiCalendar />
-            <p>{new Date(event.startDate).toLocaleDateString()}</p>
+            <p>{new Date(event.startDate).toLocaleDateString("es-ES")}</p>
           </div>
           <div className="flex items-center space-x-2">
             <PiMicrophoneThin />
@@ -96,7 +96,7 @@ export default async function Page({ params }: PageProps) {
           </div>
           {event.genre ? (
             <div className="flex items-center space-x-2">
-              <IoMdOptions />
+              <CiMusicNote1 />
               <p>{event.genre.join(", ")}</p>
             </div>
           ) : null}

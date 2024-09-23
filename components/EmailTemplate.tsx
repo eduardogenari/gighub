@@ -32,7 +32,7 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateTestProps>> = ({
             <strong>{event.name}</strong>
           </Text>
           <Text className="text-[18px] md:text-[16px] leading-[18px] md:leading-[16px]">
-            Date: {new Date(event.startDate).toLocaleDateString()}
+            Date: {new Date(event.startDate).toLocaleDateString("es-ES")}
           </Text>
           <Text className="text-[18px] md:text-[16px] leading-[18px] md:leading-[16px]">
             Venue:{" "}

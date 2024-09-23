@@ -92,7 +92,7 @@ const PdfDocument: React.FC<PdfDocumentProps> = ({ event }) => (
         <View style={stylesPDF.left}>
           <Text style={stylesPDF.title}>{event.name}</Text>
           <Text style={stylesPDF.text}>
-            Date: {new Date(event.startDate).toLocaleDateString()}
+            Date: {new Date(event.startDate).toLocaleDateString("es-ES")}
           </Text>
           <Text style={stylesPDF.text}>
             Artists: {event.artist.map((artist) => artist.name).join(", ")}
