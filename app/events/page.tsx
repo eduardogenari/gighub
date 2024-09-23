@@ -19,7 +19,7 @@ export default async function Page({
     startDate = new Date("2024-08-01");
   }
   if (!endDate) {
-    endDate = new Date();
+    endDate = new Date("2024-08-01");
     endDate.setMonth(endDate.getMonth() + 4);
   }
   if (!price) {
