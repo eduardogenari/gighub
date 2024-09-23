@@ -388,9 +388,9 @@ async function loadToStripe() {
 
 main()
   .then(async () => {
-    // loadData();
+    loadData();
     // updateVenues();
-    // loadLocations();
+    loadLocations();
     loadToStripe();
   })
   .catch(async (e) => {
