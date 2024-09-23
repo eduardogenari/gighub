@@ -119,14 +119,38 @@ export async function filter(
   });
 
   // Get artists and genres in current location
+  let locationEvents = await prisma.event.findMany({
+    include: {
+      artist: true,
+      venue: true,
+      priceRange: true,
+      image: true,
+    },
+    where: {
+      venue: {
+        some: {
+          AND: [
+            {
+              latitude: { gte: bounds[2], lte: bounds[3] }, // South - North
+            },
+            {
+              longitude: { gte: bounds[0], lte: bounds[1] }, // West - East
+            },
+          ],
+        },
+      },
+    },
+  });
   const artistNames = [
     ...new Set(
-      events.flatMap(
+      locationEvents.flatMap(
         (event) => event.artist?.map((artist) => artist.name) || []
       )
     ),
   ];
-  const genreNames = [...new Set(events.flatMap((event) => event.genre || []))];
+  const genreNames = [
+    ...new Set(locationEvents.flatMap((event) => event.genre || [])),
+  ];
 
   return {
     success: true,
