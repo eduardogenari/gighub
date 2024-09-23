@@ -115,7 +115,7 @@ export default async function Page({ params }: PageProps) {
                 )
             : null}
         </div>
-        {event.priceRange
+        {(event.priceRange && event.startDate >= new Date())
           ? event.priceRange
               .filter((priceRange) => priceRange.type == "standard")
               .map((priceRange, rangeIndex) =>
