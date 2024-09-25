@@ -200,7 +200,7 @@ export default function Map(props: MapProps) {
         </div>
       ) : null}
       {events.length > 0 && events !== null ? (
-        <div className="absolute bottom-0 z-50 mb-4 md:m-6 flex justify-center w-full">
+        <div className="absolute bottom-0 z-40 mb-4 md:m-6 flex justify-center w-full">
           <div className="w-screen md:w-[55vw]">
             <MinimizedGallery events={events} />
           </div>

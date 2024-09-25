@@ -66,11 +66,11 @@ export default function SearchItemHome({
                 field.onChange(e);
                 handleInputChange(e);
               }}
-              className="mb-4 mt-0 px-0 py-0 border-none rounded-none w-[400px] h-[35px] shadow-none outline outline-0 focus:rounded-none focus:outline-0 focus:border-none focus-visible:ring-0 focus-visible:ring-transparent"
+              className="mb-4 mt-0 px-0 py-0 border-none rounded-none w-[200px] md:w-[400px] h-[35px] shadow-none outline outline-0 focus:rounded-none focus:outline-0 focus:border-none focus-visible:ring-0 focus-visible:ring-transparent"
             />
           </FormControl>
           {showSuggestions && suggestions.length > 0 ? (
-            <ul className="border rounded absolute z-10 w-[400px]">
+            <ul className="border rounded absolute z-10 w-[200px] md:w-[400px]">
               {suggestions.map((suggestion, index) => (
                 <li
                   key={index}

@@ -56,7 +56,7 @@ export default function PaymentButtons({ event }: PaymentButtonsProps) {
   };
 
   return (
-    <div className="flex justify-around flex-col items-center mt-20 mb-10 gap-2">
+    <div className="flex justify-around flex-col items-center md:mt-20 mb-10 gap-2">
       <div>
         <button
           onClick={decreaseQuantity}

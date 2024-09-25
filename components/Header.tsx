@@ -23,13 +23,13 @@ export default function Header() {
   const isEventDetailPage = /^\/events\/\d+$/.test(pathname);
 
   return (
-    <header className="h-14 w-[65vw] mx-2 md:mx-auto flex items-center justify-between">
+    <header className="h-14 md:w-[65vw] w-screen px-2 md:mx-auto flex items-center justify-between">
       <Link href="/">
         <h3 className="hover:text-destructive">
           <strong>gighub</strong>
         </h3>
       </Link>
-      <div className="flex justify-end gap-10 items-center">
+      <div className="flex justify-end gap-6 md:gap-10 items-center">
         <Link href="/events">
           <p className="hover:text-destructive">events</p>
         </Link>

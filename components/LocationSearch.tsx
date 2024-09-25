@@ -23,7 +23,7 @@ export default function LocationSearch({ locationNames }: { locationNames: strin
     <Form {...form}>
       <form
         action={searchLocation}
-        className="w-[455px] h-[55px] flex flex-row justify-center items-center bg-background p-[10px]"
+        className="w-[200px] md:w-[455px] h-[55px] flex flex-row justify-center items-center bg-background p-[10px]"
       >
         <SearchItemHome
           form={form}

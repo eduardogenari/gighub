@@ -86,7 +86,7 @@ Finally, you can buy tickets to attend these events. Clicking on Proceed to chec
   <img src="assets/stripe.png" alt="Gighub Stripe">
 </p>
 
-## Demo Video
+## Demo video
 
 <p align="center">
   <a href="https://vimeo.com/1012784684?share=copy#t=0">
@@ -152,13 +152,13 @@ npm run dev
 
 <table  cellspacing="0" cellpadding="0" style="background-color:rgba(0, 0, 0, 0);">
   <tr>
-    <td valign="top"><img src="assets/laia.jpg" alt="Laia Valentí Zurriaga" width="80px" height="80px" style="border-radius: 5px"></td>
+    <td valign="top"><img src="assets/laia.jpg" alt="Laia Valentí Zurriaga" width="100px" height="100px" style="border-radius: 5px; display: block;"></td>
     <td valign="top"><b>Laia Valentí Zurriaga</b><br>
       GitHub: <a href="https://github.com/TanitVZ">@TanitVZ</a> <br>
       ICT Technician at <a href="https://www.santboi.cat/"> Sant Boi Town Hall</a></td>
   </tr>
   <tr>
-    <td valign="top"><img src="assets/eduardo.jpg" alt="Eduardo Mantovani Genari" width="80px" height="80px" style="border-radius: 5px"></td>
+    <td valign="top"><img src="assets/eduardo.jpg" alt="Eduardo Mantovani Genari" width="100px" height="100px" style="border-radius: 5px; display: block;"></td>
     <td valign="top"><b>Eduardo Mantovani Genari</b><br>
       GitHub: <a href="https://github.com/eduardogenari">@eduardogenari</a> <br>
       LinkedIn: <a href="https://www.linkedin.com/in/eduardogenari/">@eduardogenari</a> <br>
@@ -166,7 +166,7 @@ npm run dev
   </tr>
   <tr>
     <td valign="top">
-      <img src="assets/alba.jpg" alt="Alba Vilanova Cortezón" width="80px" height="80px" style="border-radius: 5px">
+      <img src="assets/alba.jpg" alt="Alba Vilanova Cortezón" width="100px" height="100px" style="border-radius: 5px; display: block;">
     </td>
     <td valign="top">      
       <b>Alba Vilanova Cortezón</b><br>

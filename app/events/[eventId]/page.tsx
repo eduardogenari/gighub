@@ -68,7 +68,7 @@ export default async function Page({ params }: PageProps) {
           </div>
         )}
       </div>
-      <div className="w-[75vw] mt-4 flex flex-col md:flex-row items-center justify-center gap-20">
+      <div className="w-[75vw] mt-4 flex flex-col md:flex-row items-center justify-center gap-10 md:gap-20">
         <div>
           <h2 className="mb-8">{event.name}</h2>
           <div className="flex items-center space-x-2">
