@@ -89,7 +89,9 @@ Finally, you can buy tickets to attend these events. Clicking on Proceed to chec
 ## Demo Video
 
 <p align="center">
-  <iframe src="https://vimeo.com/1012784684?share=copy#t=0" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+  <a href="https://vimeo.com/1012784684?share=copy#t=0">
+    <img src="assets/thumb.jpg" alt="Gighub Demo Video">
+  </a>
 </p>
 
 ## Tech stack
