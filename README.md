@@ -142,30 +142,30 @@ npm run dev
 
 ## Authors
 
-<div style="display: flex; flex-direction: column; gap: 1em;">
-  <div style="display: flex; gap: 1em;">
-    <img src="assets/laia.png" alt="Laia Valentí" width="80px" height="80px" style="border-radius: 5px">
+<div style="width: 100%; display: flex; flex-direction: column; gap: 1em;">
+  <div style="width: 100%; display: flex; flex-direction: row;  gap: 1em;">
+    <img src="assets/laia.jpg" alt="Laia Valentí" width="80px" height="80px" style="border-radius: 5px">
     <div>
-      <b>Laia Valentí</b><br>
+      <b>Laia Valentí Zurriaga</b><br>
       GitHub: <a href="https://github.com/TanitVZ">@TanitVZ</a> <br>
-      IT Support Technician at <a href="https://www.santboi.cat/"> Sant Boi Town Hall</a>
+      ICT Technician at <a href="https://www.santboi.cat/"> Sant Boi Town Hall</a>
     </div>
   </div>
 
-  <div style="display: flex; gap: 1em;">
+  <div style="width: 100%; display: flex; flex-direction: row; gap: 1em;">
     <img src="assets/eduardo.png" alt="Eduardo Genari" width="80px" height="80px" style="border-radius: 5px">
     <div>
-      <b>Eduardo Genari</b><br>
+      <b>Eduardo Mantovani Genari</b><br>
       GitHub: <a href="https://github.com/eduardogenari">@eduardogenari</a> <br>
       LinkedIn: <a href="https://www.linkedin.com/in/eduardogenari/">@eduardogenari</a> <br>
       Full-Stack Developer at <a href="https://www.ithinkupc.com/"> IThinkUPC </a>
     </div>
   </div>
 
-  <div style="display: flex; gap: 1em;">
+  <div style="width: 100%; display: flex; flex-direction: row; gap: 1em;">
     <img src="assets/alba.jpg" alt="Alba Vilanova" width="80px" height="80px" style="border-radius: 5px">
     <div>
-      <b>Alba Vilanova</b><br>
+      <b>Alba Vilanova Cortezón</b><br>
       GitHub: <a href="https://github.com/albavilanova">@albavilanova</a> <br>
       LinkedIn: <a href="https://www.linkedin.com/in/albavilanova/">@albavilanova</a> <br>
       Research Engineer and Web Developer at <a href="https://bsc.es/"> Barcelona Supercomputing Center</a>
