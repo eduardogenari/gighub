@@ -142,15 +142,15 @@ npm run dev
 
 ## Authors
 
-<table>
+<table  cellspacing="0" cellpadding="0" style="background-color:rgba(0, 0, 0, 0);>
   <tr>
-    <td valign="top"><img src="assets/laia.jpg" alt="Laia Valentí" width="80px" height="80px" style="border-radius: 5px"></td>
+    <td valign="top"><img src="assets/laia.jpg" alt="Laia Valentí Zurriaga" width="80px" height="80px" style="border-radius: 5px"></td>
     <td valign="top"><b>Laia Valentí Zurriaga</b><br>
       GitHub: <a href="https://github.com/TanitVZ">@TanitVZ</a> <br>
       ICT Technician at <a href="https://www.santboi.cat/"> Sant Boi Town Hall</a></td>
   </tr>
   <tr>
-    <td valign="top"><img src="assets/eduardo.png" alt="Eduardo Genari" width="80px" height="80px" style="border-radius: 5px"></td>
+    <td valign="top"><img src="assets/eduardo.png" alt="Eduardo Mantovani Genari" width="80px" height="80px" style="border-radius: 5px"></td>
     <td valign="top"><b>Eduardo Mantovani Genari</b><br>
       GitHub: <a href="https://github.com/eduardogenari">@eduardogenari</a> <br>
       LinkedIn: <a href="https://www.linkedin.com/in/eduardogenari/">@eduardogenari</a> <br>
@@ -158,7 +158,7 @@ npm run dev
   </tr>
   <tr>
     <td valign="top">
-      <img src="assets/alba.jpg" alt="Alba Vilanova" width="80px" height="80px" style="border-radius: 5px">
+      <img src="assets/alba.jpg" alt="Alba Vilanova Cortezón" width="80px" height="80px" style="border-radius: 5px">
     </td>
     <td valign="top">      
       <b>Alba Vilanova Cortezón</b><br>
