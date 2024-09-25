@@ -86,6 +86,12 @@ Finally, you can buy tickets to attend these events. Clicking on Proceed to chec
   <img src="assets/stripe.png" alt="Gighub Stripe">
 </p>
 
+## Demo Video
+
+<p align="center">
+  <iframe src="https://vimeo.com/1012784684?share=copy#t=0" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+</p>
+
 ## Tech stack
 
 <p align="center"> 
@@ -150,7 +156,7 @@ npm run dev
       ICT Technician at <a href="https://www.santboi.cat/"> Sant Boi Town Hall</a></td>
   </tr>
   <tr>
-    <td valign="top"><img src="assets/eduardo.png" alt="Eduardo Mantovani Genari" width="80px" height="80px" style="border-radius: 5px"></td>
+    <td valign="top"><img src="assets/eduardo.jpg" alt="Eduardo Mantovani Genari" width="80px" height="80px" style="border-radius: 5px"></td>
     <td valign="top"><b>Eduardo Mantovani Genari</b><br>
       GitHub: <a href="https://github.com/eduardogenari">@eduardogenari</a> <br>
       LinkedIn: <a href="https://www.linkedin.com/in/eduardogenari/">@eduardogenari</a> <br>
