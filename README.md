@@ -152,20 +152,20 @@ npm run dev
 
 <table  cellspacing="0" cellpadding="0" style="background-color:rgba(0, 0, 0, 0);">
   <tr>
-    <td valign="top"><img src="assets/laia.jpg" alt="Laia Valentí Zurriaga" width="100px" height="100px" style="border-radius: 5px; display: block;"></td>
+    <td valign="top" width="120px"><img src="assets/laia.jpg" alt="Laia Valentí Zurriaga" width="100px" height="100px" style="border-radius: 5px; display: block;"></td>
     <td valign="top"><b>Laia Valentí Zurriaga</b><br>
       GitHub: <a href="https://github.com/TanitVZ">@TanitVZ</a> <br>
       ICT Technician at <a href="https://www.santboi.cat/"> Sant Boi Town Hall</a></td>
   </tr>
   <tr>
-    <td valign="top"><img src="assets/eduardo.jpg" alt="Eduardo Mantovani Genari" width="100px" height="100px" style="border-radius: 5px; display: block;"></td>
+    <td valign="top" width="120px"><img src="assets/eduardo.jpg" alt="Eduardo Mantovani Genari" width="100px" height="100px" style="border-radius: 5px; display: block;"></td>
     <td valign="top"><b>Eduardo Mantovani Genari</b><br>
       GitHub: <a href="https://github.com/eduardogenari">@eduardogenari</a> <br>
       LinkedIn: <a href="https://www.linkedin.com/in/eduardogenari/">@eduardogenari</a> <br>
       Full-Stack Developer at <a href="https://www.ithinkupc.com/"> IThinkUPC </a></td>
   </tr>
   <tr>
-    <td valign="top">
+    <td valign="top" width="120px">
       <img src="assets/alba.jpg" alt="Alba Vilanova Cortezón" width="100px" height="100px" style="border-radius: 5px; display: block;">
     </td>
     <td valign="top">      
