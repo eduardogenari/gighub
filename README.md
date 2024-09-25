@@ -142,7 +142,7 @@ npm run dev
 
 ## Authors
 
-<table  cellspacing="0" cellpadding="0" style="background-color:rgba(0, 0, 0, 0);>
+<table  cellspacing="0" cellpadding="0" style="background-color:rgba(0, 0, 0, 0);">
   <tr>
     <td valign="top"><img src="assets/laia.jpg" alt="Laia Valentí Zurriaga" width="80px" height="80px" style="border-radius: 5px"></td>
     <td valign="top"><b>Laia Valentí Zurriaga</b><br>
