@@ -43,7 +43,7 @@ export default function CheckoutButton() {
       ) : null}
       <Button
         onClick={handleClick}
-        className="disabled:bg-slate-300 disabled:cursor-not-allowed disabled:text-white"
+        className="disabled:bg-slate-300 disabled:cursor-not-allowed disabled:text-white hover:bg-destructive"
         disabled={
           (cartCount && cartCount > 20) || status == "no-items" ? true : false
         }
