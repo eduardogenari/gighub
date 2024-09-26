@@ -90,7 +90,7 @@ Finally, you can buy tickets to attend these events. Clicking on Proceed to chec
 
 <p align="center">
   <a href="https://vimeo.com/1012784684?share=copy#t=0">
-    <img src="assets/thumb.jpg" alt="Gighub Demo Video">
+    <img src="assets/thumb.png" alt="Gighub Demo Video">
   </a>
 </p>
 
